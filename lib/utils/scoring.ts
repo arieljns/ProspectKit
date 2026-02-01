@@ -36,8 +36,8 @@ export function calculateTotalScore(
  * Get letter grade based on total score
  */
 export function getScoreGrade(totalScore: number): 'A' | 'B' | 'C' {
-  if (totalScore >= 80) return 'A';
-  if (totalScore >= 60) return 'B';
+  if (totalScore >= 85) return 'A';
+  if (totalScore >= 70) return 'B';
   return 'C';
 }
 

@@ -61,6 +61,7 @@ import { Input } from "@/components/shadcnui/input";
 import { Label } from "@/components/shadcnui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/shadcnui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/shadcnui/table";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/shadcnui/tooltip";
 
 // Match the return type from getAllContacts
 export type Contact = {
@@ -506,7 +507,7 @@ export function ContactsTable({ data: initialData }: { data: ContactWithCompany[
           if (!leadScore) {
             return (
               <div className="flex items-center gap-2">
-                <Badge variant="outline" className="text-muted-foreground">
+                <Badge variant="outline" className="text-muted-foreground text-xs">
                   Not Scored
                 </Badge>
               </div>
@@ -523,15 +524,92 @@ export function ContactsTable({ data: initialData }: { data: ContactWithCompany[
 
           const totalScore = calculateTotalScore(dimensionScores, weights);
           const grade = getScoreGrade(totalScore);
-          const badgeVariant = getGradeBadgeVariant(grade);
+
+          // Define colors for each grade
+          const gradeColors = {
+            'A': 'bg-green-500 text-white hover:bg-green-600',
+            'B': 'bg-yellow-500 text-white hover:bg-yellow-600',
+            'C': 'bg-orange-500 text-white hover:bg-orange-600',
+          } as const;
 
           return (
-            <div className="flex items-center gap-2">
-              <Badge variant={badgeVariant} className="min-w-[3rem] justify-center">
-                {grade}
-              </Badge>
-              <span className="text-sm font-medium tabular-nums">{totalScore}</span>
-            </div>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div className="flex items-center gap-2 cursor-help">
+                  <Badge className={`min-w-[3rem] justify-center ${gradeColors[grade]}`}>
+                    {grade}
+                  </Badge>
+                  <span className="text-sm font-medium tabular-nums">{totalScore}</span>
+                </div>
+              </TooltipTrigger>
+              <TooltipContent side="left" className="max-w-md p-4">
+                <div className="space-y-3">
+                  <div className="font-semibold text-sm border-b pb-2">Score Breakdown</div>
+
+                  {/* Industry Match */}
+                  <div className="space-y-1">
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-medium">Industry Match</span>
+                      <span className="text-xs font-bold tabular-nums">{leadScore.industryMatchScore}</span>
+                    </div>
+                    {leadScore.reasoning?.industryMatch && (
+                      <p className="text-xs text-muted-foreground">{leadScore.reasoning.industryMatch}</p>
+                    )}
+                  </div>
+
+                  {/* Company Match */}
+                  <div className="space-y-1">
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-medium">Company Need</span>
+                      <span className="text-xs font-bold tabular-nums">{leadScore.companyMatchScore}</span>
+                    </div>
+                    {leadScore.reasoning?.companyMatch && (
+                      <p className="text-xs text-muted-foreground">{leadScore.reasoning.companyMatch}</p>
+                    )}
+                  </div>
+
+                  {/* Position Match */}
+                  <div className="space-y-1">
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-medium">Position Match</span>
+                      <span className="text-xs font-bold tabular-nums">{leadScore.positionMatchScore}</span>
+                    </div>
+                    {leadScore.reasoning?.positionMatch && (
+                      <p className="text-xs text-muted-foreground">{leadScore.reasoning.positionMatch}</p>
+                    )}
+                  </div>
+
+                  {/* Seniority Match */}
+                  <div className="space-y-1">
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-medium">Seniority Match</span>
+                      <span className="text-xs font-bold tabular-nums">{leadScore.seniorityMatchScore}</span>
+                    </div>
+                    {leadScore.reasoning?.seniorityMatch && (
+                      <p className="text-xs text-muted-foreground">{leadScore.reasoning.seniorityMatch}</p>
+                    )}
+                  </div>
+
+                  {/* Deal Size */}
+                  <div className="space-y-1">
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-medium">Deal Size Potential</span>
+                      <span className="text-xs font-bold tabular-nums">{leadScore.dealSizeScore}</span>
+                    </div>
+                    {leadScore.reasoning?.dealSize && (
+                      <p className="text-xs text-muted-foreground">{leadScore.reasoning.dealSize}</p>
+                    )}
+                  </div>
+
+                  <div className="border-t pt-2 mt-2">
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-semibold">Total Score</span>
+                      <span className="text-xs font-bold tabular-nums">{totalScore}</span>
+                    </div>
+                  </div>
+                </div>
+              </TooltipContent>
+            </Tooltip>
           );
         },
       },
@@ -581,9 +659,10 @@ export function ContactsTable({ data: initialData }: { data: ContactWithCompany[
   });
 
   return (
-    <div className="flex w-full flex-col gap-4 px-4 lg:px-6">
-      {/* Header Controls */}
-      <div className="flex items-center justify-between">
+    <TooltipProvider>
+      <div className="flex w-full flex-col gap-4 px-4 lg:px-6">
+        {/* Header Controls */}
+        <div className="flex items-center justify-between">
         <div className="flex flex-1 items-center gap-2">
           <div className="relative w-full max-w-sm">
             <SearchIcon className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
@@ -813,6 +892,7 @@ export function ContactsTable({ data: initialData }: { data: ContactWithCompany[
           window.location.reload();
         }}
       />
-    </div>
+      </div>
+    </TooltipProvider>
   );
 }

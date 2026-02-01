@@ -1,10 +1,10 @@
-import { ContactsTable } from "@/components/contacts-table"
+import { ContactsTable, type ContactWithCompany } from "@/components/contacts-table"
 import { SiteHeader } from "@/components/site-header"
 import { getAllContacts } from "@/lib/actions/contacts"
 
 export default async function ContactsPage() {
   const result = await getAllContacts()
-  const contacts = result.success ? result.data : []
+  const contacts: ContactWithCompany[] = result.success && result.data ? result.data : []
 
   return (
     <>

@@ -5,6 +5,10 @@ import { ScoreDistributionChart } from "@/components/score-distribution-chart"
 import { LeadsOverTimeChart } from "@/components/leads-over-time-chart"
 import { getAnalyticsData } from "@/lib/actions/analytics"
 
+// Force dynamic rendering to ensure data is always fresh
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export default async function AnalyticsPage() {
   const result = await getAnalyticsData();
 

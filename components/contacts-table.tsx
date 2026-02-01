@@ -22,6 +22,7 @@ import {
   ChevronsRightIcon,
   ColumnsIcon,
   ExternalLinkIcon,
+  MailIcon,
   PlusIcon,
   SearchIcon,
   SparklesIcon,
@@ -33,6 +34,7 @@ import { toast } from "sonner";
 import { updateContactStatus, updateContactPriority, deleteContact } from "@/lib/actions/contacts";
 import { calculateTotalScore, getScoreGrade, getGradeBadgeVariant } from "@/lib/utils/scoring";
 import { getScoringConfig } from "@/lib/actions/scoring-config";
+import { MessageGeneratorDialog } from "@/components/message-generator-dialog";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -113,6 +115,8 @@ export function ContactsTable({ data: initialData }: { data: ContactWithCompany[
   });
   const [isDeleting, setIsDeleting] = React.useState(false);
   const [isScoring, setIsScoring] = React.useState(false);
+  const [messageDialogOpen, setMessageDialogOpen] = React.useState(false);
+  const [selectedContact, setSelectedContact] = React.useState<ContactWithCompany | null>(null);
   const [weights, setWeights] = React.useState({
     industryMatch: 25,
     companyMatch: 30,
@@ -529,6 +533,23 @@ export function ContactsTable({ data: initialData }: { data: ContactWithCompany[
           );
         },
       },
+      {
+        id: "outreach",
+        header: "Outreach",
+        cell: ({ row }) => (
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => {
+              setSelectedContact(row.original);
+              setMessageDialogOpen(true);
+            }}
+            className="h-8 w-8 p-0"
+          >
+            <MailIcon className="h-4 w-4 text-muted-foreground hover:text-primary" />
+          </Button>
+        ),
+      },
       // eslint-disable-next-line react-hooks/exhaustive-deps
     ],
     [weights]
@@ -771,6 +792,15 @@ export function ContactsTable({ data: initialData }: { data: ContactWithCompany[
           </div>
         </div>
       </div>
+      {/* Message Generator Dialog */}
+      {selectedContact && (
+        <MessageGeneratorDialog
+          open={messageDialogOpen}
+          onOpenChange={setMessageDialogOpen}
+          contact={selectedContact.contact}
+          company={selectedContact.company!}
+        />
+      )}
     </div>
   );
 }

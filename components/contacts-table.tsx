@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -12,8 +12,9 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
-} from "@tanstack/react-table"
+} from "@tanstack/react-table";
 import {
+  ArrowUpDownIcon,
   ChevronDownIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
@@ -23,16 +24,15 @@ import {
   ExternalLinkIcon,
   PlusIcon,
   SearchIcon,
+  SparklesIcon,
   Trash2Icon,
   UserIcon,
-} from "lucide-react"
-import { toast } from "sonner"
+} from "lucide-react";
+import { toast } from "sonner";
 
-import {
-  updateContactStatus,
-  updateContactPriority,
-  deleteContact
-} from "@/lib/actions/contacts"
+import { updateContactStatus, updateContactPriority, deleteContact } from "@/lib/actions/contacts";
+import { calculateTotalScore, getScoreGrade, getGradeBadgeVariant } from "@/lib/utils/scoring";
+import { getScoringConfig } from "@/lib/actions/scoring-config";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -43,408 +43,496 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/shadcnui/alert-dialog"
+} from "@/components/shadcnui/alert-dialog";
 
-import { Badge } from "@/components/shadcnui/badge"
-import { Button } from "@/components/shadcnui/button"
-import { Checkbox } from "@/components/shadcnui/checkbox"
+import { Badge } from "@/components/shadcnui/badge";
+import { Button } from "@/components/shadcnui/button";
+import { Checkbox } from "@/components/shadcnui/checkbox";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuTrigger,
-} from "@/components/shadcnui/dropdown-menu"
-import { Input } from "@/components/shadcnui/input"
-import { Label } from "@/components/shadcnui/label"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/shadcnui/select"
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/shadcnui/table"
+} from "@/components/shadcnui/dropdown-menu";
+import { Input } from "@/components/shadcnui/input";
+import { Label } from "@/components/shadcnui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/shadcnui/select";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/shadcnui/table";
 
 // Match the return type from getAllContacts
 export type Contact = {
-  id: string
-  companyId: string
-  name: string
-  title: string
-  department: string | null
-  linkedinUrl: string | null
-  contactStatus: string
-  priority: string
-  lastContactedAt: Date | null
-  notes: string | null
-  createdAt: Date
-  updatedAt: Date
-}
+  id: string;
+  companyId: string;
+  name: string;
+  title: string;
+  department: string | null;
+  linkedinUrl: string | null;
+  contactStatus: string;
+  priority: string;
+  lastContactedAt: Date | null;
+  notes: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+export type LeadScore = {
+  id: string;
+  contactId: string;
+  industryMatchScore: number;
+  companyMatchScore: number;
+  positionMatchScore: number;
+  seniorityMatchScore: number;
+  dealSizeScore: number;
+  reasoning: any;
+  createdAt: Date;
+  updatedAt: Date;
+} | null;
 
 export type ContactWithCompany = {
-  contact: Contact
+  contact: Contact;
   company: {
-    id: string
-    companyName: string
-    industry: string | null
-  } | null
-}
+    id: string;
+    companyName: string;
+    industry: string | null;
+  } | null;
+  leadScore: LeadScore;
+};
 
-export function ContactsTable({
-  data: initialData,
-}: {
-  data: ContactWithCompany[]
-}) {
+export function ContactsTable({ data: initialData }: { data: ContactWithCompany[] }) {
   // Sort by createdAt descending on initial load
   const [data, setData] = React.useState(() =>
-    [...initialData].sort((a, b) =>
-      new Date(b.contact.createdAt).getTime() - new Date(a.contact.createdAt).getTime()
-    )
-  )
-  const [rowSelection, setRowSelection] = React.useState({})
-  const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({})
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
-  )
-  const [sorting, setSorting] = React.useState<SortingState>([])
+    [...initialData].sort((a, b) => new Date(b.contact.createdAt).getTime() - new Date(a.contact.createdAt).getTime())
+  );
+  const [rowSelection, setRowSelection] = React.useState({});
+  const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
+  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
+  const [sorting, setSorting] = React.useState<SortingState>([]);
   const [pagination, setPagination] = React.useState({
     pageIndex: 0,
     pageSize: 10,
-  })
-  const [isDeleting, setIsDeleting] = React.useState(false)
+  });
+  const [isDeleting, setIsDeleting] = React.useState(false);
+  const [isScoring, setIsScoring] = React.useState(false);
+  const [weights, setWeights] = React.useState({
+    industryMatch: 25,
+    companyMatch: 30,
+    positionMatch: 20,
+    seniorityMatch: 15,
+    dealSizeMatch: 10,
+  });
+
+  // Load scoring config weights on mount
+  React.useEffect(() => {
+    const loadWeights = async () => {
+      const result = await getScoringConfig();
+      if (result.success && result.data) {
+        setWeights(result.data.weights as any);
+      }
+    };
+    loadWeights();
+  }, []);
 
   const handleBatchDelete = async () => {
-    const selectedRows = table.getFilteredSelectedRowModel().rows
-    const selectedContacts = selectedRows.map((row) => row.original.contact)
+    const selectedRows = table.getFilteredSelectedRowModel().rows;
+    const selectedContacts = selectedRows.map((row) => row.original.contact);
 
     if (selectedContacts.length === 0) {
-      toast.error("No contacts selected")
-      return
+      toast.error("No contacts selected");
+      return;
     }
 
-    setIsDeleting(true)
+    setIsDeleting(true);
 
     // Delete each contact
-    const deletePromises = selectedContacts.map((contact) =>
-      deleteContact(contact.id)
-    )
+    const deletePromises = selectedContacts.map((contact) => deleteContact(contact.id));
 
     try {
-      const results = await Promise.all(deletePromises)
-      const failures = results.filter((r) => !r.success)
+      const results = await Promise.all(deletePromises);
+      const failures = results.filter((r) => !r.success);
 
       if (failures.length === 0) {
         // All succeeded
         toast.success(
-          `Successfully deleted ${selectedContacts.length} ${
-            selectedContacts.length === 1 ? "contact" : "contacts"
-          }`
-        )
+          `Successfully deleted ${selectedContacts.length} ${selectedContacts.length === 1 ? "contact" : "contacts"}`
+        );
 
         // Remove from local state
-        setData((prevData) =>
-          prevData.filter(
-            (c) => !selectedContacts.some((sc) => sc.id === c.contact.id)
-          )
-        )
+        setData((prevData) => prevData.filter((c) => !selectedContacts.some((sc) => sc.id === c.contact.id)));
 
         // Clear selection
-        setRowSelection({})
+        setRowSelection({});
       } else {
-        toast.error(`Failed to delete ${failures.length} contacts`)
+        toast.error(`Failed to delete ${failures.length} contacts`);
       }
     } catch (error) {
-      toast.error("Failed to delete contacts")
+      toast.error("Failed to delete contacts");
     } finally {
-      setIsDeleting(false)
+      setIsDeleting(false);
     }
-  }
+  };
 
   const handleStatusChange = async (id: string, value: string) => {
-    const contactData = data.find((c) => c.contact.id === id)
-    if (!contactData) return
+    const contactData = data.find((c) => c.contact.id === id);
+    if (!contactData) return;
 
-    const { contact } = contactData
+    const { contact } = contactData;
 
     // Optimistically update UI
     setData((prevData) =>
-      prevData.map((c) =>
-        c.contact.id === id
-          ? { ...c, contact: { ...c.contact, contactStatus: value } }
-          : c
-      )
-    )
+      prevData.map((c) => (c.contact.id === id ? { ...c, contact: { ...c.contact, contactStatus: value } } : c))
+    );
 
     // Update in database
     const result = await updateContactStatus(
       id,
       value as "new" | "contacted" | "responded" | "qualified" | "not_interested"
-    )
+    );
 
     if (result.success) {
-      toast.success(`Updated ${contact.name}`)
+      toast.success(`Updated ${contact.name}`);
     } else {
       // Revert on error
       setData((prevData) =>
         prevData.map((c) =>
-          c.contact.id === id
-            ? { ...c, contact: { ...c.contact, contactStatus: contact.contactStatus } }
-            : c
+          c.contact.id === id ? { ...c, contact: { ...c.contact, contactStatus: contact.contactStatus } } : c
         )
-      )
-      toast.error(result.error || "Failed to update")
+      );
+      toast.error(result.error || "Failed to update");
     }
-  }
+  };
 
   const handlePriorityChange = async (id: string, value: string) => {
-    const contactData = data.find((c) => c.contact.id === id)
-    if (!contactData) return
+    const contactData = data.find((c) => c.contact.id === id);
+    if (!contactData) return;
 
-    const { contact } = contactData
+    const { contact } = contactData;
 
     // Optimistically update UI
     setData((prevData) =>
-      prevData.map((c) =>
-        c.contact.id === id
-          ? { ...c, contact: { ...c.contact, priority: value } }
-          : c
-      )
-    )
+      prevData.map((c) => (c.contact.id === id ? { ...c, contact: { ...c.contact, priority: value } } : c))
+    );
 
     // Update in database
-    const result = await updateContactPriority(id, value as "High" | "Medium" | "Low")
+    const result = await updateContactPriority(id, value as "High" | "Medium" | "Low");
 
     if (result.success) {
-      toast.success(`Updated ${contact.name}`)
+      toast.success(`Updated ${contact.name}`);
     } else {
       // Revert on error
       setData((prevData) =>
-        prevData.map((c) =>
-          c.contact.id === id
-            ? { ...c, contact: { ...c.contact, priority: contact.priority } }
-            : c
-        )
-      )
-      toast.error(result.error || "Failed to update")
+        prevData.map((c) => (c.contact.id === id ? { ...c, contact: { ...c.contact, priority: contact.priority } } : c))
+      );
+      toast.error(result.error || "Failed to update");
     }
-  }
+  };
 
-  const handleDelete = async (id: string, name: string) => {
-    const result = await deleteContact(id)
+  const handleScoreSelected = async () => {
+    const selectedRows = table.getFilteredSelectedRowModel().rows;
+    const selectedContacts = selectedRows.map((row) => row.original.contact);
 
-    if (result.success) {
-      toast.success(`Deleted ${name}`)
-      setData((prevData) => prevData.filter((c) => c.contact.id !== id))
-    } else {
-      toast.error(result.error || "Failed to delete contact")
+    if (selectedContacts.length === 0) {
+      toast.error("No contacts selected");
+      return;
     }
-  }
+
+    setIsScoring(true);
+
+    // Score each contact
+    const scorePromises = selectedContacts.map((contact) =>
+      fetch("/api/leads/score", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ contactId: contact.id }),
+      }).then((res) => res.json())
+    );
+
+    try {
+      const results = await Promise.all(scorePromises);
+      const failures = results.filter((r) => !r.success);
+
+      if (failures.length === 0) {
+        toast.success(
+          `Successfully scored ${selectedContacts.length} ${selectedContacts.length === 1 ? "contact" : "contacts"}`
+        );
+        // Reload page to show new scores
+        window.location.reload();
+      } else {
+        // Show detailed error from first failure
+        const firstError = failures[0]?.error || "Unknown error";
+        toast.error(`Failed to score ${failures.length} contacts: ${firstError}`);
+        console.error("Scoring failures:", failures);
+      }
+    } catch (error) {
+      const errorMsg = error instanceof Error ? error.message : "Failed to score contacts";
+      toast.error(errorMsg);
+      console.error("Scoring error:", error);
+    } finally {
+      setIsScoring(false);
+    }
+  };
+
+  const handleScoreAll = async () => {
+    const allContacts = data.map((c) => c.contact);
+
+    if (allContacts.length === 0) {
+      toast.error("No contacts to score");
+      return;
+    }
+
+    setIsScoring(true);
+
+    // Score each contact
+    const scorePromises = allContacts.map((contact) =>
+      fetch("/api/leads/score", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ contactId: contact.id }),
+      }).then((res) => res.json())
+    );
+
+    try {
+      const results = await Promise.all(scorePromises);
+      const failures = results.filter((r) => !r.success);
+
+      if (failures.length === 0) {
+        toast.success(`Successfully scored all ${allContacts.length} contacts`);
+        // Reload page to show new scores
+        window.location.reload();
+      } else {
+        const successCount = results.filter((r) => r.success).length;
+        const firstError = failures[0]?.error || "Unknown error";
+        toast.warning(`Scored ${successCount} contacts, ${failures.length} failed: ${firstError}`);
+        console.error("Scoring failures:", failures);
+        // Reload page to show new scores
+        window.location.reload();
+      }
+    } catch (error) {
+      const errorMsg = error instanceof Error ? error.message : "Failed to score contacts";
+      toast.error(errorMsg);
+      console.error("Scoring error:", error);
+    } finally {
+      setIsScoring(false);
+    }
+  };
 
   const getStatusBadgeVariant = (status: string) => {
     switch (status) {
       case "new":
-        return "secondary"
+        return "secondary";
       case "contacted":
-        return "outline"
+        return "outline";
       case "responded":
-        return "default"
+        return "default";
       case "qualified":
-        return "default"
+        return "default";
       case "not_interested":
-        return "secondary"
+        return "secondary";
       default:
-        return "secondary"
+        return "secondary";
     }
-  }
+  };
 
   const getStatusLabel = (status: string) => {
     switch (status) {
       case "new":
-        return "New"
+        return "New";
       case "contacted":
-        return "Contacted"
+        return "Contacted";
       case "responded":
-        return "Responded"
+        return "Responded";
       case "qualified":
-        return "Qualified"
+        return "Qualified";
       case "not_interested":
-        return "Not Interested"
+        return "Not Interested";
       default:
-        return status
+        return status;
     }
-  }
+  };
 
-  const formatDate = (date: Date | null) => {
-    if (!date) return "Never"
-    return new Date(date).toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric",
-      year: "numeric",
-    })
-  }
+  // Helper function to create sortable column header
+  const createSortableHeader = (column: any, title: string) => {
+    return (
+      <Button
+        variant="ghost"
+        size="sm"
+        className="-ml-3 h-8 data-[state=open]:bg-accent"
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+      >
+        {title}
+        <ArrowUpDownIcon className="ml-2 h-4 w-4" />
+      </Button>
+    );
+  };
 
-  const columns: ColumnDef<ContactWithCompany>[] = [
-    {
-      id: "select",
-      header: ({ table }) => (
-        <div className="flex items-center justify-center">
-          <Checkbox
-            checked={
-              table.getIsAllPageRowsSelected() ||
-              (table.getIsSomePageRowsSelected() && "indeterminate")
-            }
-            onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-            aria-label="Select all"
-          />
-        </div>
-      ),
-      cell: ({ row }) => (
-        <div className="flex items-center justify-center">
-          <Checkbox
-            checked={row.getIsSelected()}
-            onCheckedChange={(value) => row.toggleSelected(!!value)}
-            aria-label="Select row"
-          />
-        </div>
-      ),
-      enableSorting: false,
-      enableHiding: false,
-    },
-    {
-      accessorKey: "contact.name",
-      header: "Name",
-      cell: ({ row }) => (
-        <div className="flex items-center gap-2">
-          <UserIcon className="h-4 w-4 text-muted-foreground" />
-          <span className="font-medium">{row.original.contact.name}</span>
-        </div>
-      ),
-      enableHiding: false,
-    },
-    {
-      accessorKey: "contact.title",
-      header: "Title",
-      cell: ({ row }) => (
-        <div className="text-sm">{row.original.contact.title}</div>
-      ),
-    },
-    {
-      accessorKey: "company.companyName",
-      header: "Company",
-      cell: ({ row }) => (
-        <Badge variant="outline" className="px-2 text-muted-foreground">
-          {row.original.company?.companyName || "N/A"}
-        </Badge>
-      ),
-    },
-    {
-      accessorKey: "contact.linkedinUrl",
-      header: "LinkedIn",
-      cell: ({ row }) => {
-        const url = row.original.contact.linkedinUrl
-        if (!url) return <span className="text-muted-foreground text-sm">—</span>
-
-        return (
-          <a
-            href={url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1 text-blue-600 hover:underline text-sm"
-          >
-            Profile
-            <ExternalLinkIcon className="h-3 w-3" />
-          </a>
-        )
+  const columns: ColumnDef<ContactWithCompany>[] = React.useMemo(
+    () => [
+      {
+        id: "select",
+        header: ({ table }) => (
+          <div className="flex items-center justify-center">
+            <Checkbox
+              checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && "indeterminate")}
+              onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+              aria-label="Select all"
+            />
+          </div>
+        ),
+        cell: ({ row }) => (
+          <div className="flex items-center justify-center">
+            <Checkbox
+              checked={row.getIsSelected()}
+              onCheckedChange={(value) => row.toggleSelected(!!value)}
+              aria-label="Select row"
+            />
+          </div>
+        ),
+        enableSorting: false,
+        enableHiding: false,
       },
-    },
-    {
-      accessorKey: "contact.contactStatus",
-      header: "Status",
-      cell: ({ row }) => (
-        <Select
-          defaultValue={row.original.contact.contactStatus}
-          onValueChange={(value) => handleStatusChange(row.original.contact.id, value)}
-        >
-          <SelectTrigger className="h-8 w-36">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="new">New</SelectItem>
-            <SelectItem value="contacted">Contacted</SelectItem>
-            <SelectItem value="responded">Responded</SelectItem>
-            <SelectItem value="qualified">Qualified</SelectItem>
-            <SelectItem value="not_interested">Not Interested</SelectItem>
-          </SelectContent>
-        </Select>
-      ),
-    },
-    {
-      accessorKey: "contact.priority",
-      header: "Priority",
-      cell: ({ row }) => (
-        <Select
-          defaultValue={row.original.contact.priority}
-          onValueChange={(value) => handlePriorityChange(row.original.contact.id, value)}
-        >
-          <SelectTrigger className="h-8 w-28">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="High">High</SelectItem>
-            <SelectItem value="Medium">Medium</SelectItem>
-            <SelectItem value="Low">Low</SelectItem>
-          </SelectContent>
-        </Select>
-      ),
-    },
-    {
-      accessorKey: "contact.lastContactedAt",
-      header: "Last Contacted",
-      cell: ({ row }) => (
-        <div className="text-sm text-muted-foreground">
-          {formatDate(row.original.contact.lastContactedAt)}
-        </div>
-      ),
-    },
-    {
-      id: "actions",
-      header: "Actions",
-      cell: ({ row }) => (
-        <AlertDialog>
-          <AlertDialogTrigger asChild>
-            <Button variant="ghost" size="sm">
-              <Trash2Icon className="h-4 w-4 text-destructive" />
-            </Button>
-          </AlertDialogTrigger>
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle>Delete Contact?</AlertDialogTitle>
-              <AlertDialogDescription>
-                Are you sure you want to delete {row.original.contact.name}? This action cannot be undone.
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel>Cancel</AlertDialogCancel>
-              <AlertDialogAction
-                onClick={() => handleDelete(row.original.contact.id, row.original.contact.name)}
-                className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-              >
-                Delete
-              </AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
-      ),
-    },
-  ]
+      {
+        id: "name",
+        accessorKey: "contact.name",
+        header: "Name",
+        cell: ({ row }) => (
+          <div className="flex items-center gap-2">
+            <UserIcon className="h-4 w-4 text-muted-foreground" />
+            <span className="font-medium">{row.original.contact.name}</span>
+          </div>
+        ),
+        enableSorting: false,
+        enableHiding: false,
+      },
+      {
+        accessorKey: "contact.title",
+        header: "Title",
+        cell: ({ row }) => <div className="text-sm">{row.original.contact.title}</div>,
+        enableSorting: false,
+      },
+      {
+        accessorKey: "company.companyName",
+        header: ({ column }) => createSortableHeader(column, "Company"),
+        cell: ({ row }) => (
+          <Badge variant="outline" className="px-2 text-muted-foreground">
+            {row.original.company?.companyName || "N/A"}
+          </Badge>
+        ),
+      },
+      {
+        accessorKey: "contact.linkedinUrl",
+        header: "LinkedIn",
+        cell: ({ row }) => {
+          const url = row.original.contact.linkedinUrl;
+          if (!url) return <span className="text-muted-foreground text-sm">—</span>;
+
+          return (
+            <a
+              href={url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 text-blue-600 hover:underline text-sm"
+            >
+              Profile
+              <ExternalLinkIcon className="h-3 w-3" />
+            </a>
+          );
+        },
+      },
+      {
+        accessorKey: "contact.contactStatus",
+        header: ({ column }) => createSortableHeader(column, "Status"),
+        cell: ({ row }) => (
+          <Select
+            defaultValue={row.original.contact.contactStatus}
+            onValueChange={(value) => handleStatusChange(row.original.contact.id, value)}
+          >
+            <SelectTrigger className="h-8 w-36">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="new">New</SelectItem>
+              <SelectItem value="contacted">Contacted</SelectItem>
+              <SelectItem value="responded">Responded</SelectItem>
+              <SelectItem value="qualified">Qualified</SelectItem>
+              <SelectItem value="not_interested">Not Interested</SelectItem>
+            </SelectContent>
+          </Select>
+        ),
+      },
+      {
+        accessorKey: "contact.priority",
+        header: ({ column }) => createSortableHeader(column, "Priority"),
+        cell: ({ row }) => (
+          <Select
+            defaultValue={row.original.contact.priority}
+            onValueChange={(value) => handlePriorityChange(row.original.contact.id, value)}
+          >
+            <SelectTrigger className="h-8 w-28">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="High">High</SelectItem>
+              <SelectItem value="Medium">Medium</SelectItem>
+              <SelectItem value="Low">Low</SelectItem>
+            </SelectContent>
+          </Select>
+        ),
+      },
+      {
+        id: "score",
+        accessorFn: (row) => {
+          const { leadScore } = row;
+          if (!leadScore) return -1; // Unscored items sort to bottom
+
+          const dimensionScores = {
+            industryMatchScore: leadScore.industryMatchScore,
+            companyMatchScore: leadScore.companyMatchScore,
+            positionMatchScore: leadScore.positionMatchScore,
+            seniorityMatchScore: leadScore.seniorityMatchScore,
+            dealSizeScore: leadScore.dealSizeScore,
+          };
+
+          return calculateTotalScore(dimensionScores, weights);
+        },
+        header: ({ column }) => createSortableHeader(column, "Score"),
+        cell: ({ row }) => {
+          const { leadScore } = row.original;
+
+          if (!leadScore) {
+            return (
+              <div className="flex items-center gap-2">
+                <Badge variant="outline" className="text-muted-foreground">
+                  Not Scored
+                </Badge>
+              </div>
+            );
+          }
+
+          const dimensionScores = {
+            industryMatchScore: leadScore.industryMatchScore,
+            companyMatchScore: leadScore.companyMatchScore,
+            positionMatchScore: leadScore.positionMatchScore,
+            seniorityMatchScore: leadScore.seniorityMatchScore,
+            dealSizeScore: leadScore.dealSizeScore,
+          };
+
+          const totalScore = calculateTotalScore(dimensionScores, weights);
+          const grade = getScoreGrade(totalScore);
+          const badgeVariant = getGradeBadgeVariant(grade);
+
+          return (
+            <div className="flex items-center gap-2">
+              <Badge variant={badgeVariant} className="min-w-[3rem] justify-center">
+                {grade}
+              </Badge>
+              <span className="text-sm font-medium tabular-nums">{totalScore}</span>
+            </div>
+          );
+        },
+      },
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    ],
+    [weights]
+  );
 
   const table = useReactTable({
     data,
@@ -467,7 +555,7 @@ export function ContactsTable({
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
-  })
+  });
 
   return (
     <div className="flex w-full flex-col gap-4 px-4 lg:px-6">
@@ -478,13 +566,8 @@ export function ContactsTable({
             <SearchIcon className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
               placeholder="Search contacts..."
-              value={
-                (table.getColumn("contact.name")?.getFilterValue() as string) ??
-                ""
-              }
-              onChange={(event) =>
-                table.getColumn("contact.name")?.setFilterValue(event.target.value)
-              }
+              value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
+              onChange={(event) => table.getColumn("name")?.setFilterValue(event.target.value)}
               className="pl-8"
             />
           </div>
@@ -495,9 +578,7 @@ export function ContactsTable({
               <AlertDialogTrigger asChild>
                 <Button variant="destructive" size="sm" disabled={isDeleting}>
                   <Trash2Icon className="h-4 w-4" />
-                  <span className="hidden sm:inline">
-                    Delete ({table.getFilteredSelectedRowModel().rows.length})
-                  </span>
+                  <span className="hidden sm:inline">Delete ({table.getFilteredSelectedRowModel().rows.length})</span>
                   <span className="sm:hidden">Delete</span>
                 </Button>
               </AlertDialogTrigger>
@@ -505,11 +586,9 @@ export function ContactsTable({
                 <AlertDialogHeader>
                   <AlertDialogTitle>Are you sure?</AlertDialogTitle>
                   <AlertDialogDescription>
-                    This will permanently delete{" "}
-                    {table.getFilteredSelectedRowModel().rows.length}{" "}
-                    {table.getFilteredSelectedRowModel().rows.length === 1
-                      ? "contact"
-                      : "contacts"}. This action cannot be undone.
+                    This will permanently delete {table.getFilteredSelectedRowModel().rows.length}{" "}
+                    {table.getFilteredSelectedRowModel().rows.length === 1 ? "contact" : "contacts"}. This action cannot
+                    be undone.
                   </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
@@ -526,6 +605,28 @@ export function ContactsTable({
           )}
         </div>
         <div className="flex items-center gap-2">
+          {/* Smart Score Button - Score Selected or Score All */}
+          <Button
+            variant={table.getFilteredSelectedRowModel().rows.length > 0 ? "default" : "secondary"}
+            size="sm"
+            onClick={table.getFilteredSelectedRowModel().rows.length > 0 ? handleScoreSelected : handleScoreAll}
+            disabled={isScoring || data.length === 0}
+          >
+            <SparklesIcon className="h-4 w-4" />
+            <span className="hidden lg:inline">
+              {isScoring
+                ? "Scoring..."
+                : table.getFilteredSelectedRowModel().rows.length > 0
+                ? `Score (${table.getFilteredSelectedRowModel().rows.length})`
+                : "Score All"}
+            </span>
+            <span className="lg:hidden">
+              {table.getFilteredSelectedRowModel().rows.length > 0
+                ? table.getFilteredSelectedRowModel().rows.length
+                : "All"}
+            </span>
+          </Button>
+
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" size="sm">
@@ -537,24 +638,18 @@ export function ContactsTable({
             <DropdownMenuContent align="end" className="w-48">
               {table
                 .getAllColumns()
-                .filter(
-                  (column) =>
-                    typeof column.accessorFn !== "undefined" &&
-                    column.getCanHide()
-                )
+                .filter((column) => typeof column.accessorFn !== "undefined" && column.getCanHide())
                 .map((column) => {
                   return (
                     <DropdownMenuCheckboxItem
                       key={column.id}
                       className="capitalize"
                       checked={column.getIsVisible()}
-                      onCheckedChange={(value) =>
-                        column.toggleVisibility(!!value)
-                      }
+                      onCheckedChange={(value) => column.toggleVisibility(!!value)}
                     >
                       {column.id}
                     </DropdownMenuCheckboxItem>
-                  )
+                  );
                 })}
             </DropdownMenuContent>
           </DropdownMenu>
@@ -574,14 +669,9 @@ export function ContactsTable({
                 {headerGroup.headers.map((header) => {
                   return (
                     <TableHead key={header.id} colSpan={header.colSpan}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
+                      {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
                     </TableHead>
-                  )
+                  );
                 })}
               </TableRow>
             ))}
@@ -589,26 +679,15 @@ export function ContactsTable({
           <TableBody>
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                >
+                <TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
+                    <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
                   ))}
                 </TableRow>
               ))
             ) : (
               <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
+                <TableCell colSpan={columns.length} className="h-24 text-center">
                   No contacts found.
                 </TableCell>
               </TableRow>
@@ -620,8 +699,8 @@ export function ContactsTable({
       {/* Pagination */}
       <div className="flex items-center justify-between">
         <div className="hidden flex-1 text-sm text-muted-foreground lg:flex">
-          {table.getFilteredSelectedRowModel().rows.length} of{" "}
-          {table.getFilteredRowModel().rows.length} row(s) selected.
+          {table.getFilteredSelectedRowModel().rows.length} of {table.getFilteredRowModel().rows.length} row(s)
+          selected.
         </div>
         <div className="flex w-full items-center gap-8 lg:w-fit">
           <div className="hidden items-center gap-2 lg:flex">
@@ -631,13 +710,11 @@ export function ContactsTable({
             <Select
               value={`${table.getState().pagination.pageSize}`}
               onValueChange={(value) => {
-                table.setPageSize(Number(value))
+                table.setPageSize(Number(value));
               }}
             >
               <SelectTrigger className="w-20" id="rows-per-page">
-                <SelectValue
-                  placeholder={table.getState().pagination.pageSize}
-                />
+                <SelectValue placeholder={table.getState().pagination.pageSize} />
               </SelectTrigger>
               <SelectContent side="top">
                 {[10, 20, 30, 40, 50].map((pageSize) => (
@@ -649,8 +726,7 @@ export function ContactsTable({
             </Select>
           </div>
           <div className="flex w-fit items-center justify-center text-sm font-medium">
-            Page {table.getState().pagination.pageIndex + 1} of{" "}
-            {table.getPageCount()}
+            Page {table.getState().pagination.pageIndex + 1} of {table.getPageCount()}
           </div>
           <div className="ml-auto flex items-center gap-2 lg:ml-0">
             <Button
@@ -696,5 +772,5 @@ export function ContactsTable({
         </div>
       </div>
     </div>
-  )
+  );
 }

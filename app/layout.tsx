@@ -4,6 +4,7 @@ import "./globals.css";
 import { SidebarProvider, SidebarInset } from "@/components/shadcnui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
 import { Toaster } from "@/components/shadcnui/sonner";
+import { TooltipProvider } from "@/components/shadcnui/tooltip";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,13 +19,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
-        <SidebarProvider>
-          <AppSidebar variant="inset" />
-          <SidebarInset>{children}</SidebarInset>
-        </SidebarProvider>
-        <Toaster />
+        <TooltipProvider>
+          <SidebarProvider>
+            <AppSidebar variant="inset" />
+            <SidebarInset>{children}</SidebarInset>
+          </SidebarProvider>
+          <Toaster />
+        </TooltipProvider>
       </body>
     </html>
   );

@@ -1,7 +1,7 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import Link from "next/link"
+import * as React from "react";
+import Link from "next/link";
 import {
   ClipboardListIcon,
   HelpCircleIcon,
@@ -11,11 +11,11 @@ import {
   SearchIcon,
   SettingsIcon,
   UsersIcon,
-} from "lucide-react"
+} from "lucide-react";
 
-import { NavMain } from "@/components/nav-main"
-import { NavSecondary } from "@/components/nav-secondary"
-import { NavUser } from "@/components/nav-user"
+import { NavMain } from "@/components/nav-main";
+import { NavSecondary } from "@/components/nav-secondary";
+import { NavUser } from "@/components/nav-user";
 import {
   Sidebar,
   SidebarContent,
@@ -25,8 +25,8 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarTrigger,
-} from "@/components/shadcnui/sidebar"
-import { Oranienbaum } from "next/font/google"
+} from "@/components/shadcnui/sidebar";
+import { Oranienbaum } from "next/font/google";
 
 const data = {
   user: {
@@ -55,13 +55,13 @@ const data = {
       url: "/analytics",
       icon: ClipboardListIcon,
     },
-  ],
-  navSecondary: [
     {
-      title: "Settings",
-      url: "#",
+      title: "Customization",
+      url: "/settings/scoring",
       icon: SettingsIcon,
     },
+  ],
+  navSecondary: [
     {
       title: "Get Help",
       url: "#",
@@ -73,7 +73,7 @@ const data = {
       icon: SearchIcon,
     },
   ],
-}
+};
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
@@ -81,13 +81,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton
-              asChild
-              className="data-[slot=sidebar-menu-button]:!p-1.5"
-            >
+            <SidebarMenuButton asChild className="data-[slot=sidebar-menu-button]:!p-1.5">
               <Link href="/">
                 <Orbit className="h-6 w-6" />
-                <span className="text-base font-bold">AI Assistant</span>
+                <span className="text-base font-bold">Orbit SDR</span>
+                <span className="text-[10px] text-muted-foreground">powered by Grok</span>
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
@@ -101,5 +99,5 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavUser user={data.user} />
       </SidebarFooter>
     </Sidebar>
-  )
+  );
 }

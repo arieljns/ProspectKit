@@ -3,11 +3,12 @@
 import { db } from '../db';
 import { contacts, insertContactSchema, type NewContactParams } from '../db/schema/contacts';
 import { companies } from '../db/schema/companies';
+import { leadScores } from '../db/schema/lead-scores';
 import { eq, desc } from 'drizzle-orm';
 import { revalidatePath } from 'next/cache';
 
 /**
- * Get all contacts with their company information
+ * Get all contacts with their company information and lead scores
  */
 export const getAllContacts = async () => {
   try {
@@ -15,9 +16,11 @@ export const getAllContacts = async () => {
       .select({
         contact: contacts,
         company: companies,
+        leadScore: leadScores,
       })
       .from(contacts)
       .leftJoin(companies, eq(contacts.companyId, companies.id))
+      .leftJoin(leadScores, eq(contacts.id, leadScores.contactId))
       .orderBy(desc(contacts.createdAt));
 
     return { success: true, data: allContacts };

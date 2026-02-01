@@ -35,6 +35,7 @@ import { updateContactStatus, updateContactPriority, deleteContact } from "@/lib
 import { calculateTotalScore, getScoreGrade, getGradeBadgeVariant } from "@/lib/utils/scoring";
 import { getScoringConfig } from "@/lib/actions/scoring-config";
 import { MessageGeneratorDialog } from "@/components/message-generator-dialog";
+import { AddContactDialog } from "@/components/add-contact-dialog";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -117,6 +118,7 @@ export function ContactsTable({ data: initialData }: { data: ContactWithCompany[
   const [isScoring, setIsScoring] = React.useState(false);
   const [messageDialogOpen, setMessageDialogOpen] = React.useState(false);
   const [selectedContact, setSelectedContact] = React.useState<ContactWithCompany | null>(null);
+  const [addContactDialogOpen, setAddContactDialogOpen] = React.useState(false);
   const [weights, setWeights] = React.useState({
     industryMatch: 25,
     companyMatch: 30,
@@ -674,9 +676,9 @@ export function ContactsTable({ data: initialData }: { data: ContactWithCompany[
                 })}
             </DropdownMenuContent>
           </DropdownMenu>
-          <Button variant="outline" size="sm">
+          <Button variant="outline" size="sm" onClick={() => setAddContactDialogOpen(true)}>
             <PlusIcon />
-            <span className="hidden lg:inline">Add Contact</span>
+            <span className="hidden lg:inline">Add Lead</span>
           </Button>
         </div>
       </div>
@@ -801,6 +803,16 @@ export function ContactsTable({ data: initialData }: { data: ContactWithCompany[
           company={selectedContact.company!}
         />
       )}
+
+      {/* Add Lead Dialog */}
+      <AddContactDialog
+        open={addContactDialogOpen}
+        onOpenChange={setAddContactDialogOpen}
+        onSuccess={() => {
+          // Refresh the page to show the new lead
+          window.location.reload();
+        }}
+      />
     </div>
   );
 }

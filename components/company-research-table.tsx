@@ -32,6 +32,7 @@ import {
 import { toast } from "sonner"
 
 import { updateCompanyPriority, deleteCompany } from "@/lib/actions/companies"
+import { AddCompanyDialog } from "@/components/add-company-dialog"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -109,6 +110,7 @@ export function CompanyResearchTable({
     pageSize: 10,
   })
   const [isDeleting, setIsDeleting] = React.useState(false)
+  const [addCompanyDialogOpen, setAddCompanyDialogOpen] = React.useState(false)
   // Track contact finding status per company (client-side only)
   const [contactFindingStatus, setContactFindingStatus] = React.useState<
     Record<string, "none" | "finding" | "completed" | "failed">
@@ -544,7 +546,11 @@ export function CompanyResearchTable({
                 })}
             </DropdownMenuContent>
           </DropdownMenu>
-          <Button variant="outline" size="sm">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setAddCompanyDialogOpen(true)}
+          >
             <PlusIcon />
             <span className="hidden lg:inline">Add Company</span>
           </Button>
@@ -681,6 +687,16 @@ export function CompanyResearchTable({
           </div>
         </div>
       </div>
+
+      {/* Add Company Dialog */}
+      <AddCompanyDialog
+        open={addCompanyDialogOpen}
+        onOpenChange={setAddCompanyDialogOpen}
+        onSuccess={() => {
+          // Refresh the page to show the new company
+          router.refresh()
+        }}
+      />
     </div>
   )
 }

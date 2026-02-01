@@ -3,10 +3,9 @@
 import * as React from "react";
 import Link from "next/link";
 import {
-  ClipboardListIcon,
+  BarChart3Icon,
+  Building2Icon,
   HelpCircleIcon,
-  LayoutDashboardIcon,
-  MessageSquareIcon,
   Orbit,
   SearchIcon,
   SettingsIcon,
@@ -36,24 +35,19 @@ const data = {
   },
   navMain: [
     {
-      title: "Dashboard",
+      title: "Discover Companies",
       url: "/dashboard",
-      icon: LayoutDashboardIcon,
+      icon: Building2Icon,
     },
     {
-      title: "Contacts",
+      title: "Manage Leads",
       url: "/contacts",
       icon: UsersIcon,
     },
     {
-      title: "AI Chat",
-      url: "/chat",
-      icon: MessageSquareIcon,
-    },
-    {
-      title: "Usage Analytics",
+      title: "Pipeline Analytics",
       url: "/analytics",
-      icon: ClipboardListIcon,
+      icon: BarChart3Icon,
     },
     {
       title: "Customization",

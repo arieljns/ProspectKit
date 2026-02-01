@@ -1,5 +1,5 @@
 import { createResource } from '@/lib/actions/resources';
-import { openai } from '@ai-sdk/openai';
+import { xai } from '@ai-sdk/xai';
 import {
   convertToModelMessages,
   streamText,
@@ -17,11 +17,21 @@ export async function POST(req: Request) {
   const { messages }: { messages: UIMessage[] } = await req.json();
 
   const result = streamText({
-    model: openai("gpt-4.1-nano"),
-    system: `You are a helpful assistant. Check your knowledge base before answering any questions.
-    Use the getCurrentDate tool when users ask about dates, time, or current information.`,
+    model: xai("grok-4-fast-non-reasoning-latest"),
+    system: `You are a helpful assistant.
+    Check your knowledge base if the user's question is related to themselves.
+    When users ask about current events, news, or real-time information, use Live Search to get the latest data.`,
     messages: convertToModelMessages(messages),
     stopWhen: stepCountIs(5),
+    providerOptions: {
+      xai: {
+        searchParameters: {
+          mode: 'auto',
+          returnCitations: true,
+          maxSearchResults: 10,
+        },
+      },
+    },
     tools: {
       addResource: tool({
         description: `add a resource to your knowledge base.
@@ -34,7 +44,7 @@ export async function POST(req: Request) {
         execute: async ({ content }) => createResource({ content }),
       }),
       getInformation: tool({
-        description: `get information from your knowledge base to answer questions.`,
+        description: 'Get information from your knowledge base to answer questions. The knowledge base has been updated with user\'s personal information.',
         inputSchema: z.object({
           question: z.string().describe('the users question'),
         }),

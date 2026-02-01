@@ -18,6 +18,7 @@ import {
 } from "@/components/prompt-kit/prompt-input"
 import { Tool } from "@/components/prompt-kit/tool"
 import type { ToolPart } from "@/components/prompt-kit/tool"
+import { Badge } from "@/components/shadcnui/badge"
 import { Button } from "@/components/shadcnui/button"
 import { cn } from "@/lib/utils"
 import { useChat } from "@ai-sdk/react"
@@ -26,7 +27,15 @@ import type { UIMessage, UIMessagePart } from "ai"
 import {
   AlertTriangle,
   ArrowUp,
+  Brain,
+  Calendar,
   Copy,
+  Database,
+  HelpCircle,
+  Lightbulb,
+  LucideIcon,
+  Orbit,
+  Sparkles,
 } from "lucide-react"
 import { memo, useState } from "react"
 
@@ -158,21 +167,53 @@ const ErrorMessage = memo(({ error }: { error: Error }) => (
 
 ErrorMessage.displayName = "ErrorMessage"
 
+type SuggestionItem = {
+  text: string
+  icon?: LucideIcon
+  color?: string
+  onClick?: () => void
+}
+
 export type ToolCallingChatbotProps = {
   apiEndpoint?: string
-  suggestions?: string[]
-  placeholder?: string
 }
 
 function ToolCallingChatbot({
-  apiEndpoint = "/api/primitives/tool-calling",
-  suggestions = [
-    "what's the current date?",
-    "what time is it in Tokyo?",
-    "give me the current time in Europe/Paris",
-  ],
-  placeholder = "Ask anything",
+  apiEndpoint = "/api/chat",
 }: ToolCallingChatbotProps) {
+  // Hardcoded welcome configurations
+  const welcomeTitle = "How can I help you today?"
+  const welcomeDescription = "I'm your AI assistant with knowledge management capabilities. Teach me facts or ask me questions!"
+  const placeholder = "Ask anything or teach me something..."
+
+  const suggestions: SuggestionItem[] = [
+    {
+      text: 'Teach me a fact about myself',
+      icon: Brain,
+      color: 'text-blue-500',
+    },
+    {
+      text: 'What is my favorite color?',
+      icon: HelpCircle,
+      color: 'text-purple-500',
+    },
+    {
+      text: "What's today's date?",
+      icon: Calendar,
+      color: 'text-green-500',
+    },
+    {
+      text: 'Show my knowledge base',
+      icon: Database,
+      color: 'text-orange-500',
+    },
+    {
+      text: 'Give me an idea',
+      icon: Lightbulb,
+      color: 'text-yellow-500',
+    },
+  ]
+
   const [input, setInput] = useState("")
 
   const { messages, sendMessage, status, error } = useChat({
@@ -192,16 +233,56 @@ function ToolCallingChatbot({
     <div className="flex h-screen flex-col overflow-hidden">
       <ChatContainerRoot className="relative flex-1 space-y-0 overflow-y-auto">
         <ChatContainerContent className="space-y-6 px-4 py-12">
-          {messages.length === 0 && suggestions.length > 0 && (
-            <div className="mx-auto w-full max-w-3xl shrink-0 px-3 pb-3 md:px-5 md:pb-5">
-              <div className="text-foreground mb-2 font-medium">
-                Try asking:
+          {messages.length === 0 && (
+            <div className="mx-auto flex w-full max-w-3xl flex-col items-center justify-center space-y-8 px-6 py-12">
+              {/* Icon */}
+              <div className="flex h-16 w-16 items-center justify-center rounded-xl bg-gray-100 shadow-sm">
+                <Orbit className="h-10 w-10" />
               </div>
-              <ul className="list-inside list-disc space-y-1">
-                {suggestions.map((suggestion, index) => (
-                  <li key={index}>{suggestion}</li>
-                ))}
-              </ul>
+
+              {/* Welcome Text */}
+              <div className="flex flex-col space-y-2.5 text-center">
+                <h3 className="text-xl font-semibold tracking-tight">
+                  {welcomeTitle}
+                </h3>
+                <p className="text-sm text-muted-foreground max-w-md">
+                  {welcomeDescription}
+                </p>
+              </div>
+
+              {/* Suggestion Badges */}
+              {suggestions.length > 0 && (
+                <div className="flex flex-wrap items-center justify-center gap-2">
+                  {suggestions.map((suggestion, index) => {
+                    const Icon = suggestion.icon
+                    return (
+                      <Badge
+                        key={index}
+                        variant="secondary"
+                        className={cn(
+                          "h-8 cursor-pointer gap-1.5 rounded-full px-3 text-xs font-medium transition-all hover:scale-105 hover:shadow-sm",
+                          "[&_svg]:size-3.5 [&_svg]:shrink-0"
+                        )}
+                        onClick={() => {
+                          if (suggestion.onClick) {
+                            suggestion.onClick()
+                          } else {
+                            setInput(suggestion.text)
+                          }
+                        }}
+                      >
+                        {Icon && (
+                          <Icon
+                            aria-hidden="true"
+                            className={suggestion.color}
+                          />
+                        )}
+                        {suggestion.text}
+                      </Badge>
+                    )
+                  })}
+                </div>
+              )}
             </div>
           )}
 

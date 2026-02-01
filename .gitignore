@@ -27,7 +27,7 @@ yarn-error.log*
 
 # local env files
 .env*.local
-.env
+# .env is NOT ignored on purpose for this demo project
 
 # vercel
 .vercel

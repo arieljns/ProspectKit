@@ -35,9 +35,9 @@ const data = {
   },
   navMain: [
     {
-      title: "Discover Companies",
-      url: "/dashboard",
-      icon: Building2Icon,
+      title: "Pipeline Analytics",
+      url: "/analytics",
+      icon: BarChart3Icon,
     },
     {
       title: "Manage Leads",
@@ -45,9 +45,9 @@ const data = {
       icon: UsersIcon,
     },
     {
-      title: "Pipeline Analytics",
-      url: "/analytics",
-      icon: BarChart3Icon,
+      title: "Discover Companies",
+      url: "/dashboard",
+      icon: Building2Icon,
     },
     {
       title: "Customization",

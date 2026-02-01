@@ -1,4 +1,4 @@
-import { TrendingDownIcon, TrendingUpIcon } from "lucide-react"
+import { TrendingDownIcon, TrendingUpIcon, SparklesIcon, UsersIcon, TargetIcon, CheckCircle2Icon } from "lucide-react"
 
 import { Badge } from "@/components/shadcnui/badge"
 import {
@@ -9,91 +9,103 @@ import {
   CardTitle,
 } from "@/components/shadcnui/card"
 
-export function SectionCards() {
+type SectionCardsProps = {
+  data: {
+    totalLeads: number;
+    aGradeCount: number;
+    aGradeRate: number;
+    contactedRate: number;
+    qualifiedRate: number;
+  };
+};
+
+export function SectionCards({ data }: SectionCardsProps) {
   return (
     <div className="*:data-[slot=card]:shadow-xs @xl/main:grid-cols-2 @5xl/main:grid-cols-4 grid grid-cols-1 gap-4 px-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card lg:px-6">
+      {/* Total Leads */}
       <Card className="@container/card">
         <CardHeader className="relative">
-          <CardDescription>Total Revenue</CardDescription>
+          <CardDescription>Total Leads</CardDescription>
           <CardTitle className="@[250px]/card:text-3xl text-2xl font-semibold tabular-nums">
-            $1,250.00
+            {data.totalLeads}
           </CardTitle>
           <div className="absolute right-4 top-4">
-            <Badge variant="outline" className="flex gap-1 rounded-lg text-xs">
-              <TrendingUpIcon className="size-3" />
-              +12.5%
-            </Badge>
+            <UsersIcon className="size-5 text-muted-foreground" />
           </div>
         </CardHeader>
         <CardFooter className="flex-col items-start gap-1 text-sm">
           <div className="line-clamp-1 flex gap-2 font-medium">
-            Trending up this month <TrendingUpIcon className="size-4" />
+            All leads in pipeline
           </div>
           <div className="text-muted-foreground">
-            Visitors for the last 6 months
+            Total contacts across all statuses
           </div>
         </CardFooter>
       </Card>
+
+      {/* High Quality Leads (A-Grade) */}
       <Card className="@container/card">
         <CardHeader className="relative">
-          <CardDescription>New Customers</CardDescription>
+          <CardDescription>High Quality Leads</CardDescription>
           <CardTitle className="@[250px]/card:text-3xl text-2xl font-semibold tabular-nums">
-            1,234
+            {data.aGradeCount}
           </CardTitle>
           <div className="absolute right-4 top-4">
-            <Badge variant="outline" className="flex gap-1 rounded-lg text-xs">
-              <TrendingDownIcon className="size-3" />
-              -20%
+            <Badge variant="outline" className="flex gap-1 rounded-lg text-xs bg-green-50 text-green-700 border-green-200">
+              <SparklesIcon className="size-3" />
+              {data.aGradeRate.toFixed(1)}%
             </Badge>
           </div>
         </CardHeader>
         <CardFooter className="flex-col items-start gap-1 text-sm">
-          <div className="line-clamp-1 flex gap-2 font-medium">
-            Down 20% this period <TrendingDownIcon className="size-4" />
+          <div className="line-clamp-1 flex gap-2 font-medium text-green-600">
+            A-grade leads (85+ score)
           </div>
           <div className="text-muted-foreground">
-            Acquisition needs attention
+            Highest potential prospects
           </div>
         </CardFooter>
       </Card>
+
+      {/* Contacted Rate */}
       <Card className="@container/card">
         <CardHeader className="relative">
-          <CardDescription>Active Accounts</CardDescription>
+          <CardDescription>Contacted Rate</CardDescription>
           <CardTitle className="@[250px]/card:text-3xl text-2xl font-semibold tabular-nums">
-            45,678
+            {data.contactedRate.toFixed(1)}%
           </CardTitle>
           <div className="absolute right-4 top-4">
-            <Badge variant="outline" className="flex gap-1 rounded-lg text-xs">
-              <TrendingUpIcon className="size-3" />
-              +12.5%
-            </Badge>
+            <TargetIcon className="size-5 text-muted-foreground" />
           </div>
         </CardHeader>
         <CardFooter className="flex-col items-start gap-1 text-sm">
           <div className="line-clamp-1 flex gap-2 font-medium">
-            Strong user retention <TrendingUpIcon className="size-4" />
+            Outreach coverage
           </div>
-          <div className="text-muted-foreground">Engagement exceed targets</div>
+          <div className="text-muted-foreground">
+            Leads that have been contacted
+          </div>
         </CardFooter>
       </Card>
+
+      {/* Qualified Rate */}
       <Card className="@container/card">
         <CardHeader className="relative">
-          <CardDescription>Growth Rate</CardDescription>
+          <CardDescription>Qualified Rate</CardDescription>
           <CardTitle className="@[250px]/card:text-3xl text-2xl font-semibold tabular-nums">
-            4.5%
+            {data.qualifiedRate.toFixed(1)}%
           </CardTitle>
           <div className="absolute right-4 top-4">
-            <Badge variant="outline" className="flex gap-1 rounded-lg text-xs">
-              <TrendingUpIcon className="size-3" />
-              +4.5%
-            </Badge>
+            <CheckCircle2Icon className="size-5 text-muted-foreground" />
           </div>
         </CardHeader>
         <CardFooter className="flex-col items-start gap-1 text-sm">
           <div className="line-clamp-1 flex gap-2 font-medium">
-            Steady performance <TrendingUpIcon className="size-4" />
+            Qualification success
           </div>
-          <div className="text-muted-foreground">Meets growth projections</div>
+          <div className="text-muted-foreground">
+            Leads marked as qualified
+          </div>
         </CardFooter>
       </Card>
     </div>

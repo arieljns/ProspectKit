@@ -7,8 +7,8 @@ export default function Home() {
   const router = useRouter();
 
   useEffect(() => {
-    // Redirect to dashboard page on load
-    router.push("/dashboard");
+    // Redirect to analytics page on load
+    router.push("/analytics");
   }, [router]);
 
   return (

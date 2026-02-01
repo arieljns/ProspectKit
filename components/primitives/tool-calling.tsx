@@ -230,7 +230,7 @@ function ToolCallingChatbot({
   }
 
   return (
-    <div className="flex h-screen flex-col overflow-hidden">
+    <div className="flex h-full flex-col overflow-hidden">
       <ChatContainerRoot className="relative flex-1 space-y-0 overflow-y-auto">
         <ChatContainerContent className="space-y-6 px-4 py-12">
           {messages.length === 0 && (

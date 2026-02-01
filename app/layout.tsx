@@ -3,12 +3,13 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { SidebarProvider, SidebarInset } from "@/components/shadcnui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
+import { Toaster } from "@/components/shadcnui/sonner";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "AI RAG Assistant",
-  description: "AI Assistant with knowledge management and real-time search",
+  title: "Orbit SDR",
+  description: "Grok-powered Sales Development Representative system",
 };
 
 export default function RootLayout({
@@ -21,10 +22,9 @@ export default function RootLayout({
       <body className={inter.className}>
         <SidebarProvider>
           <AppSidebar variant="inset" />
-          <SidebarInset>
-            {children}
-          </SidebarInset>
+          <SidebarInset>{children}</SidebarInset>
         </SidebarProvider>
+        <Toaster />
       </body>
     </html>
   );

@@ -4,7 +4,6 @@ import * as React from "react"
 import Link from "next/link"
 import {
   ClipboardListIcon,
-  FolderIcon,
   HelpCircleIcon,
   LayoutDashboardIcon,
   MessageSquareIcon,
@@ -42,24 +41,19 @@ const data = {
       icon: LayoutDashboardIcon,
     },
     {
+      title: "Contacts",
+      url: "/contacts",
+      icon: UsersIcon,
+    },
+    {
       title: "AI Chat",
       url: "/chat",
       icon: MessageSquareIcon,
     },
     {
       title: "Usage Analytics",
-      url: "#",
+      url: "/analytics",
       icon: ClipboardListIcon,
-    },
-    {
-      title: "Projects",
-      url: "#",
-      icon: FolderIcon,
-    },
-    {
-      title: "Team",
-      url: "#",
-      icon: UsersIcon,
     },
   ],
   navSecondary: [

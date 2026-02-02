@@ -32,40 +32,49 @@ export async function POST(req: Request) {
     const systemPrompt = `You are a Sales Development Representative (SDR) assistant.
 Your job is to find key contacts and decision makers at a given company using Live Search.
 
-IMPORTANT:
-- Use Live Search to find real contacts from LinkedIn
+CRITICAL INSTRUCTIONS:
+- Use Live Search to find real contacts from LinkedIn and company websites
 - Return ONLY contacts you find through search results
-- Do NOT make up or invent names
+- Do NOT make up or invent names or details
 - Focus on finding people currently working at the company
 - Return approximately 5 contacts (or fewer if less are found)
+- If you cannot find specific contacts, return an empty contacts array
 
-Extract:
+RESPONSE FORMAT:
+- You MUST respond with ONLY valid JSON matching the schema
+- Do NOT add any explanations, notes, or markdown after the JSON
+- Do NOT include "## Explanation" or any other text after the JSON object
+
+Extract for each contact:
 - Full name
 - Current job title
 - Department (if identifiable from title or profile)
-- LinkedIn profile URL`;
+- LinkedIn profile URL (if available)`;
 
     const userPrompt = `Find key contacts at: ${company.companyName}
 ${company.industry ? `Industry: ${company.industry}` : ''}
 ${company.website ? `Website: ${company.website}` : ''}
 ${company.description ? `Description: ${company.description}` : ''}
 
-Search LinkedIn for people currently working at ${company.companyName}.
-Look for contacts across different departments and roles.
+Search for people currently working at ${company.companyName}.
+Try multiple search strategies:
+1. LinkedIn employee searches
+2. Company website team/about pages
+3. News articles mentioning executives
+4. Press releases with contact names
 
-Search queries to try:
-- site:linkedin.com ${company.companyName} employee
-- site:linkedin.com "${company.companyName}" current position
-- site:linkedin.com/in ${company.companyName}
+Look for contacts across different departments (Engineering, Sales, Marketing, Executive).
 
-Return up to 5 contacts with their name, title, department (optional), and LinkedIn URL.`;
+Return up to 5 contacts with their name, title, department (optional), and LinkedIn URL (if found).
+
+REMINDER: Return ONLY the JSON object, no additional text or explanations.`;
 
     const { object: result } = await generateObject({
       model: xai('grok-4-fast-non-reasoning-latest'),
       schema: contactFinderSchema,
       schemaName: 'ContactFinderResult',
       schemaDescription:
-        'Key contacts found at a company via LinkedIn search',
+        'Key contacts found at a company via web search',
       system: systemPrompt,
       prompt: userPrompt,
       providerOptions: {
@@ -73,11 +82,11 @@ Return up to 5 contacts with their name, title, department (optional), and Linke
           searchParameters: {
             mode: 'on',
             returnCitations: false,
-            maxSearchResults: 10,
+            maxSearchResults: 15,
+            // Allow broader search: LinkedIn, company websites, news sites
             sources: [
               {
                 type: 'web',
-                allowedWebsites: ['linkedin.com'],
               },
             ],
           },
@@ -85,7 +94,22 @@ Return up to 5 contacts with their name, title, department (optional), and Linke
       },
     });
 
-    // 3. Save contacts to database
+    // 3. Handle case where no contacts found
+    if (result.contacts.length === 0) {
+      return Response.json({
+        success: false,
+        error: `No contacts found for ${company.companyName}. Try adding contacts manually or search for a different company with more public information.`,
+        data: {
+          companyId,
+          companyName: company.companyName,
+          contactsFound: 0,
+          contactsSaved: 0,
+          contactsFailed: 0,
+        },
+      });
+    }
+
+    // 4. Save contacts to database
     const savePromises = result.contacts.map((contact) =>
       createContact({
         companyId: company.id,
@@ -104,7 +128,7 @@ Return up to 5 contacts with their name, title, department (optional), and Linke
     const successCount = saveResults.filter((r) => r.success).length;
     const failCount = saveResults.filter((r) => !r.success).length;
 
-    // 4. Return success
+    // 5. Return success
     return Response.json({
       success: true,
       data: {

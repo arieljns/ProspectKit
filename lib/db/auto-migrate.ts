@@ -14,7 +14,8 @@ export const autoMigrate = async () => {
   }
 
   try {
-    const connection = postgres(env.DATABASE_URL, { max: 1 });
+    const migrationsUrl = env.DATABASE_MIGRATIONS_URL ?? env.DATABASE_URL;
+    const connection = postgres(migrationsUrl, { max: 1 });
     const db = drizzle(connection);
 
     console.log("🔄 Checking for pending migrations...");

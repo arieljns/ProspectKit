@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "npm run db:auto-migrate && next dev",
+    "dev": "tsx lib/db/auto-migrate.ts && next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",

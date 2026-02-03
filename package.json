@@ -17,7 +17,7 @@
     "db:check": "drizzle-kit check",
     "db:seed": "tsx lib/db/seed-companies.ts",
     "db:seed:force": "tsx lib/db/seed-companies.ts --force",
-    "postinstall": "npm run db:auto-migrate"
+    "postinstall": "node scripts/postinstall.js"
   },
   "dependencies": {
     "@ai-sdk/openai": "^2.0.53",

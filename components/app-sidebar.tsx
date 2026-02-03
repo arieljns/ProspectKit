@@ -36,22 +36,22 @@ const data = {
   navMain: [
     {
       title: "Pipeline Analytics",
-      url: "/analytics",
+      url: "/app/analytics",
       icon: BarChart3Icon,
     },
     {
       title: "Manage Leads",
-      url: "/contacts",
+      url: "/app/contacts",
       icon: UsersIcon,
     },
     {
       title: "Discover Companies",
-      url: "/dashboard",
+      url: "/app/dashboard",
       icon: Building2Icon,
     },
     {
       title: "Customization",
-      url: "/settings/scoring",
+      url: "/app/settings/scoring",
       icon: SettingsIcon,
     },
   ],
@@ -76,7 +76,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton asChild className="data-[slot=sidebar-menu-button]:!p-1.5">
-              <Link href="/">
+              <Link href="/app/dashboard">
                 <Orbit className="h-6 w-6" />
                 <span className="text-base font-bold">Orbit SDR</span>
                 <span className="text-[10px] text-muted-foreground">powered by Grok</span>

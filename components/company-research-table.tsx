@@ -193,7 +193,7 @@ export function CompanyResearchTable({
   const handleReportClick = async (company: Company) => {
     if (company.reportStatus === "completed") {
       // Navigate to report page
-      router.push(`/reports/${company.id}`)
+      router.push(`/app/reports/${company.id}`)
     } else if (company.reportStatus === "generating") {
       toast.info("Report is currently being generated...")
     } else {

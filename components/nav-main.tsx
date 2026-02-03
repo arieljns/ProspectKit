@@ -96,14 +96,14 @@ export function NavMain({
         open={addContactDialogOpen}
         onOpenChange={setAddContactDialogOpen}
         onSuccess={() => {
-          window.location.href = "/contacts"
+          window.location.href = "/app/contacts"
         }}
       />
       <AddCompanyDialog
         open={addCompanyDialogOpen}
         onOpenChange={setAddCompanyDialogOpen}
         onSuccess={() => {
-          window.location.href = "/dashboard"
+          window.location.href = "/app/dashboard"
         }}
       />
     </SidebarGroup>

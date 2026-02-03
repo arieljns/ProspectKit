@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { SidebarProvider, SidebarInset } from "@/components/shadcnui/sidebar";
-import { AppSidebar } from "@/components/app-sidebar";
 import { Toaster } from "@/components/shadcnui/sonner";
 import { TooltipProvider } from "@/components/shadcnui/tooltip";
 
@@ -22,10 +20,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
         <TooltipProvider>
-          <SidebarProvider>
-            <AppSidebar variant="inset" />
-            <SidebarInset>{children}</SidebarInset>
-          </SidebarProvider>
+          {children}
           <Toaster />
         </TooltipProvider>
       </body>

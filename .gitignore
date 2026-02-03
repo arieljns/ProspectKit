@@ -27,7 +27,6 @@ yarn-error.log*
 
 # local env files
 .env
-# .env is NOT ignored on purpose for this demo project
 
 # vercel
 .vercel
@@ -36,6 +35,9 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# CLAUDE.md
+# CLAUDE.md and README.md
 CLAUDE.md
-CLAUDE.md
+README.md
+
+# references
+.references/

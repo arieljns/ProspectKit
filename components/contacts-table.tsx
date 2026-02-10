@@ -178,7 +178,7 @@ export function ContactsTable({ data: initialData }: { data: ContactWithCompany[
     }
   };
 
-  const handleStatusChange = async (id: string, value: string) => {
+  const handleStatusChange = React.useCallback(async (id: string, value: string) => {
     const contactData = data.find((c) => c.contact.id === id);
     if (!contactData) return;
 
@@ -206,9 +206,9 @@ export function ContactsTable({ data: initialData }: { data: ContactWithCompany[
       );
       toast.error(result.error || "Failed to update");
     }
-  };
+  }, [data]);
 
-  const handlePriorityChange = async (id: string, value: string) => {
+  const handlePriorityChange = React.useCallback(async (id: string, value: string) => {
     const contactData = data.find((c) => c.contact.id === id);
     if (!contactData) return;
 
@@ -231,7 +231,7 @@ export function ContactsTable({ data: initialData }: { data: ContactWithCompany[
       );
       toast.error(result.error || "Failed to update");
     }
-  };
+  }, [data]);
 
   const handleScoreSelected = async () => {
     const selectedRows = table.getFilteredSelectedRowModel().rows;
@@ -630,9 +630,8 @@ export function ContactsTable({ data: initialData }: { data: ContactWithCompany[
           </Button>
         ),
       },
-      // eslint-disable-next-line react-hooks/exhaustive-deps
     ],
-    [weights]
+    [weights, handlePriorityChange, handleStatusChange]
   );
 
   const table = useReactTable({

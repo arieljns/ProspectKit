@@ -149,10 +149,3 @@ export const resetScoringConfig = async () => {
     };
   }
 };
-
-/**
- * Get default configuration (for initial form values)
- */
-export const getDefaultScoringConfig = () => {
-  return DEFAULT_CONFIG;
-};

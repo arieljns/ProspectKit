@@ -48,12 +48,7 @@ export default function ScoringConfigPage() {
     dealSizeMatch: 10,
   });
 
-  // Load config on mount
-  React.useEffect(() => {
-    loadConfig();
-  }, []);
-
-  const loadConfig = async () => {
+  const loadConfig = React.useCallback(async () => {
     setIsLoading(true);
     const result = await getScoringConfig();
 
@@ -64,11 +59,24 @@ export default function ScoringConfigPage() {
       setProductDescription(config.productDescription);
       setTargetIndustries(config.targetIndustries as string[]);
       setTargetSeniorityLevels(config.targetSeniorityLevels as string[]);
-      setWeights(config.weights as any);
+      setWeights(
+        config.weights as {
+          industryMatch: number;
+          companyMatch: number;
+          positionMatch: number;
+          seniorityMatch: number;
+          dealSizeMatch: number;
+        }
+      );
     }
 
     setIsLoading(false);
-  };
+  }, []);
+
+  // Load config on mount
+  React.useEffect(() => {
+    void loadConfig();
+  }, [loadConfig]);
 
   const handleSave = async () => {
     // Validate weights

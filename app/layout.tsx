@@ -2,10 +2,14 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Toaster } from "@/components/shadcnui/sonner";
 import { TooltipProvider } from "@/components/shadcnui/tooltip";
+import { ThemeProvider } from "@/components/theme-provider";
+import { interDisplay } from "@/app/fonts/inter-display/inter";
+import { dmMono } from "@/app/fonts/dm-mono";
 
 export const metadata: Metadata = {
   title: "Orbit SDR",
-  description: "Grok-powered Sales Development Representative system",
+  description:
+    "Open-source SDR workspace for lean startups and sales teams under five.",
 };
 
 export default function RootLayout({
@@ -15,11 +19,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className="min-h-screen font-sans antialiased">
-        <TooltipProvider>
-          {children}
-          <Toaster />
-        </TooltipProvider>
+      <body
+        className={`${interDisplay.variable} ${dmMono.variable} min-h-screen font-primary antialiased`}
+      >
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <TooltipProvider>
+            {children}
+            <Toaster />
+          </TooltipProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

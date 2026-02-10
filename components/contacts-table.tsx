@@ -327,7 +327,7 @@ export function ContactsTable({ data: initialData }: { data: ContactWithCompany[
       case "new":
         return "secondary";
       case "contacted":
-        return "outline";
+        return "outline-solid";
       case "responded":
         return "default";
       case "qualified":
@@ -536,7 +536,7 @@ export function ContactsTable({ data: initialData }: { data: ContactWithCompany[
             <Tooltip>
               <TooltipTrigger asChild>
                 <div className="flex items-center gap-2 cursor-help">
-                  <Badge className={`min-w-[3rem] justify-center ${gradeColors[grade]}`}>
+                  <Badge className={`min-w-12 justify-center ${gradeColors[grade]}`}>
                     {grade}
                   </Badge>
                   <span className="text-sm font-medium tabular-nums">{totalScore}</span>

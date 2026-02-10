@@ -46,14 +46,14 @@ export function getScoreGrade(totalScore: number): 'A' | 'B' | 'C' {
  */
 export function getGradeBadgeVariant(
   grade: 'A' | 'B' | 'C'
-): 'default' | 'secondary' | 'outline' {
+): 'default' | 'secondary' | 'outline-solid' {
   switch (grade) {
     case 'A':
       return 'default'; // Green/primary color
     case 'B':
       return 'secondary'; // Yellow/warning color
     case 'C':
-      return 'outline'; // Gray/muted color
+      return 'outline-solid'; // Gray/muted color
   }
 }
 

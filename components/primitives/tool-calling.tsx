@@ -236,7 +236,7 @@ function ToolCallingChatbot({
           {messages.length === 0 && (
             <div className="mx-auto flex w-full max-w-3xl flex-col items-center justify-center space-y-8 px-6 py-12">
               {/* Icon */}
-              <div className="flex h-16 w-16 items-center justify-center rounded-xl bg-gray-100 shadow-sm">
+              <div className="flex h-16 w-16 items-center justify-center rounded-xl bg-gray-100 shadow-xs">
                 <Orbit className="h-10 w-10" />
               </div>
 
@@ -260,7 +260,7 @@ function ToolCallingChatbot({
                         key={index}
                         variant="secondary"
                         className={cn(
-                          "h-8 cursor-pointer gap-1.5 rounded-full px-3 text-xs font-medium transition-all hover:scale-105 hover:shadow-sm",
+                          "h-8 cursor-pointer gap-1.5 rounded-full px-3 text-xs font-medium transition-all hover:scale-105 hover:shadow-xs",
                           "[&_svg]:size-3.5 [&_svg]:shrink-0"
                         )}
                         onClick={() => {
@@ -309,7 +309,7 @@ function ToolCallingChatbot({
           value={input}
           onValueChange={setInput}
           onSubmit={handleSubmit}
-          className="border-input bg-popover relative z-10 w-full rounded-3xl border p-0 pt-1 shadow-xs"
+          className="border-input bg-popover relative z-10 w-full rounded-3xl border p-0 pt-1 shadow-2xs"
         >
           <div className="flex flex-col">
             <PromptInputTextarea

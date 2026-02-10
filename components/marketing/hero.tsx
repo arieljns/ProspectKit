@@ -34,7 +34,7 @@ export function Hero() {
           </p>
         </div>
 
-        <div className="rounded-xl border bg-gradient-to-b from-muted/50 to-background p-6">
+        <div className="rounded-xl border bg-linear-to-b from-muted/50 to-background p-6">
           <div className="rounded-lg border bg-background p-4">
             <div className="flex items-center justify-between">
               <div className="text-sm font-medium">Pipeline snapshot</div>

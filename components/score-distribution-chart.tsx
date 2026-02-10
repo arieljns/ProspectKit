@@ -63,7 +63,7 @@ export function ScoreDistributionChart({ data }: ScoreDistributionChartProps) {
               {/* Label and Count */}
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <Badge className={`${item.badgeClass} min-w-[3rem] justify-center`}>
+                  <Badge className={`${item.badgeClass} min-w-12 justify-center`}>
                     {item.label}
                   </Badge>
                   <span className="text-sm text-muted-foreground">{item.description}</span>

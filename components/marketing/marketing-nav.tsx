@@ -12,7 +12,7 @@ const navItems = [
 
 export function MarketingNav() {
   return (
-    <header className="sticky top-0 z-50 border-b bg-background/80 backdrop-blur">
+    <header className="sticky top-0 z-50 border-b bg-background/80 backdrop-blur-sm">
       <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-6">
         <div className="flex items-center gap-3">
           <Link href="/" className="font-semibold tracking-tight">

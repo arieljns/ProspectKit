@@ -61,6 +61,8 @@ export type BoundaryPoint = {
 export const landingNavItems: LandingNavItem[] = [
   { title: "Workflow", href: "#how-it-works" },
   { title: "Core features", href: "#core-features" },
+  { title: "Benefits", href: "#benefits" },
+  { title: "Outcomes", href: "#outcomes" },
   { title: "Boundaries", href: "#boundaries" },
   { title: "FAQ", href: "#faq" },
 ];

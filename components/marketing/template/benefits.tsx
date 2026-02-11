@@ -38,14 +38,14 @@ export const Benefits = () => {
       className="border-divide relative overflow-hidden border-x px-4 py-20 md:px-8"
     >
       <div className="relative flex flex-col items-center">
-        <Badge text="Benefits" />
+        <Badge text="Why this shape" />
         <SectionHeading className="mt-4">
-          Built for speed and clarity
+          Lightweight by design, complete by workflow
         </SectionHeading>
 
         <SubHeading as="p" className="mx-auto mt-6 max-w-lg">
-          Keep the outbound process simple enough for tiny teams and strong
-          enough to scale as your motion gets more repeatable.
+          Keep the essential loop in one place so small teams can move faster
+          and stay consistent as pipeline volume grows.
         </SubHeading>
       </div>
       <div className="mt-20 grid grid-cols-1 gap-4 md:grid-cols-3">

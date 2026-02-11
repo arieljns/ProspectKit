@@ -14,46 +14,39 @@ import {
   SDKIcon,
 } from "@/icons/bento-icons";
 import {
-  LLMModelSelectorSkeleton,
-  NativeToolsIntegrationSkeleton,
-  TextToWorkflowBuilderSkeleton,
+  DiscoverCompaniesSkeleton,
+  ManageLeadsSkeleton,
+  PipelineAnalyticsSkeleton,
 } from "./skeletons";
 import { coreFeatureCards } from "@/lib/marketing/landing-content";
-
-type Tab = {
-  title: string;
-  description: string;
-  icon: React.FC<React.SVGProps<SVGSVGElement>>;
-  id: string;
-};
 
 export const AgenticIntelligence = () => {
   return (
     <Container id="core-features" className="border-divide border-x">
       <div className="flex flex-col items-center py-16">
-        <Badge text="Features" />
-        <SectionHeading className="mt-4">Core outbound capabilities</SectionHeading>
+        <Badge text="Core capabilities" />
+        <SectionHeading className="mt-4">Product features in the prototype today</SectionHeading>
 
         <SubHeading as="p" className="mx-auto mt-6 max-w-lg px-2">
-          Everything needed for a focused SDR workflow, without enterprise
-          platform overhead.
+          The main working surfaces are Discover Companies, Manage Leads, and
+          Pipeline Analytics.
         </SubHeading>
         <div className="border-divide divide-divide mt-16 grid grid-cols-1 divide-y border-y md:grid-cols-2 md:divide-x">
           <Card className="overflow-hidden mask-b-from-80%">
             <div className="flex items-center gap-2">
               <BrainIcon />
-              <CardTitle>{coreFeatureCards[0].title}</CardTitle>
+              <CardTitle>{coreFeatureCards[1].title}</CardTitle>
             </div>
-            <CardDescription>{coreFeatureCards[0].description}</CardDescription>
-            <LLMModelSelectorSkeleton />
+            <CardDescription>{coreFeatureCards[1].description}</CardDescription>
+            <DiscoverCompaniesSkeleton />
           </Card>
           <Card className="overflow-hidden mask-b-from-80%">
             <div className="flex items-center gap-2">
               <MouseBoxIcon />
-              <CardTitle>{coreFeatureCards[3].title}</CardTitle>
+              <CardTitle>{coreFeatureCards[0].title}</CardTitle>
             </div>
-            <CardDescription>{coreFeatureCards[3].description}</CardDescription>
-            <TextToWorkflowBuilderSkeleton />
+            <CardDescription>{coreFeatureCards[0].description}</CardDescription>
+            <ManageLeadsSkeleton />
           </Card>
         </div>
         <div className="w-full">
@@ -64,23 +57,23 @@ export const AgenticIntelligence = () => {
               <CardTitle>{coreFeatureCards[5].title}</CardTitle>
             </div>
             <CardDescription>{coreFeatureCards[5].description}</CardDescription>
-            <NativeToolsIntegrationSkeleton />
+            <PipelineAnalyticsSkeleton />
           </Card>
         </div>
         <div className="grid grid-cols-1 gap-10 md:grid-cols-3">
           <Card>
             <div className="flex items-center gap-2">
               <FingerprintIcon />
-              <CardTitle>{coreFeatureCards[1].title}</CardTitle>
+              <CardTitle>{coreFeatureCards[2].title}</CardTitle>
             </div>
-            <CardDescription>{coreFeatureCards[1].description}</CardDescription>
+            <CardDescription>{coreFeatureCards[2].description}</CardDescription>
           </Card>
           <Card>
             <div className="flex items-center gap-2">
               <RealtimeSyncIcon />
-              <CardTitle>{coreFeatureCards[2].title}</CardTitle>
+              <CardTitle>{coreFeatureCards[3].title}</CardTitle>
             </div>
-            <CardDescription>{coreFeatureCards[2].description}</CardDescription>
+            <CardDescription>{coreFeatureCards[3].description}</CardDescription>
           </Card>
           <Card>
             <div className="flex items-center gap-2">

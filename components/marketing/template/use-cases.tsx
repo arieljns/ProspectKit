@@ -35,12 +35,12 @@ export const UseCases = () => {
       <div className="relative flex flex-col items-center py-20">
         <Badge text="Use Cases" />
         <SectionHeading className="mt-4">
-          Common small-team sales motions
+          Three common ways teams use ProspectKit
         </SectionHeading>
 
         <SubHeading as="p" className="mx-auto mt-6 max-w-lg">
-          Structured outbound workflows for early-stage startups and small
-          teams that need signal over complexity.
+          Use it to establish a repeatable outbound loop without adopting a full
+          CRM, sequence tool, or data platform.
         </SubHeading>
 
         <div className="mt-12 grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-3">

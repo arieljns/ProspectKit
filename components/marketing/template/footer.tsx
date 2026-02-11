@@ -12,8 +12,8 @@ export function Footer() {
         <div>
           <Logo />
           <SubHeading as="p" className="mt-4 max-w-md text-left">
-            Open-source SDR workspace built for early-stage startups and lean
-            sales teams.
+            Open-source SDR workspace for startups that need account discovery,
+            lead qualification, and outreach drafting in one place.
           </SubHeading>
           <div className="mt-5 flex gap-2">
             <Button as={Link} href={landingLinks.primaryCta}>
@@ -49,10 +49,10 @@ export function Footer() {
         </div>
 
         <div className="rounded-xl border border-gray-300 bg-gray-100 p-4 dark:border-neutral-700 dark:bg-neutral-800">
-          <p className="text-sm font-medium">Open-source note</p>
+          <p className="text-sm font-medium">Product scope</p>
           <p className="mt-2 text-sm text-gray-600 dark:text-neutral-300">
-            Structure and visuals are in active iteration. Copy and messaging
-            will be refined in the next pass.
+            ProspectKit focuses on the essential pre-send SDR workflow. It is
+            intentionally not a CRM or outbound sequence engine.
           </p>
         </div>
       </div>

@@ -16,9 +16,9 @@ export function CTA() {
     >
       <CTAOrbit className="absolute inset-x-0 -top-96 mask-b-from-30%" />
       <SectionHeading className="relative z-10 text-center lg:text-6xl">
-        Keep outbound execution
+        Complete the essential SDR loop
         <br />
-        focused and fast
+        with a tiny team
       </SectionHeading>
       <div className="relative z-10 mt-5 flex flex-wrap items-center justify-center gap-3">
         <Button as={Link} href={landingLinks.primaryCta}>

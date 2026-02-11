@@ -43,7 +43,7 @@ export const LogoCloud = () => {
   return (
     <Container id="proof" className="border-divide border-x">
       <h2 className="py-8 text-center font-mono text-sm tracking-tight text-neutral-500 uppercase dark:text-gray-300">
-        Teams replacing bloated outbound tooling
+        Built for lean outbound teams
       </h2>
       <div className="border-divide grid grid-cols-2 border-t md:grid-cols-4">
         {displayedIndices.map((logoIndex, position) => {

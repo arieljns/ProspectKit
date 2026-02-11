@@ -42,16 +42,32 @@ export type FeatureCard = {
   description: string;
 };
 
+export type WorkflowStep = {
+  title: string;
+  description: string;
+};
+
+export type WorkflowOutcome = {
+  metric: string;
+  title: string;
+  description: string;
+};
+
+export type BoundaryPoint = {
+  title: string;
+  description: string;
+};
+
 export type UseCase = {
   title: string;
   description: string;
 };
 
 export const landingNavItems: LandingNavItem[] = [
-  { title: "Features", href: "#core-features" },
-  { title: "How it works", href: "#how-it-works" },
+  { title: "Workflow", href: "#how-it-works" },
+  { title: "Core features", href: "#core-features" },
   { title: "Use cases", href: "#use-cases" },
-  { title: "Pricing", href: "#pricing" },
+  { title: "Boundaries", href: "#boundaries" },
   { title: "FAQ", href: "#faq" },
 ];
 
@@ -72,54 +88,69 @@ export const landingLogos = [
   },
 ];
 
-export const howItWorksSteps: FeatureCard[] = [
+export const howItWorksSteps: WorkflowStep[] = [
   {
-    title: "Build lead lists",
+    title: "Find accounts",
     description:
-      "Collect target companies and contacts in one lightweight workspace for your SDR team.",
+      "Build and maintain your target company list in a single workspace.",
   },
   {
-    title: "Enrich and score",
+    title: "Research accounts",
     description:
-      "Prioritize outreach with configurable scoring and fast context pulled into one screen.",
+      "Generate structured company reports with market context, products, and opportunities.",
   },
   {
-    title: "Launch outreach",
+    title: "Find contacts",
     description:
-      "Draft and send personalized messages, then track what moves leads forward.",
+      "Discover key people at each account and capture role-level context quickly.",
+  },
+  {
+    title: "Qualify leads",
+    description:
+      "Score every contact across five configurable dimensions tied to your ICP.",
+  },
+  {
+    title: "Draft outreach",
+    description:
+      "Generate personalized LinkedIn and email drafts from contact and company context.",
+  },
+  {
+    title: "Monitor pipeline",
+    description:
+      "Track status progression and lead quality with lightweight pipeline analytics.",
   },
 ];
 
 export const coreFeatureCards: FeatureCard[] = [
   {
-    title: "Company research snapshots",
+    title: "Manage leads workspace",
     description:
-      "Quickly capture key firmographic and market details for each target account.",
+      "Run contact context, score details, status updates, and outreach drafting from one screen.",
   },
   {
-    title: "Contact discovery",
+    title: "Company research reports",
     description:
-      "Find decision-makers and keep clean contact records without juggling multiple tools.",
+      "Generate structured account reports with strengths, challenges, products, and market insights.",
   },
   {
-    title: "Lead scoring controls",
+    title: "Contact discovery and enrich",
     description:
-      "Tune ICP signals and weights so small teams can focus on high-fit opportunities.",
+      "Find key stakeholders and enrich contact records with role and company context.",
   },
   {
-    title: "Outreach drafting",
+    title: "Outreach message drafting",
     description:
-      "Generate ready-to-edit outbound messages using profile and company context.",
+      "Create ready-to-edit connection requests or email drafts with contextual reasoning.",
   },
   {
-    title: "Pipeline status views",
+    title: "Configurable lead scoring",
     description:
-      "Understand where prospects are stalling with simple funnel visibility.",
+      "Adjust target industries, seniority, and scoring weights to match your motion.",
   },
   {
-    title: "Open-source foundation",
+    title: "Pipeline analytics snapshot",
     description:
-      "Self-host, customize, and extend the workflow for your own operating style.",
+      "See funnel movement, contacted coverage, and qualification progress at a glance.",
   },
 ];
 
@@ -127,59 +158,105 @@ export const landingUseCases: UseCase[] = [
   {
     title: "Founder-led sales",
     description:
-      "Run lean outbound from a single place when your team is still under five people.",
+      "Run outbound with structure before hiring a full sales ops stack.",
   },
   {
     title: "First SDR hire",
     description:
-      "Give new reps a focused system for list building, qualification, and outreach.",
+      "Give your first rep a clear process from target account to first touch.",
   },
   {
-    title: "Pilot campaigns",
+    title: "ICP and segment exploration",
     description:
-      "Test new segments quickly and compare response quality without heavy setup.",
-  },
-  {
-    title: "Agency workflows",
-    description:
-      "Manage multiple client prospecting streams with shared templates and process.",
-  },
-  {
-    title: "PLG assist motion",
-    description:
-      "Prioritize high-intent signups with scoring and contextual outbound follow-up.",
-  },
-  {
-    title: "Community projects",
-    description:
-      "Use and improve the open-source stack for custom SDR experiments.",
+      "Test new ICP slices quickly with consistent scoring and research structure.",
   },
 ];
 
 export const landingBenefitCards: FeatureCard[] = [
   {
-    title: "Faster setup",
-    description: "Get a practical outbound system running in days instead of weeks.",
+    title: "Faster outbound setup",
+    description: "Launch a usable SDR workflow in days, not months.",
   },
   {
-    title: "Lower tool sprawl",
-    description: "Replace fragmented workflows with one focused SDR surface.",
+    title: "Less context switching",
+    description: "Keep research, qualification, and drafting in one operating surface.",
   },
   {
-    title: "Clear prioritization",
-    description: "Align team effort around leads with the strongest fit and intent.",
+    title: "More consistent prioritization",
+    description: "Use shared scoring logic so the team works the same leads first.",
   },
   {
-    title: "Repeatable outreach",
-    description: "Standardize message quality while keeping personalization intact.",
+    title: "Higher outreach throughput",
+    description: "Generate first drafts faster while keeping personalization quality.",
   },
   {
-    title: "Team visibility",
-    description: "Track pipeline movement and handoffs without extra reporting overhead.",
+    title: "Clearer pipeline signal",
+    description: "Track lead status and qualification trends without heavyweight BI setup.",
   },
   {
-    title: "Community leverage",
-    description: "Ship improvements faster by building on an open-source codebase.",
+    title: "Open-source control",
+    description: "Own the stack and evolve the workflow as your motion changes.",
+  },
+];
+
+export const workflowOutcomes: WorkflowOutcome[] = [
+  {
+    metric: "1 workspace",
+    title: "From account list to first draft",
+    description:
+      "Replace handoffs across scattered tools with one continuous flow.",
+  },
+  {
+    metric: "5 dimensions",
+    title: "Shared qualification language",
+    description:
+      "Score leads with transparent criteria that the whole team understands.",
+  },
+  {
+    metric: "Context-first",
+    title: "Better research before outreach",
+    description:
+      "Ground each message in account and contact context before writing.",
+  },
+  {
+    metric: "Lean by design",
+    title: "Built for teams under five",
+    description:
+      "Keep only the essential SDR loop without enterprise operational overhead.",
+  },
+];
+
+export const prospectKitDoes: BoundaryPoint[] = [
+  {
+    title: "Lead discovery and enrichment",
+    description: "Find companies, research accounts, and capture key contacts.",
+  },
+  {
+    title: "Qualification and prioritization",
+    description: "Score leads with configurable ICP criteria and weighting.",
+  },
+  {
+    title: "Outreach content support",
+    description: "Generate context-aware draft messages that reps can edit and send.",
+  },
+  {
+    title: "Pipeline signal visibility",
+    description: "Track lead statuses, conversion stages, and score distribution.",
+  },
+];
+
+export const prospectKitDoesNot: BoundaryPoint[] = [
+  {
+    title: "Not a CRM replacement",
+    description: "ProspectKit does not try to replace full CRM systems.",
+  },
+  {
+    title: "Not an outbound sender",
+    description: "It does not send emails or LinkedIn messages on your behalf.",
+  },
+  {
+    title: "Not a sequence orchestrator",
+    description: "It does not provide multistep sequence automation.",
   },
 ];
 
@@ -239,9 +316,14 @@ export const landingFaqs: FAQItem[] = [
       "ProspectKit is designed for small teams and early-stage startups, especially sales teams with fewer than five people.",
   },
   {
+    question: "What is the main value of ProspectKit?",
+    answer:
+      "It helps tiny teams complete the essential SDR loop in one place: find accounts, research, qualify, draft outreach, and monitor pipeline signal.",
+  },
+  {
     question: "How is this different from heavier platforms?",
     answer:
-      "It focuses on essential lead-generation and outreach workflows instead of broad, complex automation suites.",
+      "ProspectKit intentionally focuses on the core outbound workflow instead of broad all-in-one sales automation.",
   },
   {
     question: "Can we self-host and customize it?",
@@ -249,9 +331,14 @@ export const landingFaqs: FAQItem[] = [
       "Yes. The project is open-source, so you can self-host, modify flows, and tailor it to your own process.",
   },
   {
-    question: "Does it support lead scoring?",
+    question: "Does it support configurable lead scoring?",
     answer:
-      "Yes. You can define score inputs and weighting rules to fit your ICP and prioritization strategy.",
+      "Yes. You can configure target industries, seniority levels, and scoring weights across five qualification dimensions.",
+  },
+  {
+    question: "What is explicitly out of scope?",
+    answer:
+      "ProspectKit does not aim to be a CRM, outbound sender, sequence tool, or data broker. It focuses on pre-send prospecting and qualification workflow.",
   },
   {
     question: "Where can we contribute?",

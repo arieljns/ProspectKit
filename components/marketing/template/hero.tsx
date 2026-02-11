@@ -16,15 +16,16 @@ export const Hero = () => {
       id="hero"
       className="border-divide flex flex-col items-center justify-center border-x px-4 pt-10 pb-10 md:pt-32 md:pb-20"
     >
-      <Badge text="Open-source • Lightweight Clay/Apollo alternative" />
+      <Badge text="Open-source • Built for teams under 5" />
       <Heading className="mt-4">
-        Lead generation and outreach <br />
-        for <span className="text-brand">lean sales teams</span>
+        Complete the essential SDR loop <br />
+        with a <span className="text-brand">tiny team</span>
       </Heading>
 
       <SubHeading className="mx-auto mt-6 max-w-lg">
-        ProspectKit keeps only the essentials: prospecting workflow, contact
-        discovery, lead scoring, and outreach execution for teams under five.
+        ProspectKit is a lightweight alternative to heavier outbound suites:
+        discover accounts, research contacts, score leads, draft outreach, and
+        monitor pipeline signal in one focused workspace.
       </SubHeading>
 
       <div className="mt-6 flex items-center gap-4">

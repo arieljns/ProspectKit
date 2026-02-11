@@ -56,8 +56,8 @@ export const FAQs = () => {
       </SectionHeading>
 
       <SubHeading as="p" className="mx-auto mt-6 max-w-lg px-2">
-        Common questions from early startup teams adopting a lightweight SDR
-        stack.
+        Questions about fit, scope, and how ProspectKit supports the core
+        outbound workflow.
       </SubHeading>
       <div className="mt-8 mb-12 flex w-full flex-col justify-center gap-4 px-4 sm:flex-row">
         <Button variant="primary" className="w-full sm:w-auto" as="a" href={landingLinks.repo} target="_blank" rel="noreferrer">

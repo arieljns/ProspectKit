@@ -9,15 +9,14 @@ import { AgenticIntelligence } from "@/components/marketing/template/agentic-int
 import { UseCases } from "@/components/marketing/template/use-cases";
 import { Benefits } from "@/components/marketing/template/benefits";
 import { Testimonials } from "@/components/marketing/template/testimonials";
-import { Pricing } from "@/components/marketing/template/pricing";
 import { Security } from "@/components/marketing/template/security";
 import { FAQ } from "@/components/marketing/template/faq";
 import { CTA } from "@/components/marketing/template/cta";
 import { Footer } from "@/components/marketing/template/footer";
 
 export const metadata: Metadata = {
-  title: "ProspectKit — Open-source Outbound Workspace",
-  description: "Open-source outbound workspace for small teams.",
+  title: "ProspectKit — Essential SDR Workflow for Tiny Teams",
+  description: "Complete the essential SDR loop with a tiny team.",
 };
 
 export default function LandingPage() {
@@ -40,8 +39,6 @@ export default function LandingPage() {
       <Benefits />
       <DivideX />
       <Testimonials />
-      <DivideX />
-      <Pricing />
       <DivideX />
       <Security />
       <DivideX />

@@ -58,15 +58,9 @@ export type BoundaryPoint = {
   description: string;
 };
 
-export type UseCase = {
-  title: string;
-  description: string;
-};
-
 export const landingNavItems: LandingNavItem[] = [
   { title: "Workflow", href: "#how-it-works" },
   { title: "Core features", href: "#core-features" },
-  { title: "Use cases", href: "#use-cases" },
   { title: "Boundaries", href: "#boundaries" },
   { title: "FAQ", href: "#faq" },
 ];
@@ -151,24 +145,6 @@ export const coreFeatureCards: FeatureCard[] = [
     title: "Pipeline analytics snapshot",
     description:
       "See funnel movement, contacted coverage, and qualification progress at a glance.",
-  },
-];
-
-export const landingUseCases: UseCase[] = [
-  {
-    title: "Founder-led sales",
-    description:
-      "Run outbound with structure before hiring a full sales ops stack.",
-  },
-  {
-    title: "First SDR hire",
-    description:
-      "Give your first rep a clear process from target account to first touch.",
-  },
-  {
-    title: "ICP and segment exploration",
-    description:
-      "Test new ICP slices quickly with consistent scoring and research structure.",
   },
 ];
 

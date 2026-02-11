@@ -6,7 +6,6 @@ import { HeroImage } from "@/components/marketing/template/hero-image";
 import { LogoCloud } from "@/components/marketing/template/logo-cloud";
 import { HowItWorks } from "@/components/marketing/template/how-it-works";
 import { AgenticIntelligence } from "@/components/marketing/template/agentic-intelligence";
-import { UseCases } from "@/components/marketing/template/use-cases";
 import { Benefits } from "@/components/marketing/template/benefits";
 import { Testimonials } from "@/components/marketing/template/testimonials";
 import { Security } from "@/components/marketing/template/security";
@@ -33,8 +32,6 @@ export default function LandingPage() {
       <HowItWorks />
       <DivideX />
       <AgenticIntelligence />
-      <DivideX />
-      <UseCases />
       <DivideX />
       <Benefits />
       <DivideX />

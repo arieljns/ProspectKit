@@ -108,7 +108,7 @@ export function DiscoverCompaniesSkeleton() {
           </button>
         ))}
       </div>
-      <div className="relative mx-auto h-[12.5rem] w-full max-w-sm rounded-t-3xl border border-gray-200 bg-neutral-100 p-2 shadow-xl dark:border-neutral-700 dark:bg-neutral-800">
+      <div className="relative mx-auto h-[16rem] w-full max-w-sm rounded-t-3xl border border-gray-200 bg-neutral-100 p-2 shadow-xl dark:border-neutral-700 dark:bg-neutral-800">
         <ResearchSectionCard
           title={selected.title}
           icon={selected.icon}
@@ -139,7 +139,7 @@ const ResearchSectionCard = ({
   return (
     <motion.div
       key={title}
-      className="flex h-full flex-col gap-2.5 rounded-2xl border border-black/5 bg-white p-3 ring-1 ring-black/5 dark:border-white/10 dark:bg-neutral-900 dark:ring-white/10"
+      className="flex h-full flex-col gap-4 rounded-2xl border border-black/5 bg-white p-3 ring-1 ring-black/5 dark:border-white/10 dark:bg-neutral-900 dark:ring-white/10"
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.25 }}
@@ -189,90 +189,214 @@ const ResearchSectionCard = ({
 };
 
 export function ManageLeadsSkeleton() {
+  const leads: LeadWorkbenchItem[] = [
+    {
+      name: "Maya Chen",
+      title: "Head of Revenue",
+      company: "SignalWorks",
+      status: "Contacted",
+      score: 89,
+      priority: "High",
+      nextStep: "Send pricing-angle follow-up",
+      draft:
+        "Noticed you are building your first SDR pod. ProspectKit can keep list building, scoring, and message drafts in one workflow without adding another heavy tool.",
+      signals: [
+        { label: "ICP fit", value: 92 },
+        { label: "Buying timing", value: 84 },
+        { label: "Intent", value: 78 },
+      ],
+    },
+    {
+      name: "Rafael Ortiz",
+      title: "VP Sales",
+      company: "Northlane",
+      status: "New",
+      score: 81,
+      priority: "Medium",
+      nextStep: "Generate first-touch opener",
+      draft:
+        "Saw your team posting for outbound roles while expanding upmarket. We can help prioritize who to contact first and draft tailored outreach faster.",
+      signals: [
+        { label: "ICP fit", value: 86 },
+        { label: "Buying timing", value: 72 },
+        { label: "Intent", value: 69 },
+      ],
+    },
+    {
+      name: "Jules Morgan",
+      title: "Growth Lead",
+      company: "StackRiver",
+      status: "Responded",
+      score: 93,
+      priority: "High",
+      nextStep: "Prep tailored discovery notes",
+      draft:
+        "Your recent product launch suggests active pipeline expansion. ProspectKit can enrich account context and keep outreach personalized as volume grows.",
+      signals: [
+        { label: "ICP fit", value: 95 },
+        { label: "Buying timing", value: 90 },
+        { label: "Intent", value: 88 },
+      ],
+    },
+  ];
+
+  const [activeLeadIndex, setActiveLeadIndex] = useState(0);
+  const activeLead = leads[activeLeadIndex];
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setActiveLeadIndex((index) => (index + 1) % leads.length);
+    }, 2600);
+    return () => clearInterval(timer);
+  }, [leads.length]);
+
   return (
-    <div className="relative mx-auto mt-10 w-[90%] rounded-2xl border border-gray-300 bg-white p-4 shadow-xl dark:border-neutral-700 dark:bg-neutral-900">
+    <div className="relative mx-auto mt-10 w-[92%] rounded-2xl border border-gray-300 bg-white/95 p-3 shadow-xl dark:border-neutral-700 dark:bg-neutral-900/95">
       <div className="mb-3 flex items-center justify-between">
-        <p className="text-xs font-medium text-gray-500">Lead workbench</p>
-        <span className="rounded bg-emerald-100 px-2 py-1 text-[10px] text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300">
-          Manage Leads
-        </span>
+        <p className="text-xs font-medium text-gray-500">Manage leads workspace</p>
+        <div className="flex items-center gap-1.5 text-[10px]">
+          <span className="rounded-md border border-gray-200 bg-gray-50 px-1.5 py-1 text-gray-600 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-300">
+            12 queued
+          </span>
+          <span className="rounded-md border border-emerald-200 bg-emerald-100 px-1.5 py-1 text-emerald-700 dark:border-emerald-400/20 dark:bg-emerald-900/30 dark:text-emerald-300">
+            4 hot leads
+          </span>
+        </div>
       </div>
-      <div className="grid grid-cols-5 gap-3">
-        <div className="col-span-3 space-y-2">
-          <motion.div
-            {...pulse}
-            className="rounded-lg border border-gray-200 bg-gray-50 p-3 dark:border-neutral-700 dark:bg-neutral-800"
-          >
-            <p className="text-xs font-medium text-gray-700 dark:text-neutral-200">
-              Maya Chen · Sales Lead
-            </p>
-            <p className="mt-1 text-[11px] text-gray-500 dark:text-neutral-400">
-              SignalWorks · Status: Contacted · Priority: High
-            </p>
-          </motion.div>
-          <div className="space-y-1.5">
-            {[
-              { label: "Industry match", width: "88%" },
-              { label: "Company need", width: "92%" },
-            ].map((item, index) => (
-              <div key={item.label}>
-                <div className="mb-1 flex justify-between text-[10px] text-gray-500 dark:text-neutral-400">
-                  <span>{item.label}</span>
-                  <span>{item.width}</span>
+
+      <div className="grid grid-cols-1 gap-3 md:grid-cols-12">
+        <div className="space-y-2 md:col-span-4">
+          {leads.map((lead, index) => {
+            const isActive = index === activeLeadIndex;
+            return (
+              <button
+                key={`${lead.name}-${lead.company}`}
+                type="button"
+                onClick={() => setActiveLeadIndex(index)}
+                className={cn(
+                  "w-full rounded-lg border p-2.5 text-left transition",
+                  "border-gray-200 bg-gray-50 hover:border-gray-300 dark:border-neutral-700 dark:bg-neutral-800 dark:hover:border-neutral-600",
+                  isActive &&
+                    "border-brand/40 bg-brand/5 ring-1 ring-brand/25 dark:border-brand/40 dark:bg-brand/10",
+                )}
+              >
+                <div className="flex items-center justify-between gap-2">
+                  <div className="min-w-0">
+                    <p className="truncate text-[11px] font-semibold text-gray-700 dark:text-neutral-100">
+                      {lead.name}
+                    </p>
+                    <p className="truncate text-[10px] text-gray-500 dark:text-neutral-400">
+                      {lead.company}
+                    </p>
+                  </div>
+                  <span className="rounded bg-white px-1.5 py-0.5 text-[10px] font-medium text-gray-600 dark:bg-neutral-900 dark:text-neutral-300">
+                    {lead.score}
+                  </span>
                 </div>
-                <div className="h-1.5 rounded-full bg-gray-100 dark:bg-neutral-800">
+              </button>
+            );
+          })}
+        </div>
+
+        <motion.div
+          key={activeLead.name}
+          className="rounded-xl border border-gray-200 bg-gray-50 p-3 dark:border-neutral-700 dark:bg-neutral-800 md:col-span-8"
+          initial={{ opacity: 0, y: 6 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.22 }}
+        >
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <div>
+              <p className="text-xs font-semibold text-gray-800 dark:text-neutral-100">
+                {activeLead.name} · {activeLead.title}
+              </p>
+              <p className="text-[10px] text-gray-500 dark:text-neutral-400">
+                {activeLead.company}
+              </p>
+            </div>
+            <div className="flex items-center gap-1.5 text-[10px]">
+              <span className="rounded bg-gray-200/70 px-1.5 py-0.5 text-gray-600 dark:bg-neutral-700 dark:text-neutral-300">
+                {activeLead.status}
+              </span>
+              <span className="rounded bg-amber-100 px-1.5 py-0.5 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300">
+                {activeLead.priority}
+              </span>
+            </div>
+          </div>
+
+          <div className="mt-2 rounded-md border border-gray-200 bg-white p-2 dark:border-neutral-700 dark:bg-neutral-900">
+            <div className="mb-1 flex items-center justify-between text-[10px] text-gray-500 dark:text-neutral-400">
+              <span>Composite lead score</span>
+              <span className="font-semibold text-gray-700 dark:text-neutral-200">{activeLead.score}</span>
+            </div>
+            <div className="h-1.5 rounded-full bg-gray-100 dark:bg-neutral-800">
+              <motion.div
+                initial={{ width: 0 }}
+                animate={{ width: `${activeLead.score}%` }}
+                transition={{ duration: 0.55, ease: "easeOut" }}
+                className="bg-brand h-full rounded-full"
+              />
+            </div>
+          </div>
+
+          <div className="mt-2 grid grid-cols-1 gap-2 sm:grid-cols-3">
+            {activeLead.signals.map((signal, index) => (
+              <div
+                key={signal.label}
+                className="rounded-md border border-gray-200 bg-white p-2 dark:border-neutral-700 dark:bg-neutral-900"
+              >
+                <p className="text-[10px] text-gray-500 dark:text-neutral-400">{signal.label}</p>
+                <p className="mb-1 text-[11px] font-medium text-gray-700 dark:text-neutral-200">{signal.value}%</p>
+                <div className="h-1 rounded-full bg-gray-100 dark:bg-neutral-800">
                   <motion.div
                     initial={{ width: 0 }}
-                    animate={{ width: item.width }}
-                    transition={{ duration: 0.9, delay: 0.2 + index * 0.12 }}
-                    className="bg-brand h-full rounded-full"
+                    animate={{ width: `${signal.value}%` }}
+                    transition={{ duration: 0.45, delay: 0.05 * index }}
+                    className="bg-brand/80 h-full rounded-full"
                   />
                 </div>
               </div>
             ))}
           </div>
-        </div>
 
-        <div className="col-span-2 rounded-lg border border-gray-200 bg-gray-50 p-3 dark:border-neutral-700 dark:bg-neutral-800">
-          <div className="relative mx-auto h-20 w-20">
-            <div className="absolute inset-0 rounded-full bg-[conic-gradient(var(--color-brand)_0_72%,rgba(209,213,219,0.5)_72%_100%)]" />
-            <motion.div
-              className="absolute inset-0 rounded-full"
-              style={{ background: "conic-gradient(transparent 0 80%, rgba(255,255,255,0.8) 80% 86%, transparent 86% 100%)" }}
-              animate={{ rotate: [0, 360] }}
-              transition={{ duration: 2.8, repeat: Infinity, ease: "linear" }}
-            />
-            <div className="absolute inset-2 flex items-center justify-center rounded-full bg-white text-xs font-semibold text-gray-700 dark:bg-neutral-900 dark:text-neutral-200">
-              89
+          <div className="mt-2 rounded-md border border-gray-200 bg-white p-2 dark:border-neutral-700 dark:bg-neutral-900">
+            <p className="text-[10px] text-gray-500 dark:text-neutral-400">Outreach draft</p>
+            <p className="mt-1 line-clamp-3 text-[10px] leading-relaxed text-gray-600 dark:text-neutral-300">
+              {activeLead.draft}
+            </p>
+            <div className="mt-2 flex items-center justify-between">
+              <span className="text-[10px] text-gray-500 dark:text-neutral-400">
+                Next: {activeLead.nextStep}
+              </span>
+              <div className="flex items-center gap-1">
+                {[0, 1, 2].map((dot) => (
+                  <motion.span
+                    key={dot}
+                    className="inline-block h-1.5 w-1.5 rounded-full bg-gray-400"
+                    animate={{ opacity: [0.25, 1, 0.25] }}
+                    transition={{ duration: 1, delay: dot * 0.18, repeat: Infinity }}
+                  />
+                ))}
+              </div>
             </div>
           </div>
-          <p className="mt-2 text-center text-[10px] text-gray-500 dark:text-neutral-400">
-            Composite lead score
-          </p>
-        </div>
-      </div>
-      <div className="mt-3 rounded-md border border-gray-200 bg-gray-50 p-2 dark:border-neutral-700 dark:bg-neutral-800">
-        <p className="text-[10px] text-gray-500 dark:text-neutral-400">
-          Outreach draft
-        </p>
-        <p className="mt-1 text-[10px] text-gray-600 dark:text-neutral-300">
-          Noticed your team is hiring first SDRs. We can help keep qualification
-          and messaging in one workflow.
-        </p>
-        <div className="mt-2 flex items-center gap-1">
-          {[0, 1, 2].map((dot) => (
-            <motion.span
-              key={dot}
-              className="inline-block h-1.5 w-1.5 rounded-full bg-gray-400"
-              animate={{ opacity: [0.3, 1, 0.3] }}
-              transition={{ duration: 1, delay: dot * 0.2, repeat: Infinity }}
-            />
-          ))}
-        </div>
+        </motion.div>
       </div>
     </div>
   );
 }
+
+type LeadWorkbenchItem = {
+  name: string;
+  title: string;
+  company: string;
+  status: string;
+  score: number;
+  priority: string;
+  nextStep: string;
+  draft: string;
+  signals: { label: string; value: number }[];
+};
 
 export function PipelineAnalyticsSkeleton() {
   const stats = [

@@ -2,7 +2,7 @@ import Link from "next/link";
 
 import { Badge } from "@/components/shadcnui/badge";
 import { Button } from "@/components/shadcnui/button";
-import { ORBIT_REPO_URL } from "@/lib/marketing/links";
+import { PROSPECTKIT_REPO_URL } from "@/lib/marketing/links";
 
 export function Hero() {
   return (
@@ -14,7 +14,7 @@ export function Hero() {
             Lead gen and outreach—without the bloat.
           </h1>
           <p className="mt-4 max-w-xl text-base text-muted-foreground sm:text-lg">
-            Orbit SDR is a lightweight SDR app built for small teams and early-stage startups.
+            ProspectKit is an open-source outbound workspace built for small teams and early-stage startups.
             Research companies, find decision-makers, score leads, and draft outreach in one place.
           </p>
 
@@ -23,7 +23,7 @@ export function Hero() {
               <Link href="/app">Try the demo</Link>
             </Button>
             <Button asChild variant="outline" size="lg">
-              <a href={ORBIT_REPO_URL} target="_blank" rel="noreferrer">
+              <a href={PROSPECTKIT_REPO_URL} target="_blank" rel="noreferrer">
                 View source
               </a>
             </Button>
@@ -63,4 +63,3 @@ export function Hero() {
     </section>
   );
 }
-

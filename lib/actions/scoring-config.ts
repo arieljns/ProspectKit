@@ -14,11 +14,11 @@ import { revalidatePath } from 'next/cache';
  * Used for initial setup and reset
  */
 const DEFAULT_CONFIG: UpdateScoringConfigParams = {
-  userCompanyName: 'xAI',
+  userCompanyName: 'ProspectKit',
   userCompanyDescription:
-    'Leading AI research company building Grok, the world\'s most advanced AI assistant with real-time knowledge and reasoning capabilities.',
+    'An open-source outbound workspace built for small teams.',
   productDescription:
-    'Grok API - Enterprise AI API platform that provides developers with access to state-of-the-art language models, real-time web search, and advanced reasoning capabilities. Perfect for building intelligent applications, chatbots, and AI-powered tools.',
+    'ProspectKit helps teams run a lean outbound workflow: company research, contact discovery, lead scoring, and outreach drafting.',
   targetIndustries: ['SaaS', 'Developer Tools', 'AI/ML', 'FinTech'],
   targetSeniorityLevels: ['C-level', 'VP', 'Director'],
   weights: {

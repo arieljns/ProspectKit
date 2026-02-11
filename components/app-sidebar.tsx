@@ -6,11 +6,11 @@ import {
   BarChart3Icon,
   Building2Icon,
   HelpCircleIcon,
-  Orbit,
   SearchIcon,
   SettingsIcon,
   UsersIcon,
 } from "lucide-react";
+import { LogoMark } from "@/components/branding/LogoMark";
 
 import { NavMain } from "@/components/nav-main";
 import { NavSecondary } from "@/components/nav-secondary";
@@ -25,7 +25,6 @@ import {
   SidebarMenuItem,
   SidebarTrigger,
 } from "@/components/shadcnui/sidebar";
-import { Oranienbaum } from "next/font/google";
 
 const data = {
   user: {
@@ -77,9 +76,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <SidebarMenuItem>
             <SidebarMenuButton asChild className="data-[slot=sidebar-menu-button]:p-1.5!">
               <Link href="/app/dashboard">
-                <Orbit className="h-6 w-6" />
-                <span className="text-base font-bold">Orbit SDR</span>
-                <span className="text-[10px] text-muted-foreground">powered by Grok</span>
+                <LogoMark className="h-6 w-6" />
+                <span className="text-base font-bold">ProspectKit</span>
+                <span className="text-[10px] text-muted-foreground">
+                  Open-source outbound workspace for small teams
+                </span>
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>

@@ -1,6 +1,6 @@
 const faqs = [
   {
-    q: "Who is Orbit SDR for?",
+    q: "Who is ProspectKit for?",
     a: "Small teams and early-stage startups that want a lightweight Clay/Apollo-style workflow for lead generation and outreach—without stitching together too many tools.",
   },
   {
@@ -9,7 +9,7 @@ const faqs = [
   },
   {
     q: "Can I self-host it?",
-    a: "Yes. Orbit SDR is open-source and can be self-hosted for free.",
+    a: "Yes. ProspectKit is open-source and can be self-hosted for free.",
   },
   {
     q: "Does it support customizable scoring?",
@@ -49,4 +49,3 @@ export function FAQ() {
     </section>
   );
 }
-

@@ -75,7 +75,7 @@ export const HeroImage = () => {
         >
           <Image
             src="/marketing/dashboard@3x.png"
-            alt="Orbit SDR dashboard preview"
+            alt="ProspectKit dashboard preview"
             className="w-full"
             priority
             width={1000}

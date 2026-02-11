@@ -2,7 +2,7 @@ import { z } from "zod";
 
 /**
  * Schema for AI-generated lead scoring results
- * Grok will evaluate a contact across 5 dimensions and provide scores + reasoning
+ * The AI model evaluates a contact across 5 dimensions and returns scores + reasoning
  */
 export const leadScoringSchema = z.object({
   // Dimension scores (0-100)

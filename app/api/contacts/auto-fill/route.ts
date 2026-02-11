@@ -32,7 +32,7 @@ export async function POST(req: Request) {
       );
     }
 
-    // Use Grok with Live Search to extract LinkedIn profile information
+    // Use an AI model with Live Search to extract LinkedIn profile information
     const { object: contactInfo } = await generateObject({
       model: xai("grok-4-fast-non-reasoning-latest"),
       schema: contactInfoSchema,

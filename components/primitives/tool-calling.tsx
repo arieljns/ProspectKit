@@ -21,6 +21,7 @@ import type { ToolPart } from "@/components/prompt-kit/tool"
 import { Badge } from "@/components/shadcnui/badge"
 import { Button } from "@/components/shadcnui/button"
 import { cn } from "@/lib/utils"
+import { LogoMark } from "@/components/branding/LogoMark"
 import { useChat } from "@ai-sdk/react"
 import { DefaultChatTransport } from "ai"
 import type { UIMessage, UIMessagePart } from "ai"
@@ -34,7 +35,6 @@ import {
   HelpCircle,
   Lightbulb,
   LucideIcon,
-  Orbit,
   Sparkles,
 } from "lucide-react"
 import { memo, useState } from "react"
@@ -237,7 +237,7 @@ function ToolCallingChatbot({
             <div className="mx-auto flex w-full max-w-3xl flex-col items-center justify-center space-y-8 px-6 py-12">
               {/* Icon */}
               <div className="flex h-16 w-16 items-center justify-center rounded-xl bg-gray-100 shadow-xs">
-                <Orbit className="h-10 w-10" />
+                <LogoMark className="h-10 w-10" priority />
               </div>
 
               {/* Welcome Text */}

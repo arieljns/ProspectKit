@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 /**
  * Schema for AI-generated contact finder results
- * Used with xAI Grok + Live Search to find key contacts at a company
+ * Used with an AI model + Live Search to find key contacts at a company
  */
 export const contactFinderSchema = z.object({
   contacts: z

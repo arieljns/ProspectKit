@@ -36,7 +36,7 @@ export function TextToWorkflowBuilderSkeleton() {
       <p className="text-xs text-gray-500">Outreach draft</p>
       <div className="mt-3 rounded-md bg-gray-100 p-3 text-xs leading-relaxed dark:bg-neutral-800">
         Hi Alex, noticed your team is hiring its first outbound rep. We built
-        Orbit SDR to keep list building and outreach lean without the overhead.
+        ProspectKit to keep list building and outreach lean without the overhead.
       </div>
       <div className="mt-3 flex items-center justify-end">
         <span className="rounded bg-emerald-100 px-2 py-1 text-xs text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300">

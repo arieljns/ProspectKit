@@ -7,9 +7,8 @@ import { interDisplay } from "@/app/fonts/inter-display/inter";
 import { dmMono } from "@/app/fonts/dm-mono";
 
 export const metadata: Metadata = {
-  title: "Orbit SDR",
-  description:
-    "Open-source SDR workspace for lean startups and sales teams under five.",
+  title: "ProspectKit",
+  description: "Open-source outbound workspace for small teams.",
 };
 
 export default function RootLayout({

@@ -58,7 +58,7 @@ export function Footer() {
       </div>
       <div className="border-divide flex flex-col items-center justify-between gap-2 border-t px-4 py-6 text-sm md:flex-row">
         <p className="text-footer-link">
-          © {new Date().getFullYear()} Orbit SDR. All rights reserved.
+          © {new Date().getFullYear()} ProspectKit. All rights reserved.
         </p>
         <div className="flex gap-4">
           <Link href={landingLinks.primaryCta} className="text-footer-link">

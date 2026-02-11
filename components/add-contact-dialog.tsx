@@ -172,7 +172,9 @@ export function AddContactDialog({ open, onOpenChange, onSuccess }: AddContactDi
       <DialogContent className="max-w-lg">
         <DialogHeader>
           <DialogTitle>Add New Contact</DialogTitle>
-          <DialogDescription>Enter LinkedIn URL and let Grok extract the contact information.</DialogDescription>
+          <DialogDescription>
+            Enter LinkedIn URL and let AI extract the contact information.
+          </DialogDescription>
         </DialogHeader>
 
         <div className="space-y-4">
@@ -206,7 +208,7 @@ export function AddContactDialog({ open, onOpenChange, onSuccess }: AddContactDi
             ) : (
               <>
                 <Sparkles className="h-4 w-4 mr-2" />
-                Auto-fill with Grok
+                Auto-fill with AI
               </>
             )}
           </Button>

@@ -37,7 +37,7 @@ export async function POST(req: Request) {
       );
     }
 
-    // Use Grok with Live Search to find company information
+    // Use an AI model with Live Search to find company information
     const { object: companyInfo } = await generateObject({
       model: xai("grok-4-fast-non-reasoning-latest"),
       schema: companyInfoSchema,

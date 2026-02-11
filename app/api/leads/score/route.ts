@@ -105,7 +105,7 @@ ${company.website ? `Website: ${company.website}` : ""}
 
 Provide scores and 1-2 sentence reasoning for each dimension.`;
 
-    // 5. Use Grok to score the lead
+    // 5. Use an AI model to score the lead
     const { object: result } = await generateObject({
       model: xai("grok-4-fast-non-reasoning-latest"),
       schema: leadScoringSchema,

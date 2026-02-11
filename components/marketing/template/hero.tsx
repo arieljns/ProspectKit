@@ -8,7 +8,7 @@ import { Button } from "./button";
 import { Badge } from "./badge";
 import Link from "next/link";
 import { landingLinks } from "@/lib/marketing/landing-content";
-import { ORBIT_REPO_URL } from "@/lib/marketing/links";
+import { PROSPECTKIT_REPO_URL } from "@/lib/marketing/links";
 
 export const Hero = () => {
   return (
@@ -23,7 +23,7 @@ export const Hero = () => {
       </Heading>
 
       <SubHeading className="mx-auto mt-6 max-w-lg">
-        Orbit SDR keeps only the essentials: prospecting workflow, contact
+        ProspectKit keeps only the essentials: prospecting workflow, contact
         discovery, lead scoring, and outreach execution for teams under five.
       </SubHeading>
 
@@ -31,7 +31,7 @@ export const Hero = () => {
         <Button as={Link} href={landingLinks.primaryCta}>
           Try the demo
         </Button>
-        <Button variant="secondary" as="a" href={ORBIT_REPO_URL} target="_blank" rel="noreferrer">
+        <Button variant="secondary" as="a" href={PROSPECTKIT_REPO_URL} target="_blank" rel="noreferrer">
           View source
         </Button>
       </div>

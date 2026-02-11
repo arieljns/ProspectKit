@@ -169,7 +169,7 @@ export function AddCompanyDialog({
             ) : (
               <>
                 <Sparkles className="h-4 w-4 mr-2" />
-                Auto-fill with Grok
+                Auto-fill with AI
               </>
             )}
           </Button>

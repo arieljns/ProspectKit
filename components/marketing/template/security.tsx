@@ -5,7 +5,7 @@ import { SectionHeading } from "./seciton-heading";
 import { SubHeading } from "./subheading";
 import { Button } from "./button";
 import Image from "next/image";
-import { ORBIT_CONTACT_MAILTO } from "@/lib/marketing/links";
+import { PROSPECTKIT_CONTACT_MAILTO } from "@/lib/marketing/links";
 
 export const Security = () => {
   return (
@@ -22,10 +22,10 @@ export const Security = () => {
             Stay in control as you scale
           </SectionHeading>
           <SubHeading as="p" className="mt-4 text-left">
-            Orbit SDR is open-source and self-hostable, so your data handling
+            ProspectKit is open-source and self-hostable, so your data handling
             and infrastructure choices stay in your hands.
           </SubHeading>
-          <Button className="mt-4 mb-8 inline-block w-full md:w-auto" as="a" href={ORBIT_CONTACT_MAILTO}>
+          <Button className="mt-4 mb-8 inline-block w-full md:w-auto" as="a" href={PROSPECTKIT_CONTACT_MAILTO}>
             Talk to us
           </Button>
         </div>

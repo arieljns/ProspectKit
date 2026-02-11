@@ -34,7 +34,7 @@ export function Features() {
         <div className="max-w-2xl">
           <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">Everything you need for the basics.</h2>
           <p className="mt-3 text-sm text-muted-foreground sm:text-base">
-            Orbit SDR focuses on the core Clay/Apollo-style workflow: build a list, research quickly, write outreach, and
+            ProspectKit focuses on the core Clay/Apollo-style workflow: build a list, research quickly, write outreach, and
             track progress.
           </p>
         </div>
@@ -55,4 +55,3 @@ export function Features() {
     </section>
   );
 }
-

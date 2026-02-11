@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 import { Button } from "@/components/shadcnui/button";
-import { ORBIT_REPO_URL } from "@/lib/marketing/links";
+import { PROSPECTKIT_REPO_URL } from "@/lib/marketing/links";
 
 const navItems = [
   { label: "Features", href: "#features" },
@@ -16,10 +16,10 @@ export function MarketingNav() {
       <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-6">
         <div className="flex items-center gap-3">
           <Link href="/" className="font-semibold tracking-tight">
-            Orbit SDR
+            ProspectKit
           </Link>
           <span className="hidden text-xs text-muted-foreground sm:inline">
-            Clay/Apollo-lite for small teams
+            Open-source outbound workspace for small teams
           </span>
         </div>
 
@@ -37,7 +37,7 @@ export function MarketingNav() {
 
         <div className="flex items-center gap-2">
           <Button asChild variant="outline" size="sm" className="hidden sm:inline-flex">
-            <a href={ORBIT_REPO_URL} target="_blank" rel="noreferrer">
+            <a href={PROSPECTKIT_REPO_URL} target="_blank" rel="noreferrer">
               View source
             </a>
           </Button>
@@ -49,4 +49,3 @@ export function MarketingNav() {
     </header>
   );
 }
-

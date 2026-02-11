@@ -16,9 +16,8 @@ import { CTA } from "@/components/marketing/template/cta";
 import { Footer } from "@/components/marketing/template/footer";
 
 export const metadata: Metadata = {
-  title: "Orbit SDR — Lean Outbound Workspace",
-  description:
-    "Open-source SDR app for small startup teams focused on essential lead-generation and outreach.",
+  title: "ProspectKit — Open-source Outbound Workspace",
+  description: "Open-source outbound workspace for small teams.",
 };
 
 export default function LandingPage() {

@@ -1,7 +1,7 @@
 import {
-  ORBIT_CONTACT_MAILTO,
-  ORBIT_REPO_URL,
-  ORBIT_SPONSOR_URL,
+  PROSPECTKIT_CONTACT_MAILTO,
+  PROSPECTKIT_REPO_URL,
+  PROSPECTKIT_SPONSOR_URL,
 } from "@/lib/marketing/links";
 
 export type LandingNavItem = {
@@ -205,7 +205,7 @@ export const landingPricingTiers: PricingTier[] = [
     monthly: 12,
     yearly: 120,
     ctaText: "Sponsor on GitHub",
-    ctaLink: ORBIT_SPONSOR_URL,
+    ctaLink: PROSPECTKIT_SPONSOR_URL,
     featured: true,
     features: [
       "Everything in Starter",
@@ -221,7 +221,7 @@ export const landingPricingTiers: PricingTier[] = [
     monthly: 49,
     yearly: 490,
     ctaText: "Contact us",
-    ctaLink: ORBIT_CONTACT_MAILTO,
+    ctaLink: PROSPECTKIT_CONTACT_MAILTO,
     features: [
       "Everything in Sponsor",
       "Implementation guidance",
@@ -234,9 +234,9 @@ export const landingPricingTiers: PricingTier[] = [
 
 export const landingFaqs: FAQItem[] = [
   {
-    question: "Who is Orbit SDR built for?",
+    question: "Who is ProspectKit built for?",
     answer:
-      "Orbit SDR is designed for small teams and early-stage startups, especially sales teams with fewer than five people.",
+      "ProspectKit is designed for small teams and early-stage startups, especially sales teams with fewer than five people.",
   },
   {
     question: "How is this different from heavier platforms?",
@@ -291,7 +291,7 @@ export const landingTestimonials: TestimonialItem[] = [
     sideText: "3 weeks",
     sideSubText: "To first pipeline",
     quote:
-      "As an early-stage team, we needed practical structure quickly. Orbit gave us a usable outbound engine fast.",
+      "As an early-stage team, we needed practical structure quickly. ProspectKit gave us a usable outbound engine fast.",
     name: "Noah Rivera",
     position: "Co-founder",
     company: "Telescope",
@@ -363,7 +363,7 @@ export const landingTestimonials: TestimonialItem[] = [
     sideText: "Lean",
     sideSubText: "By design",
     quote:
-      "Orbit is intentionally focused, which is why it works well for early teams with tight bandwidth.",
+      "ProspectKit is intentionally focused, which is why it works well for early teams with tight bandwidth.",
     name: "Leo Park",
     position: "Growth Lead",
     company: "April Labs",
@@ -385,7 +385,7 @@ export const landingTestimonials: TestimonialItem[] = [
 
 export const landingLinks = {
   primaryCta: "/app",
-  repo: ORBIT_REPO_URL,
-  sponsor: ORBIT_SPONSOR_URL,
-  contact: ORBIT_CONTACT_MAILTO,
+  repo: PROSPECTKIT_REPO_URL,
+  sponsor: PROSPECTKIT_SPONSOR_URL,
+  contact: PROSPECTKIT_CONTACT_MAILTO,
 };

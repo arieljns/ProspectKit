@@ -1,6 +1,15 @@
 "use client";
 
+import { cn } from "@/lib/utils";
+import {
+  BarChart3Icon,
+  BriefcaseIcon,
+  LightbulbIcon,
+  NewspaperIcon,
+  ScanSearchIcon,
+} from "lucide-react";
 import { motion } from "motion/react";
+import { type ReactNode, useEffect, useRef, useState } from "react";
 
 const pulse = {
   initial: { opacity: 0.5 },
@@ -9,88 +18,175 @@ const pulse = {
 };
 
 export function DiscoverCompaniesSkeleton() {
-  const nodes = [
-    { id: "n1", x: "14%", y: "20%", label: "FinTech", count: "12" },
-    { id: "n2", x: "38%", y: "12%", label: "AI/ML", count: "9" },
-    { id: "n3", x: "66%", y: "18%", label: "DevTools", count: "7" },
-    { id: "n4", x: "25%", y: "62%", label: "SaaS", count: "18" },
-    { id: "n5", x: "54%", y: "56%", label: "Data", count: "11" },
-    { id: "n6", x: "78%", y: "66%", label: "Health", count: "6" },
+  const items: ResearchSection[] = [
+    {
+      title: "Executive Summary",
+      icon: <ScanSearchIcon className="size-4 text-blue-600" />,
+      className:
+        "border border-blue-200 bg-blue-100 text-blue-700 dark:border-blue-300/15 dark:bg-blue-500/10 dark:text-blue-300",
+      description:
+        "Overview, key strengths, key challenges, and current market position for the target account.",
+      tags: ["Overview", "Strengths", "Challenges", "Market position"],
+    },
+    {
+      title: "Products & Services",
+      icon: <BriefcaseIcon className="size-4 text-emerald-600" />,
+      className:
+        "border border-emerald-200 bg-emerald-100 text-emerald-700 dark:border-emerald-300/15 dark:bg-emerald-500/10 dark:text-emerald-300",
+      description:
+        "Core offerings with categories and notes reps can reuse for outreach personalization.",
+      tags: ["Offerings", "Category", "Use case", "Context"],
+    },
+    {
+      title: "Market Analysis",
+      icon: <BarChart3Icon className="size-4 text-violet-600" />,
+      className:
+        "border border-violet-200 bg-violet-100 text-violet-700 dark:border-violet-300/15 dark:bg-violet-500/10 dark:text-violet-300",
+      description:
+        "Target market, competitors, and size signal to support qualification and messaging angle.",
+      tags: ["Target market", "Competitors", "Market size", "Positioning"],
+    },
+    {
+      title: "Business Opportunities",
+      icon: <LightbulbIcon className="size-4 text-amber-600" />,
+      className:
+        "border border-amber-200 bg-amber-100 text-amber-700 dark:border-amber-300/15 dark:bg-amber-500/10 dark:text-amber-300",
+      description:
+        "Potential opportunities identified from public data that can shape call openers and hypothesis.",
+      tags: ["Pain points", "Timing", "Triggers", "Angle ideas"],
+    },
+    {
+      title: "Recent News",
+      icon: <NewspaperIcon className="size-4 text-neutral-600" />,
+      className:
+        "border border-neutral-200 bg-neutral-100 text-neutral-700 dark:border-neutral-300/15 dark:bg-neutral-500/10 dark:text-neutral-300",
+      description:
+        "Latest company updates and announcements to keep account research fresh and relevant.",
+      tags: ["Announcements", "Funding", "Hiring", "Momentum"],
+    },
   ];
 
-  const edges = [
-    { from: [14, 20], to: [38, 12] },
-    { from: [38, 12], to: [66, 18] },
-    { from: [14, 20], to: [25, 62] },
-    { from: [38, 12], to: [54, 56] },
-    { from: [66, 18], to: [78, 66] },
-    { from: [25, 62], to: [54, 56] },
-    { from: [54, 56], to: [78, 66] },
-  ];
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const selected = items[selectedIndex];
+
+  useEffect(() => {
+    intervalRef.current = setInterval(() => {
+      setSelectedIndex((index) => (index + 1) % items.length);
+    }, 2200);
+
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    };
+  }, [items.length]);
 
   return (
-    <div className="relative mx-auto mt-10 w-[90%] rounded-2xl border border-gray-300 bg-white p-4 shadow-xl dark:border-neutral-700 dark:bg-neutral-900">
-      <div className="mb-5 flex items-center justify-between">
-        <p className="text-xs font-medium text-gray-500">Account signal map</p>
-        <span className="rounded bg-blue-100 px-2 py-1 text-[10px] text-blue-700 dark:bg-blue-900/30 dark:text-blue-300">
-          Discover Companies
-        </span>
-      </div>
-      <div className="relative h-52 overflow-hidden rounded-xl border border-gray-200 bg-[radial-gradient(circle_at_20%_20%,rgba(59,130,246,0.12),transparent_40%),radial-gradient(circle_at_80%_70%,rgba(16,185,129,0.12),transparent_45%)] dark:border-neutral-700">
-        <svg className="pointer-events-none absolute inset-0 h-full w-full">
-          {edges.map((edge, index) => (
-            <motion.line
-              key={`${edge.from.join("-")}-${edge.to.join("-")}`}
-              x1={`${edge.from[0]}%`}
-              y1={`${edge.from[1]}%`}
-              x2={`${edge.to[0]}%`}
-              y2={`${edge.to[1]}%`}
-              stroke="currentColor"
-              strokeWidth="1"
-              className="text-gray-300 dark:text-neutral-700"
-              strokeDasharray="7 7"
-              initial={{ strokeDashoffset: 14, opacity: 0.4 }}
-              animate={{ strokeDashoffset: [14, 0], opacity: [0.3, 0.8, 0.3] }}
-              transition={{ duration: 2.2, delay: index * 0.15, repeat: Infinity, ease: "linear" }}
-            />
-          ))}
-        </svg>
-
-        <motion.div
-          className="absolute left-1/2 top-1/2 h-28 w-28 -translate-x-1/2 -translate-y-1/2 rounded-full border border-brand/40"
-          animate={{ scale: [0.8, 1.2], opacity: [0.7, 0] }}
-          transition={{ duration: 2.4, repeat: Infinity, ease: "easeOut" }}
-        />
-
-        {nodes.map((node, index) => (
-          <motion.div
-            key={node.id}
-            className="absolute"
-            style={{ left: node.x, top: node.y }}
-            animate={{ y: [0, -3, 0] }}
-            transition={{ duration: 2 + index * 0.2, repeat: Infinity, ease: "easeInOut" }}
+    <div className="mx-auto mt-10 w-[90%]">
+      <div className="mb-4 flex flex-wrap items-center justify-center gap-2">
+        {items.map((item, idx) => (
+          <button
+            key={item.title}
+            type="button"
+            onClick={() => setSelectedIndex(idx)}
+            className={cn(
+              "relative flex items-center gap-1 rounded-md px-2.5 py-1.5 text-[11px] transition duration-200",
+              "opacity-60 hover:opacity-100",
+              selectedIndex === idx && "opacity-100",
+              item.className,
+            )}
           >
-            <div className="rounded-md border border-gray-300 bg-white/90 px-2 py-1 shadow-sm backdrop-blur-sm dark:border-neutral-700 dark:bg-neutral-900/90">
-              <p className="text-[10px] font-medium text-gray-700 dark:text-neutral-200">
-                {node.label}
-              </p>
-              <p className="text-[10px] text-gray-500 dark:text-neutral-400">
-                {node.count} accounts
-              </p>
-            </div>
-          </motion.div>
+            {selectedIndex === idx ? (
+              <motion.span
+                layoutId="report-selected-chip"
+                className="absolute inset-0 rounded-md shadow-inner ring-1 ring-black/5 dark:ring-white/10"
+              />
+            ) : null}
+            <span className="relative z-10">{item.icon}</span>
+            <span className="relative z-10">{item.title}</span>
+          </button>
         ))}
-
-        <motion.div
-          {...pulse}
-          className="absolute right-3 bottom-3 rounded-md bg-gray-900 px-2 py-1 text-[10px] text-white dark:bg-neutral-100 dark:text-neutral-900"
-        >
-          Generate report + Find contacts
-        </motion.div>
+      </div>
+      <div className="relative mx-auto h-[12.5rem] w-full max-w-sm rounded-t-3xl border border-gray-200 bg-neutral-100 p-2 shadow-xl dark:border-neutral-700 dark:bg-neutral-800">
+        <ResearchSectionCard
+          title={selected.title}
+          icon={selected.icon}
+          description={selected.description}
+          tags={selected.tags}
+          className={selected.className}
+        />
       </div>
     </div>
   );
 }
+
+type ResearchSection = {
+  title: string;
+  icon: ReactNode;
+  className: string;
+  description: string;
+  tags: string[];
+};
+
+const ResearchSectionCard = ({
+  title,
+  icon,
+  description,
+  tags,
+  className,
+}: ResearchSection) => {
+  return (
+    <motion.div
+      key={title}
+      className="flex h-full flex-col gap-2.5 rounded-2xl border border-black/5 bg-white p-3 ring-1 ring-black/5 dark:border-white/10 dark:bg-neutral-900 dark:ring-white/10"
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.25 }}
+    >
+      <div className="flex items-center gap-2">
+        <motion.div
+          className={cn(
+            "mt-0.5 flex size-7 shrink-0 items-center justify-center rounded-full",
+            className,
+          )}
+          initial={{ scale: 0.9, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+        >
+          {icon}
+        </motion.div>
+        <motion.p
+          className="text-sm font-semibold text-neutral-800 dark:text-neutral-100"
+          initial={{ opacity: 0, filter: "blur(8px)" }}
+          animate={{ opacity: 1, filter: "blur(0px)" }}
+          transition={{ delay: 0.05 }}
+        >
+          {title}
+        </motion.p>
+      </div>
+
+      <div>
+        <p className="text-[11px] leading-relaxed text-neutral-600 dark:text-neutral-300">
+          {description}
+        </p>
+      </div>
+
+      <div className="mt-auto flex flex-wrap gap-1.5">
+        {tags.map((tag, idx) => (
+          <motion.div
+            key={`${tag}-${idx}`}
+            className="rounded-sm border border-neutral-200 px-1.5 py-0.5 text-[10px] text-neutral-500 dark:border-neutral-700 dark:text-neutral-400"
+            initial={{ opacity: 0, y: -6 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.12 + idx * 0.05 }}
+          >
+            {tag}
+          </motion.div>
+        ))}
+      </div>
+    </motion.div>
+  );
+};
 
 export function ManageLeadsSkeleton() {
   return (

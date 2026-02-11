@@ -16,7 +16,7 @@ export function PixelatedCanvas({
   className,
   size = 4,
   duration = 2500,
-  fillColor = "var(--color-brand, #f17463)",
+  fillColor = "var(--color-brand)",
   backgroundColor = "var(--color-gray-200, white)",
 }: PixelatedCanvasProps) {
   return (

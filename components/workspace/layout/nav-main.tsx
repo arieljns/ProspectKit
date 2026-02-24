@@ -12,16 +12,16 @@ import {
   type LucideIcon,
 } from "lucide-react";
 
-import { Button } from "@/components/shadcnui/button";
+import { Button } from "@/components/shared/ui/button";
 import {
   SidebarGroup,
   SidebarGroupContent,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/components/shadcnui/sidebar";
-import { AddContactDialog } from "@/components/add-contact-dialog";
-import { AddCompanyDialog } from "@/components/add-company-dialog";
+} from "@/components/shared/ui/sidebar";
+import { AddContactDialog } from "@/components/workspace/contacts/add-contact-dialog";
+import { AddCompanyDialog } from "@/components/workspace/companies/add-company-dialog";
 
 export function NavMain({
   items,

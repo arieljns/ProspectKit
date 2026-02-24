@@ -1,7 +1,7 @@
-import { CompanyResearchTable } from "@/components/company-research-table";
-import { SiteHeader } from "@/components/site-header";
+import { CompanyResearchTable } from "@/components/workspace/companies/company-research-table";
+import { SiteHeader } from "@/components/workspace/layout/site-header";
 import { getAllCompanies } from "@/lib/actions/companies";
-import { Company } from "@/components/company-research-table";
+import { Company } from "@/components/workspace/companies/company-research-table";
 
 export default async function DashboardPage() {
   const result = await getAllCompanies();

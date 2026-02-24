@@ -7,14 +7,14 @@ import {
   CheckCircle2Icon,
 } from "lucide-react";
 
-import { Badge } from "@/components/shadcnui/badge";
+import { Badge } from "@/components/shared/ui/badge";
 import {
   Card,
   CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/shadcnui/card";
+} from "@/components/shared/ui/card";
 
 type SectionCardsProps = {
   data: {

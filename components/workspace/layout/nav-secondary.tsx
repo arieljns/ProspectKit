@@ -10,7 +10,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/components/shadcnui/sidebar";
+} from "@/components/shared/ui/sidebar";
 
 export function NavSecondary({
   items,

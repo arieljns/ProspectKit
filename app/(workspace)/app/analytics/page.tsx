@@ -1,8 +1,8 @@
-import { SectionCards } from "@/components/section-cards";
-import { SiteHeader } from "@/components/site-header";
-import { LeadStatusFunnel } from "@/components/lead-status-funnel";
-import { ScoreDistributionChart } from "@/components/score-distribution-chart";
-import { LeadsOverTimeChart } from "@/components/leads-over-time-chart";
+import { SectionCards } from "@/components/workspace/analytics/section-cards";
+import { SiteHeader } from "@/components/workspace/layout/site-header";
+import { LeadStatusFunnel } from "@/components/workspace/analytics/lead-status-funnel";
+import { ScoreDistributionChart } from "@/components/workspace/analytics/score-distribution-chart";
+import { LeadsOverTimeChart } from "@/components/workspace/analytics/leads-over-time-chart";
 import { getAnalyticsData } from "@/lib/actions/analytics";
 
 // Force dynamic rendering to ensure data is always fresh

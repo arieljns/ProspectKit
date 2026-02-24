@@ -43,8 +43,8 @@ import {
   getGradeBadgeVariant,
 } from "@/lib/utils/scoring";
 import { getScoringConfig } from "@/lib/actions/scoring-config";
-import { MessageGeneratorDialog } from "@/components/message-generator-dialog";
-import { AddContactDialog } from "@/components/add-contact-dialog";
+import { MessageGeneratorDialog } from "@/components/workspace/messages/message-generator-dialog";
+import { AddContactDialog } from "@/components/workspace/contacts/add-contact-dialog";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -55,26 +55,26 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/shadcnui/alert-dialog";
+} from "@/components/shared/ui/alert-dialog";
 
-import { Badge } from "@/components/shadcnui/badge";
-import { Button } from "@/components/shadcnui/button";
-import { Checkbox } from "@/components/shadcnui/checkbox";
+import { Badge } from "@/components/shared/ui/badge";
+import { Button } from "@/components/shared/ui/button";
+import { Checkbox } from "@/components/shared/ui/checkbox";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuTrigger,
-} from "@/components/shadcnui/dropdown-menu";
-import { Input } from "@/components/shadcnui/input";
-import { Label } from "@/components/shadcnui/label";
+} from "@/components/shared/ui/dropdown-menu";
+import { Input } from "@/components/shared/ui/input";
+import { Label } from "@/components/shared/ui/label";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/shadcnui/select";
+} from "@/components/shared/ui/select";
 import {
   Table,
   TableBody,
@@ -82,13 +82,13 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/shadcnui/table";
+} from "@/components/shared/ui/table";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/components/shadcnui/tooltip";
+} from "@/components/shared/ui/tooltip";
 
 // Match the return type from getAllContacts
 export type Contact = {

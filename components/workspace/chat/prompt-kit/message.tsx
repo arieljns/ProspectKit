@@ -2,15 +2,15 @@ import {
   Avatar,
   AvatarFallback,
   AvatarImage,
-} from "@/components/shadcnui/avatar";
+} from "@/components/shared/ui/avatar";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/components/shadcnui/tooltip";
+} from "@/components/shared/ui/tooltip";
 import { cn } from "@/lib/utils";
-import { Markdown } from "@/components/shadcnui/markdown";
+import { Markdown } from "@/components/shared/ui/markdown";
 
 export type MessageProps = {
   children: React.ReactNode;

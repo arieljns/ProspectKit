@@ -32,7 +32,7 @@ import {
 import { toast } from "sonner";
 
 import { updateCompanyPriority, deleteCompany } from "@/lib/actions/companies";
-import { AddCompanyDialog } from "@/components/add-company-dialog";
+import { AddCompanyDialog } from "@/components/workspace/companies/add-company-dialog";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -43,26 +43,26 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/shadcnui/alert-dialog";
+} from "@/components/shared/ui/alert-dialog";
 
-import { Badge } from "@/components/shadcnui/badge";
-import { Button } from "@/components/shadcnui/button";
-import { Checkbox } from "@/components/shadcnui/checkbox";
+import { Badge } from "@/components/shared/ui/badge";
+import { Button } from "@/components/shared/ui/button";
+import { Checkbox } from "@/components/shared/ui/checkbox";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuTrigger,
-} from "@/components/shadcnui/dropdown-menu";
-import { Input } from "@/components/shadcnui/input";
-import { Label } from "@/components/shadcnui/label";
+} from "@/components/shared/ui/dropdown-menu";
+import { Input } from "@/components/shared/ui/input";
+import { Label } from "@/components/shared/ui/label";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/shadcnui/select";
+} from "@/components/shared/ui/select";
 import {
   Table,
   TableBody,
@@ -70,7 +70,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/shadcnui/table";
+} from "@/components/shared/ui/table";
 
 // Match database schema
 export type Company = {

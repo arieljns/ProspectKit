@@ -55,15 +55,15 @@ import { toast } from "sonner";
 import { z } from "zod";
 
 import { useIsMobile } from "@/hooks/use-mobile";
-import { Badge } from "@/components/shadcnui/badge";
-import { Button } from "@/components/shadcnui/button";
+import { Badge } from "@/components/shared/ui/badge";
+import { Button } from "@/components/shared/ui/button";
 import {
   ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-} from "@/components/shadcnui/chart";
-import { Checkbox } from "@/components/shadcnui/checkbox";
+} from "@/components/shared/ui/chart";
+import { Checkbox } from "@/components/shared/ui/checkbox";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -71,17 +71,17 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/shadcnui/dropdown-menu";
-import { Input } from "@/components/shadcnui/input";
-import { Label } from "@/components/shadcnui/label";
+} from "@/components/shared/ui/dropdown-menu";
+import { Input } from "@/components/shared/ui/input";
+import { Label } from "@/components/shared/ui/label";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/shadcnui/select";
-import { Separator } from "@/components/shadcnui/separator";
+} from "@/components/shared/ui/select";
+import { Separator } from "@/components/shared/ui/separator";
 import {
   Sheet,
   SheetClose,
@@ -91,7 +91,7 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "@/components/shadcnui/sheet";
+} from "@/components/shared/ui/sheet";
 import {
   Table,
   TableBody,
@@ -99,13 +99,13 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/shadcnui/table";
+} from "@/components/shared/ui/table";
 import {
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
-} from "@/components/shadcnui/tabs";
+} from "@/components/shared/ui/tabs";
 
 export const schema = z.object({
   id: z.number(),

@@ -10,11 +10,11 @@ import {
   SettingsIcon,
   UsersIcon,
 } from "lucide-react";
-import { LogoMark } from "@/components/branding/LogoMark";
+import { LogoMark } from "@/components/shared/branding/LogoMark";
 
-import { NavMain } from "@/components/nav-main";
-import { NavSecondary } from "@/components/nav-secondary";
-import { NavUser } from "@/components/nav-user";
+import { NavMain } from "@/components/workspace/layout/nav-main";
+import { NavSecondary } from "@/components/workspace/layout/nav-secondary";
+import { NavUser } from "@/components/workspace/layout/nav-user";
 import {
   Sidebar,
   SidebarContent,
@@ -24,7 +24,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarTrigger,
-} from "@/components/shadcnui/sidebar";
+} from "@/components/shared/ui/sidebar";
 
 const data = {
   user: {

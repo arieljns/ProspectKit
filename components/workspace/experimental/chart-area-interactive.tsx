@@ -10,24 +10,24 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/shadcnui/card";
+} from "@/components/shared/ui/card";
 import {
   ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-} from "@/components/shadcnui/chart";
+} from "@/components/shared/ui/chart";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/shadcnui/select";
+} from "@/components/shared/ui/select";
 import {
   ToggleGroup,
   ToggleGroupItem,
-} from "@/components/shadcnui/toggle-group";
+} from "@/components/shared/ui/toggle-group";
 const chartData = [
   { date: "2024-04-01", desktop: 222, mobile: 150 },
   { date: "2024-04-02", desktop: 97, mobile: 180 },

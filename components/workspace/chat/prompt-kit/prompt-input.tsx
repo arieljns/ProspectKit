@@ -1,12 +1,12 @@
 "use client";
 
-import { Textarea } from "@/components/shadcnui/textarea";
+import { Textarea } from "@/components/shared/ui/textarea";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/components/shadcnui/tooltip";
+} from "@/components/shared/ui/tooltip";
 import { cn } from "@/lib/utils";
 import React, {
   createContext,

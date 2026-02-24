@@ -3,25 +3,25 @@
 import {
   ChatContainerContent,
   ChatContainerRoot,
-} from "@/components/prompt-kit/chat-container";
-import { TypingLoader } from "@/components/prompt-kit/loader";
+} from "@/components/workspace/chat/prompt-kit/chat-container";
+import { TypingLoader } from "@/components/workspace/chat/prompt-kit/loader";
 import {
   Message,
   MessageAction,
   MessageActions,
   MessageContent,
-} from "@/components/prompt-kit/message";
+} from "@/components/workspace/chat/prompt-kit/message";
 import {
   PromptInput,
   PromptInputActions,
   PromptInputTextarea,
-} from "@/components/prompt-kit/prompt-input";
-import { Tool } from "@/components/prompt-kit/tool";
-import type { ToolPart } from "@/components/prompt-kit/tool";
-import { Badge } from "@/components/shadcnui/badge";
-import { Button } from "@/components/shadcnui/button";
+} from "@/components/workspace/chat/prompt-kit/prompt-input";
+import { Tool } from "@/components/workspace/chat/prompt-kit/tool";
+import type { ToolPart } from "@/components/workspace/chat/prompt-kit/tool";
+import { Badge } from "@/components/shared/ui/badge";
+import { Button } from "@/components/shared/ui/button";
 import { cn } from "@/lib/utils";
-import { LogoMark } from "@/components/branding/LogoMark";
+import { LogoMark } from "@/components/shared/branding/LogoMark";
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport } from "ai";
 import type { UIMessage, UIMessagePart } from "ai";

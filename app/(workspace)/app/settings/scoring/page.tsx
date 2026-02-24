@@ -1,25 +1,25 @@
 "use client";
 
 import * as React from "react";
-import { SiteHeader } from "@/components/site-header";
-import { Button } from "@/components/shadcnui/button";
+import { SiteHeader } from "@/components/workspace/layout/site-header";
+import { Button } from "@/components/shared/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/shadcnui/card";
-import { Input } from "@/components/shadcnui/input";
-import { Label } from "@/components/shadcnui/label";
-import { Textarea } from "@/components/shadcnui/textarea";
-import { Checkbox } from "@/components/shadcnui/checkbox";
-import { Slider } from "@/components/shadcnui/slider";
+} from "@/components/shared/ui/card";
+import { Input } from "@/components/shared/ui/input";
+import { Label } from "@/components/shared/ui/label";
+import { Textarea } from "@/components/shared/ui/textarea";
+import { Checkbox } from "@/components/shared/ui/checkbox";
+import { Slider } from "@/components/shared/ui/slider";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-} from "@/components/shadcnui/tooltip";
+} from "@/components/shared/ui/tooltip";
 import { InfoIcon } from "lucide-react";
 import { toast } from "sonner";
 import {

@@ -6,8 +6,8 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/shadcnui/card";
-import { Badge } from "@/components/shadcnui/badge";
+} from "@/components/shared/ui/card";
+import { Badge } from "@/components/shared/ui/badge";
 
 type ScoreDistributionChartProps = {
   data: {

@@ -1,11 +1,11 @@
 "use client";
 
-import { Button } from "@/components/shadcnui/button";
+import { Button } from "@/components/shared/ui/button";
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
-} from "@/components/shadcnui/collapsible";
+} from "@/components/shared/ui/collapsible";
 import { cn } from "@/lib/utils";
 import {
   CheckCircle,

@@ -9,13 +9,13 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/shadcnui/card";
+} from "@/components/shared/ui/card";
 import {
   ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-} from "@/components/shadcnui/chart";
+} from "@/components/shared/ui/chart";
 
 const chartConfig = {
   total: {

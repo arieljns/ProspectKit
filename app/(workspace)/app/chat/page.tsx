@@ -1,7 +1,7 @@
 "use client";
 
-import ToolCallingChatbot from "@/components/primitives/tool-calling";
-import { SiteHeader } from "@/components/site-header";
+import ToolCallingChatbot from "@/components/workspace/chat/tool-calling";
+import { SiteHeader } from "@/components/workspace/layout/site-header";
 
 export default function ChatPage() {
   return (

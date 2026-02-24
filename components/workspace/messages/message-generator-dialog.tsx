@@ -1,18 +1,18 @@
 "use client";
 
 import * as React from "react";
-import { Button } from "@/components/shadcnui/button";
-import { Checkbox } from "@/components/shadcnui/checkbox";
-import { Input } from "@/components/shadcnui/input";
-import { Label } from "@/components/shadcnui/label";
+import { Button } from "@/components/shared/ui/button";
+import { Checkbox } from "@/components/shared/ui/checkbox";
+import { Input } from "@/components/shared/ui/input";
+import { Label } from "@/components/shared/ui/label";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from "@/components/shadcnui/dialog";
-import { Badge } from "@/components/shadcnui/badge";
+} from "@/components/shared/ui/dialog";
+import { Badge } from "@/components/shared/ui/badge";
 import { toast } from "sonner";
 import { Copy, Sparkles, Send, ThumbsUp, ThumbsDown } from "lucide-react";
 import {

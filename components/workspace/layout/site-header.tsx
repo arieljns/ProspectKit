@@ -1,5 +1,5 @@
-import { Separator } from "@/components/shadcnui/separator";
-import { SidebarTrigger } from "@/components/shadcnui/sidebar";
+import { Separator } from "@/components/shared/ui/separator";
+import { SidebarTrigger } from "@/components/shared/ui/sidebar";
 
 export type SiteHeaderProps = {
   title?: string;

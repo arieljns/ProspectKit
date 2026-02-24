@@ -1,14 +1,14 @@
 "use client";
 
-import { Badge } from "@/components/shadcnui/badge";
+import { Badge } from "@/components/shared/ui/badge";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/shadcnui/card";
-import { Separator } from "@/components/shadcnui/separator";
+} from "@/components/shared/ui/card";
+import { Separator } from "@/components/shared/ui/separator";
 import { ReportData } from "@/lib/db/schema/company-reports";
 import {
   BuildingIcon,

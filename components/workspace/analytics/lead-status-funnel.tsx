@@ -6,7 +6,7 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/shadcnui/card";
+} from "@/components/shared/ui/card";
 import { ArrowRightIcon } from "lucide-react";
 
 type LeadStatusFunnelProps = {

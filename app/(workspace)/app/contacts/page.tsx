@@ -1,8 +1,8 @@
 import {
   ContactsTable,
   type ContactWithCompany,
-} from "@/components/contacts-table";
-import { SiteHeader } from "@/components/site-header";
+} from "@/components/workspace/contacts/contacts-table";
+import { SiteHeader } from "@/components/workspace/layout/site-header";
 import { getAllContacts } from "@/lib/actions/contacts";
 
 export default async function ContactsPage() {

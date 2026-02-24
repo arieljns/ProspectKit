@@ -1,10 +1,10 @@
 "use client";
 
 import * as React from "react";
-import { Button } from "@/components/shadcnui/button";
-import { Input } from "@/components/shadcnui/input";
-import { Label } from "@/components/shadcnui/label";
-import { Textarea } from "@/components/shadcnui/textarea";
+import { Button } from "@/components/shared/ui/button";
+import { Input } from "@/components/shared/ui/input";
+import { Label } from "@/components/shared/ui/label";
+import { Textarea } from "@/components/shared/ui/textarea";
 import {
   Dialog,
   DialogContent,
@@ -12,14 +12,14 @@ import {
   DialogHeader,
   DialogTitle,
   DialogFooter,
-} from "@/components/shadcnui/dialog";
+} from "@/components/shared/ui/dialog";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/shadcnui/select";
+} from "@/components/shared/ui/select";
 import { toast } from "sonner";
 import { Sparkles, Loader2 } from "lucide-react";
 import { createCompany } from "@/lib/actions/companies";

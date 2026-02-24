@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { Toaster } from "@/components/shadcnui/sonner";
-import { TooltipProvider } from "@/components/shadcnui/tooltip";
-import { ThemeProvider } from "@/components/theme-provider";
+import { Toaster } from "@/components/shared/ui/sonner";
+import { TooltipProvider } from "@/components/shared/ui/tooltip";
+import { ThemeProvider } from "@/components/shared/providers/theme-provider";
 import { interDisplay } from "@/app/fonts/inter-display/inter";
 import { dmMono } from "@/app/fonts/dm-mono";
 

@@ -2,9 +2,9 @@ import { notFound } from "next/navigation";
 import { ArrowLeftIcon } from "lucide-react";
 import Link from "next/link";
 
-import { Button } from "@/components/shadcnui/button";
-import { CompanyReportView } from "@/components/company-report-view";
-import { SiteHeader } from "@/components/site-header";
+import { Button } from "@/components/shared/ui/button";
+import { CompanyReportView } from "@/components/workspace/reports/company-report-view";
+import { SiteHeader } from "@/components/workspace/layout/site-header";
 import { getCompanyById } from "@/lib/actions/companies";
 import { getReportByCompanyId } from "@/lib/actions/company-reports";
 

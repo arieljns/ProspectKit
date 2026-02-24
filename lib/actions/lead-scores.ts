@@ -8,17 +8,17 @@ import {
 } from "../db/schema/lead-scores";
 import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
+import {
+  findLeadScoreByContactId,
+  upsertLeadScore,
+} from "@/lib/server/repositories/lead-scores-repo";
 
 /**
  * Get lead score for a specific contact
  */
 export const getLeadScore = async (contactId: string) => {
   try {
-    const [score] = await db
-      .select()
-      .from(leadScores)
-      .where(eq(leadScores.contactId, contactId))
-      .limit(1);
+    const score = await findLeadScoreByContactId(contactId);
 
     if (!score) {
       return { success: true, data: null };
@@ -62,17 +62,10 @@ export const saveLeadScore = async (input: NewLeadScoreParams) => {
     }
 
     // Insert or update (upsert based on contactId unique constraint)
-    const [savedScore] = await db
-      .insert(leadScores)
-      .values(validatedData)
-      .onConflictDoUpdate({
-        target: leadScores.contactId,
-        set: {
-          ...validatedData,
-          updatedAt: new Date(),
-        },
-      })
-      .returning();
+    const savedScore = await upsertLeadScore(validatedData);
+    if (!savedScore) {
+      return { success: false, error: "Failed to save score" };
+    }
 
     revalidatePath("/app/contacts");
 

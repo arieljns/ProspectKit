@@ -1,41 +1,15 @@
 import "server-only";
 
-import { eq } from "drizzle-orm";
 import { generateObject } from "ai";
 import { xai } from "@ai-sdk/xai";
 
-import { db } from "@/lib/db";
-import { contacts } from "@/lib/db/schema/contacts";
-import { companies } from "@/lib/db/schema/companies";
-import { leadScores } from "@/lib/db/schema/lead-scores";
-import { scoringConfig } from "@/lib/db/schema/scoring-config";
 import { leadScoringSchema } from "@/lib/ai/lead-scoring-schema";
+import { type NewLeadScoreParams } from "@/lib/db/schema/lead-scores";
+import { DEFAULT_SCORING_CONFIG } from "@/lib/server/domain/default-scoring-config";
+import { findContactWithCompanyById } from "@/lib/server/repositories/contacts-repo";
+import { upsertLeadScore } from "@/lib/server/repositories/lead-scores-repo";
+import { getOrCreateDefaultScoringConfig } from "@/lib/server/repositories/scoring-config-repo";
 import { err, ok, type ServiceResult } from "@/lib/server/shared/result";
-
-type ScoringWeights = {
-  industryMatch: number;
-  companyMatch: number;
-  positionMatch: number;
-  seniorityMatch: number;
-  dealSizeMatch: number;
-};
-
-const DEFAULT_SCORING_CONFIG = {
-  userCompanyName: "ProspectKit",
-  userCompanyDescription:
-    "An open-source outbound workspace built for small teams.",
-  productDescription:
-    "ProspectKit helps teams run a lean outbound workflow: company research, contact discovery, lead scoring, and outreach drafting.",
-  targetIndustries: ["SaaS", "Developer Tools", "AI/ML", "FinTech"],
-  targetSeniorityLevels: ["C-level", "VP", "Director"],
-  weights: {
-    industryMatch: 25,
-    companyMatch: 30,
-    positionMatch: 20,
-    seniorityMatch: 15,
-    dealSizeMatch: 10,
-  } satisfies ScoringWeights,
-};
 
 export type ScoreLeadForContactOutput = {
   contactId: string;
@@ -66,28 +40,6 @@ export type ScoreLeadForContactErrorCode =
   | "DB_WRITE_FAILED"
   | "UNKNOWN";
 
-async function getOrCreateScoringConfig() {
-  const [config] = await db
-    .select()
-    .from(scoringConfig)
-    .where(eq(scoringConfig.id, "default"))
-    .limit(1);
-
-  if (config) {
-    return config;
-  }
-
-  const [created] = await db
-    .insert(scoringConfig)
-    .values({
-      id: "default",
-      ...DEFAULT_SCORING_CONFIG,
-    })
-    .returning();
-
-  return created ?? null;
-}
-
 export async function scoreLeadForContact(input: {
   contactId?: string;
 }): Promise<ServiceResult<ScoreLeadForContactOutput, ScoreLeadForContactErrorCode>> {
@@ -97,15 +49,7 @@ export async function scoreLeadForContact(input: {
       return err("INVALID_INPUT", "Contact ID is required");
     }
 
-    const [contactResult] = await db
-      .select({
-        contact: contacts,
-        company: companies,
-      })
-      .from(contacts)
-      .leftJoin(companies, eq(contacts.companyId, companies.id))
-      .where(eq(contacts.id, contactId))
-      .limit(1);
+    const contactResult = await findContactWithCompanyById(contactId);
 
     if (!contactResult) {
       return err("CONTACT_NOT_FOUND", "Contact not found");
@@ -116,7 +60,7 @@ export async function scoreLeadForContact(input: {
       return err("CONTACT_COMPANY_NOT_FOUND", "Contact company not found");
     }
 
-    const config = await getOrCreateScoringConfig();
+    const config = await getOrCreateDefaultScoringConfig(DEFAULT_SCORING_CONFIG);
     if (!config) {
       return err(
         "SCORING_CONFIG_MISSING",
@@ -239,30 +183,19 @@ Provide scores and 1-2 sentence reasoning for each dimension.`;
     }
 
     try {
-      await db
-        .insert(leadScores)
-        .values({
-          contactId: contact.id,
-          industryMatchScore: result.industryMatchScore,
-          companyMatchScore: result.companyMatchScore,
-          positionMatchScore: result.positionMatchScore,
-          seniorityMatchScore: result.seniorityMatchScore,
-          dealSizeScore: result.dealSizeScore,
-          reasoning: result.reasoning,
-        })
-        .onConflictDoUpdate({
-          target: leadScores.contactId,
-          set: {
-            contactId: contact.id,
-            industryMatchScore: result.industryMatchScore,
-            companyMatchScore: result.companyMatchScore,
-            positionMatchScore: result.positionMatchScore,
-            seniorityMatchScore: result.seniorityMatchScore,
-            dealSizeScore: result.dealSizeScore,
-            reasoning: result.reasoning,
-            updatedAt: new Date(),
-          },
-        });
+      const leadScoreInput: NewLeadScoreParams = {
+        contactId: contact.id,
+        industryMatchScore: result.industryMatchScore,
+        companyMatchScore: result.companyMatchScore,
+        positionMatchScore: result.positionMatchScore,
+        seniorityMatchScore: result.seniorityMatchScore,
+        dealSizeScore: result.dealSizeScore,
+        reasoning: result.reasoning,
+      };
+      const savedScore = await upsertLeadScore(leadScoreInput);
+      if (!savedScore) {
+        return err("DB_WRITE_FAILED", "Failed to save score");
+      }
     } catch (error) {
       console.error("Failed to save lead score:", error);
       return err(

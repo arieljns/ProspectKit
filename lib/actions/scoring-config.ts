@@ -6,53 +6,26 @@ import {
   updateScoringConfigSchema,
   type UpdateScoringConfigParams,
 } from "../db/schema/scoring-config";
-import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
+import { DEFAULT_SCORING_CONFIG } from "@/lib/server/domain/default-scoring-config";
+import { getOrCreateDefaultScoringConfig } from "@/lib/server/repositories/scoring-config-repo";
 
 /**
  * Default scoring configuration
  * Used for initial setup and reset
  */
-const DEFAULT_CONFIG: UpdateScoringConfigParams = {
-  userCompanyName: "ProspectKit",
-  userCompanyDescription:
-    "An open-source outbound workspace built for small teams.",
-  productDescription:
-    "ProspectKit helps teams run a lean outbound workflow: company research, contact discovery, lead scoring, and outreach drafting.",
-  targetIndustries: ["SaaS", "Developer Tools", "AI/ML", "FinTech"],
-  targetSeniorityLevels: ["C-level", "VP", "Director"],
-  weights: {
-    industryMatch: 25,
-    companyMatch: 30,
-    positionMatch: 20,
-    seniorityMatch: 15,
-    dealSizeMatch: 10,
-  },
-};
-
 /**
  * Get the current scoring configuration
  * Creates default config if none exists
  */
 export const getScoringConfig = async () => {
   try {
-    const [config] = await db
-      .select()
-      .from(scoringConfig)
-      .where(eq(scoringConfig.id, "default"))
-      .limit(1);
+    const config = await getOrCreateDefaultScoringConfig(
+      DEFAULT_SCORING_CONFIG,
+    );
 
-    // If no config exists, create default
     if (!config) {
-      const [newConfig] = await db
-        .insert(scoringConfig)
-        .values({
-          id: "default",
-          ...DEFAULT_CONFIG,
-        })
-        .returning();
-
-      return { success: true, data: newConfig };
+      return { success: false, error: "Failed to fetch config" };
     }
 
     return { success: true, data: config };
@@ -123,13 +96,13 @@ export const resetScoringConfig = async () => {
       .insert(scoringConfig)
       .values({
         id: "default",
-        ...DEFAULT_CONFIG,
+        ...DEFAULT_SCORING_CONFIG,
         updatedAt: new Date(),
       })
       .onConflictDoUpdate({
         target: scoringConfig.id,
         set: {
-          ...DEFAULT_CONFIG,
+          ...DEFAULT_SCORING_CONFIG,
           updatedAt: new Date(),
         },
       })

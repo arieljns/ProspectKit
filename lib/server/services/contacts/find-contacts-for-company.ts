@@ -1,13 +1,12 @@
 import "server-only";
 
-import { eq } from "drizzle-orm";
 import { generateObject } from "ai";
 import { xai } from "@ai-sdk/xai";
 
-import { db } from "@/lib/db";
-import { companies } from "@/lib/db/schema/companies";
-import { contacts } from "@/lib/db/schema/contacts";
 import { contactFinderSchema } from "@/lib/ai/contact-finder-schema";
+import { type NewContactParams } from "@/lib/db/schema/contacts";
+import { findCompanyById } from "@/lib/server/repositories/companies-repo";
+import { insertContact } from "@/lib/server/repositories/contacts-repo";
 import { err, ok, type ServiceResult } from "@/lib/server/shared/result";
 
 export type FindContactsForCompanyOutput = {
@@ -51,11 +50,7 @@ export async function findContactsForCompany(input: {
       return err("INVALID_INPUT", "Company ID is required");
     }
 
-    const [company] = await db
-      .select()
-      .from(companies)
-      .where(eq(companies.id, companyId))
-      .limit(1);
+    const company = await findCompanyById(companyId);
 
     if (!company) {
       return err("COMPANY_NOT_FOUND", "Company not found");
@@ -149,7 +144,7 @@ REMINDER: Return ONLY the JSON object, no additional text or explanations.`;
     const saveResults = await Promise.all(
       result.contacts.map(async (contact) => {
         try {
-          await db.insert(contacts).values({
+          const input: NewContactParams = {
             companyId: company.id,
             name: contact.name,
             title: contact.title,
@@ -159,7 +154,11 @@ REMINDER: Return ONLY the JSON object, no additional text or explanations.`;
             priority: "Low",
             lastContactedAt: null,
             notes: null,
-          });
+          };
+          const savedContact = await insertContact(input);
+          if (!savedContact) {
+            return false;
+          }
           return true;
         } catch (error) {
           console.error("Failed to save contact:", error);

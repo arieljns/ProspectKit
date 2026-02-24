@@ -10,6 +10,10 @@ import { companies } from "../db/schema/companies";
 import { leadScores } from "../db/schema/lead-scores";
 import { eq, desc } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
+import {
+  findContactWithCompanyById,
+  insertContact,
+} from "@/lib/server/repositories/contacts-repo";
 
 /**
  * Get all contacts with their company information and lead scores
@@ -42,15 +46,7 @@ export const getAllContacts = async () => {
  */
 export const getContactById = async (id: string) => {
   try {
-    const [result] = await db
-      .select({
-        contact: contacts,
-        company: companies,
-      })
-      .from(contacts)
-      .leftJoin(companies, eq(contacts.companyId, companies.id))
-      .where(eq(contacts.id, id))
-      .limit(1);
+    const result = await findContactWithCompanyById(id);
 
     if (!result) {
       return { success: false, error: "Contact not found" };
@@ -93,10 +89,10 @@ export const createContact = async (input: NewContactParams) => {
   try {
     const validatedData = insertContactSchema.parse(input);
 
-    const [contact] = await db
-      .insert(contacts)
-      .values(validatedData)
-      .returning();
+    const contact = await insertContact(validatedData);
+    if (!contact) {
+      return { success: false, error: "Failed to create contact" };
+    }
 
     revalidatePath("/app/contacts");
     revalidatePath("/app/dashboard");

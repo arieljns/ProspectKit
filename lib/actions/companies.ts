@@ -8,6 +8,7 @@ import {
 } from "../db/schema/companies";
 import { eq, desc } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
+import { findCompanyById } from "@/lib/server/repositories/companies-repo";
 
 /**
  * Get all companies
@@ -34,11 +35,7 @@ export const getAllCompanies = async () => {
  */
 export const getCompanyById = async (id: string) => {
   try {
-    const [company] = await db
-      .select()
-      .from(companies)
-      .where(eq(companies.id, id))
-      .limit(1);
+    const company = await findCompanyById(id);
 
     if (!company) {
       return { success: false, error: "Company not found" };

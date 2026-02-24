@@ -48,7 +48,9 @@ export async function generateOutreachMessage(
       return err("CONTACT_COMPANY_NOT_FOUND", "Contact company not found");
     }
 
-    const config = await getOrCreateDefaultScoringConfig(DEFAULT_SCORING_CONFIG);
+    const config = await getOrCreateDefaultScoringConfig(
+      DEFAULT_SCORING_CONFIG,
+    );
     if (!config) {
       return err("SCORING_CONFIG_MISSING", "Scoring configuration not found");
     }

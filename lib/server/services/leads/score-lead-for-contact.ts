@@ -42,7 +42,9 @@ export type ScoreLeadForContactErrorCode =
 
 export async function scoreLeadForContact(input: {
   contactId?: string;
-}): Promise<ServiceResult<ScoreLeadForContactOutput, ScoreLeadForContactErrorCode>> {
+}): Promise<
+  ServiceResult<ScoreLeadForContactOutput, ScoreLeadForContactErrorCode>
+> {
   try {
     const contactId = input.contactId?.trim();
     if (!contactId) {
@@ -60,7 +62,9 @@ export async function scoreLeadForContact(input: {
       return err("CONTACT_COMPANY_NOT_FOUND", "Contact company not found");
     }
 
-    const config = await getOrCreateDefaultScoringConfig(DEFAULT_SCORING_CONFIG);
+    const config = await getOrCreateDefaultScoringConfig(
+      DEFAULT_SCORING_CONFIG,
+    );
     if (!config) {
       return err(
         "SCORING_CONFIG_MISSING",

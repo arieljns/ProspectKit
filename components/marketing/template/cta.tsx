@@ -24,7 +24,13 @@ export function CTA() {
         <Button as={Link} href={landingLinks.primaryCta}>
           Try the demo
         </Button>
-        <Button as="a" href={landingLinks.repo} target="_blank" rel="noreferrer" variant="secondary">
+        <Button
+          as="a"
+          href={landingLinks.repo}
+          target="_blank"
+          rel="noreferrer"
+          variant="secondary"
+        >
           Explore the code
         </Button>
       </div>
@@ -51,7 +57,10 @@ function CTAOrbit({ size = 780, className }: CTAOrbitProps) {
             style={{
               width: Math.round(size * scale),
               height: Math.round(size * scale),
-              backgroundColor: index === 0 ? "var(--color-neutral-300)" : "var(--color-neutral-200)",
+              backgroundColor:
+                index === 0
+                  ? "var(--color-neutral-300)"
+                  : "var(--color-neutral-200)",
             }}
           />
         ))}
@@ -68,7 +77,11 @@ function CTAOrbit({ size = 780, className }: CTAOrbitProps) {
             translateY: "-50%",
           }}
           animate={{ rotate: index % 2 === 0 ? 360 : -360 }}
-          transition={{ duration: durations[index], repeat: Infinity, ease: "linear" }}
+          transition={{
+            duration: durations[index],
+            repeat: Infinity,
+            ease: "linear",
+          }}
         >
           {Array.from({ length: 4 + index * 2 }).map((_, dotIndex, list) => {
             const angle = (360 / list.length) * dotIndex;

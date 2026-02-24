@@ -128,12 +128,8 @@
           "name": "company_reports_company_id_companies_id_fk",
           "tableFrom": "company_reports",
           "tableTo": "companies",
-          "columnsFrom": [
-            "company_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["company_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -193,12 +189,8 @@
           "name": "embeddings_resource_id_resources_id_fk",
           "tableFrom": "embeddings",
           "tableTo": "resources",
-          "columnsFrom": [
-            "resource_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["resource_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }

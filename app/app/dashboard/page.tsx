@@ -1,11 +1,11 @@
-import { CompanyResearchTable } from "@/components/company-research-table"
-import { SiteHeader } from "@/components/site-header"
-import { getAllCompanies } from "@/lib/actions/companies"
-import { Company } from "@/components/company-research-table"
+import { CompanyResearchTable } from "@/components/company-research-table";
+import { SiteHeader } from "@/components/site-header";
+import { getAllCompanies } from "@/lib/actions/companies";
+import { Company } from "@/components/company-research-table";
 
 export default async function DashboardPage() {
-  const result = await getAllCompanies()
-  const companies = result.success ? result.data : []
+  const result = await getAllCompanies();
+  const companies = result.success ? result.data : [];
 
   return (
     <>
@@ -18,5 +18,5 @@ export default async function DashboardPage() {
         </div>
       </div>
     </>
-  )
+  );
 }

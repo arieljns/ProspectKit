@@ -12,7 +12,9 @@ export function DesignYourWorkflowSkeleton() {
         transition={{ duration: 0.35 }}
       >
         <p className="text-xs text-gray-500">List Setup</p>
-        <p className="mt-2 text-sm font-medium">ICP: B2B SaaS • 1-200 employees</p>
+        <p className="mt-2 text-sm font-medium">
+          ICP: B2B SaaS • 1-200 employees
+        </p>
       </motion.div>
       <div className="grid grid-cols-2 gap-4">
         {["Companies", "Contacts"].map((item, idx) => (

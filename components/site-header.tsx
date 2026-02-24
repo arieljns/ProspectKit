@@ -1,10 +1,10 @@
-import { Separator } from "@/components/shadcnui/separator"
-import { SidebarTrigger } from "@/components/shadcnui/sidebar"
+import { Separator } from "@/components/shadcnui/separator";
+import { SidebarTrigger } from "@/components/shadcnui/sidebar";
 
 export type SiteHeaderProps = {
-  title?: string
-  children?: React.ReactNode
-}
+  title?: string;
+  children?: React.ReactNode;
+};
 
 export function SiteHeader({ title }: SiteHeaderProps) {
   return (
@@ -18,5 +18,5 @@ export function SiteHeader({ title }: SiteHeaderProps) {
         <h1 className="text-base font-medium">{title}</h1>
       </div>
     </header>
-  )
+  );
 }

@@ -36,7 +36,12 @@ export function MarketingNav() {
         </nav>
 
         <div className="flex items-center gap-2">
-          <Button asChild variant="outline" size="sm" className="hidden sm:inline-flex">
+          <Button
+            asChild
+            variant="outline"
+            size="sm"
+            className="hidden sm:inline-flex"
+          >
             <a href={PROSPECTKIT_REPO_URL} target="_blank" rel="noreferrer">
               View source
             </a>

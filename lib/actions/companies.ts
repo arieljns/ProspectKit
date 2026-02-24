@@ -1,9 +1,13 @@
-'use server';
+"use server";
 
-import { db } from '../db';
-import { companies, insertCompanySchema, type NewCompanyParams } from '../db/schema/companies';
-import { eq, desc } from 'drizzle-orm';
-import { revalidatePath } from 'next/cache';
+import { db } from "../db";
+import {
+  companies,
+  insertCompanySchema,
+  type NewCompanyParams,
+} from "../db/schema/companies";
+import { eq, desc } from "drizzle-orm";
+import { revalidatePath } from "next/cache";
 
 /**
  * Get all companies
@@ -19,7 +23,8 @@ export const getAllCompanies = async () => {
   } catch (error) {
     return {
       success: false,
-      error: error instanceof Error ? error.message : 'Failed to fetch companies',
+      error:
+        error instanceof Error ? error.message : "Failed to fetch companies",
     };
   }
 };
@@ -36,14 +41,14 @@ export const getCompanyById = async (id: string) => {
       .limit(1);
 
     if (!company) {
-      return { success: false, error: 'Company not found' };
+      return { success: false, error: "Company not found" };
     }
 
     return { success: true, data: company };
   } catch (error) {
     return {
       success: false,
-      error: error instanceof Error ? error.message : 'Failed to fetch company',
+      error: error instanceof Error ? error.message : "Failed to fetch company",
     };
   }
 };
@@ -60,12 +65,13 @@ export const createCompany = async (input: NewCompanyParams) => {
       .values(validatedData)
       .returning();
 
-    revalidatePath('/app/dashboard');
+    revalidatePath("/app/dashboard");
     return { success: true, data: company };
   } catch (error) {
     return {
       success: false,
-      error: error instanceof Error ? error.message : 'Failed to create company',
+      error:
+        error instanceof Error ? error.message : "Failed to create company",
     };
   }
 };
@@ -75,7 +81,7 @@ export const createCompany = async (input: NewCompanyParams) => {
  */
 export const updateCompany = async (
   id: string,
-  input: Partial<NewCompanyParams>
+  input: Partial<NewCompanyParams>,
 ) => {
   try {
     const [updatedCompany] = await db
@@ -88,15 +94,16 @@ export const updateCompany = async (
       .returning();
 
     if (!updatedCompany) {
-      return { success: false, error: 'Company not found' };
+      return { success: false, error: "Company not found" };
     }
 
-    revalidatePath('/app/dashboard');
+    revalidatePath("/app/dashboard");
     return { success: true, data: updatedCompany };
   } catch (error) {
     return {
       success: false,
-      error: error instanceof Error ? error.message : 'Failed to update company',
+      error:
+        error instanceof Error ? error.message : "Failed to update company",
     };
   }
 };
@@ -112,15 +119,19 @@ export const deleteCompany = async (id: string) => {
       .returning();
 
     if (!deletedCompany) {
-      return { success: false, error: 'Company not found' };
+      return { success: false, error: "Company not found" };
     }
 
-    revalidatePath('/app/dashboard');
-    return { success: true, message: `Company ${deletedCompany.companyName} deleted` };
+    revalidatePath("/app/dashboard");
+    return {
+      success: true,
+      message: `Company ${deletedCompany.companyName} deleted`,
+    };
   } catch (error) {
     return {
       success: false,
-      error: error instanceof Error ? error.message : 'Failed to delete company',
+      error:
+        error instanceof Error ? error.message : "Failed to delete company",
     };
   }
 };
@@ -130,7 +141,7 @@ export const deleteCompany = async (id: string) => {
  */
 export const updateCompanyPriority = async (
   id: string,
-  priority: 'High' | 'Medium' | 'Low'
+  priority: "High" | "Medium" | "Low",
 ) => {
   try {
     const [updatedCompany] = await db
@@ -143,15 +154,16 @@ export const updateCompanyPriority = async (
       .returning();
 
     if (!updatedCompany) {
-      return { success: false, error: 'Company not found' };
+      return { success: false, error: "Company not found" };
     }
 
-    revalidatePath('/app/dashboard');
+    revalidatePath("/app/dashboard");
     return { success: true, data: updatedCompany };
   } catch (error) {
     return {
       success: false,
-      error: error instanceof Error ? error.message : 'Failed to update priority',
+      error:
+        error instanceof Error ? error.message : "Failed to update priority",
     };
   }
 };
@@ -161,7 +173,7 @@ export const updateCompanyPriority = async (
  */
 export const updateCompanyReportStatus = async (
   id: string,
-  reportStatus: 'none' | 'generating' | 'completed' | 'failed'
+  reportStatus: "none" | "generating" | "completed" | "failed",
 ) => {
   try {
     const [updatedCompany] = await db
@@ -174,15 +186,18 @@ export const updateCompanyReportStatus = async (
       .returning();
 
     if (!updatedCompany) {
-      return { success: false, error: 'Company not found' };
+      return { success: false, error: "Company not found" };
     }
 
-    revalidatePath('/app/dashboard');
+    revalidatePath("/app/dashboard");
     return { success: true, data: updatedCompany };
   } catch (error) {
     return {
       success: false,
-      error: error instanceof Error ? error.message : 'Failed to update report status',
+      error:
+        error instanceof Error
+          ? error.message
+          : "Failed to update report status",
     };
   }
 };

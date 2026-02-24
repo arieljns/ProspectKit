@@ -49,7 +49,10 @@ export const FAQs = () => {
   };
 
   return (
-    <Container id="faq" className="border-divide flex flex-col items-center border-x pt-12">
+    <Container
+      id="faq"
+      className="border-divide flex flex-col items-center border-x pt-12"
+    >
       <Badge text="FAQs" />
       <SectionHeading className="mt-4">
         Frequently Asked Questions
@@ -60,7 +63,14 @@ export const FAQs = () => {
         outbound workflow.
       </SubHeading>
       <div className="mt-8 mb-12 flex w-full flex-col justify-center gap-4 px-4 sm:flex-row">
-        <Button variant="primary" className="w-full sm:w-auto" as="a" href={landingLinks.repo} target="_blank" rel="noreferrer">
+        <Button
+          variant="primary"
+          className="w-full sm:w-auto"
+          as="a"
+          href={landingLinks.repo}
+          target="_blank"
+          rel="noreferrer"
+        >
           View repository
         </Button>
         <Button

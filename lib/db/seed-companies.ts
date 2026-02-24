@@ -1,5 +1,5 @@
-import { db } from './index';
-import { companies } from './schema/companies';
+import { db } from "./index";
+import { companies } from "./schema/companies";
 
 const seedData = [
   {
@@ -113,20 +113,20 @@ const seedData = [
 ];
 
 async function seed(force = false) {
-  console.log('🌱 Seeding companies...');
+  console.log("🌱 Seeding companies...");
 
   try {
     // Check if companies already exist
     const existing = await db.select().from(companies).limit(1);
 
     if (existing.length > 0 && !force) {
-      console.log('⚠️  Companies already exist. Skipping seed.');
-      console.log('   Run `npm run db:seed:force` to force re-seed.');
+      console.log("⚠️  Companies already exist. Skipping seed.");
+      console.log("   Run `npm run db:seed:force` to force re-seed.");
       return;
     }
 
     if (force && existing.length > 0) {
-      console.log('🗑️  Clearing existing companies...');
+      console.log("🗑️  Clearing existing companies...");
       await db.delete(companies);
     }
 
@@ -135,7 +135,7 @@ async function seed(force = false) {
 
     console.log(`✅ Successfully seeded ${seedData.length} companies!`);
   } catch (error) {
-    console.error('❌ Failed to seed companies:');
+    console.error("❌ Failed to seed companies:");
     console.error(error);
     process.exit(1);
   }
@@ -143,7 +143,7 @@ async function seed(force = false) {
 
 // Run if called directly
 if (require.main === module) {
-  const force = process.argv.includes('--force');
+  const force = process.argv.includes("--force");
   seed(force)
     .then(() => process.exit(0))
     .catch((error) => {

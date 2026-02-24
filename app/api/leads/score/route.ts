@@ -12,19 +12,28 @@ export async function POST(req: Request) {
     const { contactId } = await req.json();
 
     if (!contactId) {
-      return Response.json({ success: false, error: "Contact ID is required" }, { status: 400 });
+      return Response.json(
+        { success: false, error: "Contact ID is required" },
+        { status: 400 },
+      );
     }
 
     // 1. Get contact and company info (getContactById returns both)
     const contactResult = await getContactById(contactId);
     if (!contactResult.success || !contactResult.data) {
-      return Response.json({ success: false, error: "Contact not found" }, { status: 404 });
+      return Response.json(
+        { success: false, error: "Contact not found" },
+        { status: 404 },
+      );
     }
 
     const { contact, company } = contactResult.data;
 
     if (!company) {
-      return Response.json({ success: false, error: "Contact company not found" }, { status: 404 });
+      return Response.json(
+        { success: false, error: "Contact company not found" },
+        { status: 404 },
+      );
     }
 
     // 3. Get scoring configuration
@@ -33,9 +42,10 @@ export async function POST(req: Request) {
       return Response.json(
         {
           success: false,
-          error: "Scoring configuration not found. Please configure your settings first.",
+          error:
+            "Scoring configuration not found. Please configure your settings first.",
         },
-        { status: 404 }
+        { status: 404 },
       );
     }
     const config = configResult.data;
@@ -110,7 +120,8 @@ Provide scores and 1-2 sentence reasoning for each dimension.`;
       model: xai("grok-4-fast-non-reasoning-latest"),
       schema: leadScoringSchema,
       schemaName: "LeadScoringResult",
-      schemaDescription: "AI-generated lead qualification scores across 5 dimensions",
+      schemaDescription:
+        "AI-generated lead qualification scores across 5 dimensions",
       system: systemPrompt,
       prompt: userPrompt,
       providerOptions: {
@@ -142,7 +153,10 @@ Provide scores and 1-2 sentence reasoning for each dimension.`;
     });
 
     if (!saveResult.success) {
-      return Response.json({ success: false, error: saveResult.error || "Failed to save score" }, { status: 500 });
+      return Response.json(
+        { success: false, error: saveResult.error || "Failed to save score" },
+        { status: 500 },
+      );
     }
 
     // 7. Return success with scores
@@ -177,7 +191,7 @@ Provide scores and 1-2 sentence reasoning for each dimension.`;
         error: error instanceof Error ? error.message : "Failed to score lead",
         details: error instanceof Error ? error.stack : undefined,
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

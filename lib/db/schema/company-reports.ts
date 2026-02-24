@@ -19,17 +19,21 @@ export const reportDataSchema = z.object({
     marketPosition: z.string(),
   }),
 
-  financials: z.object({
-    revenue: z.string().optional(),
-    funding: z.string().optional(),
-    valuation: z.string().optional(),
-  }).optional(),
+  financials: z
+    .object({
+      revenue: z.string().optional(),
+      funding: z.string().optional(),
+      valuation: z.string().optional(),
+    })
+    .optional(),
 
-  products: z.array(z.object({
-    name: z.string(),
-    description: z.string(),
-    category: z.string(),
-  })),
+  products: z.array(
+    z.object({
+      name: z.string(),
+      description: z.string(),
+      category: z.string(),
+    }),
+  ),
 
   marketAnalysis: z.object({
     targetMarket: z.string(),
@@ -37,10 +41,14 @@ export const reportDataSchema = z.object({
     marketSize: z.string(),
   }),
 
-  recentNews: z.array(z.object({
-    title: z.string(),
-    url: z.string(),
-  })).optional(),
+  recentNews: z
+    .array(
+      z.object({
+        title: z.string(),
+        url: z.string(),
+      }),
+    )
+    .optional(),
 
   insights: z.object({
     opportunities: z.array(z.string()),

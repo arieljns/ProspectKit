@@ -3,14 +3,22 @@ import { Container } from "./container";
 import { Badge } from "./badge";
 import { SectionHeading } from "./seciton-heading";
 import { SubHeading } from "./subheading";
-import { prospectKitDoes, prospectKitDoesNot } from "@/lib/marketing/landing-content";
+import {
+  prospectKitDoes,
+  prospectKitDoesNot,
+} from "@/lib/marketing/landing-content";
 
 export const Security = () => {
   return (
-    <Container id="boundaries" className="border-divide border-x px-4 py-16 md:px-8">
+    <Container
+      id="boundaries"
+      className="border-divide border-x px-4 py-16 md:px-8"
+    >
       <div className="mx-auto flex max-w-4xl flex-col items-center">
         <Badge text="Boundaries" />
-        <SectionHeading className="mt-4">What ProspectKit does and does not do</SectionHeading>
+        <SectionHeading className="mt-4">
+          What ProspectKit does and does not do
+        </SectionHeading>
         <SubHeading as="p" className="mx-auto mt-6 max-w-2xl">
           ProspectKit is intentionally focused on pre-send prospecting and
           qualification workflows for tiny teams.

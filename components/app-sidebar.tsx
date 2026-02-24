@@ -30,7 +30,8 @@ const data = {
   user: {
     name: "Zebang Li",
     email: "zebang.li.2012@gmail.com",
-    avatar: "https://ui-avatars.com/api/?name=Zebang+Li&background=334155&color=fff&size=128",
+    avatar:
+      "https://ui-avatars.com/api/?name=Zebang+Li&background=334155&color=fff&size=128",
   },
   navMain: [
     {
@@ -74,7 +75,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton asChild className="data-[slot=sidebar-menu-button]:p-1.5!">
+            <SidebarMenuButton
+              asChild
+              className="data-[slot=sidebar-menu-button]:p-1.5!"
+            >
               <Link href="/app/dashboard">
                 <LogoMark className="h-6 w-6" />
                 <span className="text-base font-bold">ProspectKit</span>

@@ -5,9 +5,7 @@ import { z } from "zod";
 export const maxDuration = 60;
 
 const contactInfoSchema = z.object({
-  name: z
-    .string()
-    .describe("Full name of the person"),
+  name: z.string().describe("Full name of the person"),
   title: z
     .string()
     .describe("Job title (e.g., VP of Engineering, Senior Product Manager)"),
@@ -28,7 +26,7 @@ export async function POST(req: Request) {
     if (!linkedinUrl || !linkedinUrl.trim()) {
       return Response.json(
         { success: false, error: "LinkedIn URL is required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -74,9 +72,12 @@ Be accurate and use real data from the LinkedIn profile.`,
     return Response.json(
       {
         success: false,
-        error: error instanceof Error ? error.message : "Failed to auto-fill contact",
+        error:
+          error instanceof Error
+            ? error.message
+            : "Failed to auto-fill contact",
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

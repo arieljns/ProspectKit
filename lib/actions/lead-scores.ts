@@ -1,13 +1,13 @@
-'use server';
+"use server";
 
-import { db } from '../db';
+import { db } from "../db";
 import {
   leadScores,
   insertLeadScoreSchema,
   type NewLeadScoreParams,
-} from '../db/schema/lead-scores';
-import { eq } from 'drizzle-orm';
-import { revalidatePath } from 'next/cache';
+} from "../db/schema/lead-scores";
+import { eq } from "drizzle-orm";
+import { revalidatePath } from "next/cache";
 
 /**
  * Get lead score for a specific contact
@@ -28,7 +28,7 @@ export const getLeadScore = async (contactId: string) => {
   } catch (error) {
     return {
       success: false,
-      error: error instanceof Error ? error.message : 'Failed to fetch score',
+      error: error instanceof Error ? error.message : "Failed to fetch score",
     };
   }
 };
@@ -74,13 +74,13 @@ export const saveLeadScore = async (input: NewLeadScoreParams) => {
       })
       .returning();
 
-    revalidatePath('/app/contacts');
+    revalidatePath("/app/contacts");
 
     return { success: true, data: savedScore };
   } catch (error) {
     return {
       success: false,
-      error: error instanceof Error ? error.message : 'Failed to save score',
+      error: error instanceof Error ? error.message : "Failed to save score",
     };
   }
 };
@@ -96,16 +96,16 @@ export const deleteLeadScore = async (contactId: string) => {
       .returning();
 
     if (!deletedScore) {
-      return { success: false, error: 'Score not found' };
+      return { success: false, error: "Score not found" };
     }
 
-    revalidatePath('/app/contacts');
+    revalidatePath("/app/contacts");
 
-    return { success: true, message: 'Score deleted' };
+    return { success: true, message: "Score deleted" };
   } catch (error) {
     return {
       success: false,
-      error: error instanceof Error ? error.message : 'Failed to delete score',
+      error: error instanceof Error ? error.message : "Failed to delete score",
     };
   }
 };

@@ -5,11 +5,20 @@ import { Button } from "@/components/shadcnui/button";
 import { Checkbox } from "@/components/shadcnui/checkbox";
 import { Input } from "@/components/shadcnui/input";
 import { Label } from "@/components/shadcnui/label";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/shadcnui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/shadcnui/dialog";
 import { Badge } from "@/components/shadcnui/badge";
 import { toast } from "sonner";
 import { Copy, Sparkles, Send, ThumbsUp, ThumbsDown } from "lucide-react";
-import { updateContactStatus, updateLastContacted } from "@/lib/actions/contacts";
+import {
+  updateContactStatus,
+  updateLastContacted,
+} from "@/lib/actions/contacts";
 
 type MessageType = "linkedin-connection" | "linkedin-email";
 
@@ -31,8 +40,14 @@ type MessageGeneratorDialogProps = {
   company: Company;
 };
 
-export function MessageGeneratorDialog({ open, onOpenChange, contact, company }: MessageGeneratorDialogProps) {
-  const [messageType, setMessageType] = React.useState<MessageType>("linkedin-email");
+export function MessageGeneratorDialog({
+  open,
+  onOpenChange,
+  contact,
+  company,
+}: MessageGeneratorDialogProps) {
+  const [messageType, setMessageType] =
+    React.useState<MessageType>("linkedin-email");
   const [generatedMessage, setGeneratedMessage] = React.useState("");
   const [isGenerating, setIsGenerating] = React.useState(false);
   const [feedback, setFeedback] = React.useState("");
@@ -95,7 +110,9 @@ export function MessageGeneratorDialog({ open, onOpenChange, contact, company }:
       }
     } catch (error) {
       console.error("Generation error:", error);
-      toast.error(error instanceof Error ? error.message : "Failed to generate message");
+      toast.error(
+        error instanceof Error ? error.message : "Failed to generate message",
+      );
     } finally {
       setIsGenerating(false);
     }
@@ -133,7 +150,9 @@ export function MessageGeneratorDialog({ open, onOpenChange, contact, company }:
             <Label>Message Type</Label>
             <div className="flex gap-2">
               <Button
-                variant={messageType === "linkedin-connection" ? "default" : "outline"}
+                variant={
+                  messageType === "linkedin-connection" ? "default" : "outline"
+                }
                 size="sm"
                 onClick={() => setMessageType("linkedin-connection")}
                 disabled={isGenerating}
@@ -141,7 +160,9 @@ export function MessageGeneratorDialog({ open, onOpenChange, contact, company }:
                 LinkedIn Connection Request
               </Button>
               <Button
-                variant={messageType === "linkedin-email" ? "default" : "outline"}
+                variant={
+                  messageType === "linkedin-email" ? "default" : "outline"
+                }
                 size="sm"
                 onClick={() => setMessageType("linkedin-email")}
                 disabled={isGenerating}
@@ -153,7 +174,11 @@ export function MessageGeneratorDialog({ open, onOpenChange, contact, company }:
 
           {/* Generate Button */}
           {!hasGenerated && (
-            <Button onClick={() => generateMessage(false)} disabled={isGenerating} className="w-full">
+            <Button
+              onClick={() => generateMessage(false)}
+              disabled={isGenerating}
+              className="w-full"
+            >
               <Sparkles className="h-4 w-4 mr-2" />
               {isGenerating ? "Generating..." : "Generate Message"}
             </Button>
@@ -169,8 +194,14 @@ export function MessageGeneratorDialog({ open, onOpenChange, contact, company }:
                     isGenerating ? "bg-muted/50" : "bg-background"
                   }`}
                 >
-                  {generatedMessage || <span className="text-muted-foreground italic">Generating...</span>}
-                  {isGenerating && <span className="inline-block w-2 h-4 bg-primary animate-pulse ml-0.5" />}
+                  {generatedMessage || (
+                    <span className="text-muted-foreground italic">
+                      Generating...
+                    </span>
+                  )}
+                  {isGenerating && (
+                    <span className="inline-block w-2 h-4 bg-primary animate-pulse ml-0.5" />
+                  )}
                 </div>
               </div>
 
@@ -178,7 +209,11 @@ export function MessageGeneratorDialog({ open, onOpenChange, contact, company }:
               <div className="flex items-center justify-between text-sm">
                 <div className="flex items-center gap-2">
                   <span
-                    className={characterCount > characterLimit ? "text-destructive font-medium" : "text-muted-foreground"}
+                    className={
+                      characterCount > characterLimit
+                        ? "text-destructive font-medium"
+                        : "text-muted-foreground"
+                    }
                   >
                     Character count: {characterCount} / {characterLimit}
                   </span>
@@ -213,7 +248,9 @@ export function MessageGeneratorDialog({ open, onOpenChange, contact, company }:
           {/* Feedback & Regenerate */}
           {hasGenerated && (
             <div className="space-y-2 border-t pt-4">
-              <Label htmlFor="feedback">Feedback (optional - for regeneration)</Label>
+              <Label htmlFor="feedback">
+                Feedback (optional - for regeneration)
+              </Label>
               <div className="flex gap-2">
                 <Input
                   id="feedback"
@@ -240,7 +277,9 @@ export function MessageGeneratorDialog({ open, onOpenChange, contact, company }:
                 <Checkbox
                   id="mark-contacted"
                   checked={markAsContacted}
-                  onCheckedChange={(checked) => setMarkAsContacted(checked as boolean)}
+                  onCheckedChange={(checked) =>
+                    setMarkAsContacted(checked as boolean)
+                  }
                 />
                 <label
                   htmlFor="mark-contacted"
@@ -251,7 +290,12 @@ export function MessageGeneratorDialog({ open, onOpenChange, contact, company }:
               </div>
 
               <div className="flex gap-2">
-                <Button onClick={handleCopy} variant="outline" size="sm" disabled={!generatedMessage || isGenerating}>
+                <Button
+                  onClick={handleCopy}
+                  variant="outline"
+                  size="sm"
+                  disabled={!generatedMessage || isGenerating}
+                >
                   <Copy className="h-4 w-4 mr-2" />
                   Copy
                 </Button>

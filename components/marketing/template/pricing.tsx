@@ -30,7 +30,9 @@ export const Pricing = () => {
     <section id="pricing">
       <Container className="border-divide flex flex-col items-center justify-center border-x pt-10 pb-10">
         <Badge text="Pricing" />
-        <SectionHeading className="mt-4">Flexible open-source model</SectionHeading>
+        <SectionHeading className="mt-4">
+          Flexible open-source model
+        </SectionHeading>
         <div className="relative mt-8 flex items-center gap-4 rounded-xl bg-gray-50 p-2 dark:bg-neutral-800">
           <Scale className="opacity-50" />
           {tabs.map((tab) => (
@@ -87,7 +89,8 @@ export const Pricing = () => {
               <Button
                 className="mt-6 w-full"
                 as={
-                  tier.ctaLink.startsWith("http") || tier.ctaLink.startsWith("mailto:")
+                  tier.ctaLink.startsWith("http") ||
+                  tier.ctaLink.startsWith("mailto:")
                     ? "a"
                     : Link
                 }

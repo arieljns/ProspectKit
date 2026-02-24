@@ -25,9 +25,7 @@ export const contacts = pgTable("contacts", {
   linkedinUrl: text("linkedin_url"), // Optional LinkedIn profile URL
 
   // SDR-specific fields
-  contactStatus: text("contact_status")
-    .notNull()
-    .default("new"), // "new" | "contacted" | "responded" | "qualified" | "not_interested"
+  contactStatus: text("contact_status").notNull().default("new"), // "new" | "contacted" | "responded" | "qualified" | "not_interested"
   priority: text("priority").notNull().default("Low"), // "High" | "Medium" | "Low"
   lastContactedAt: timestamp("last_contacted_at"), // Optional: when they were last contacted
   notes: text("notes"), // Optional sales notes

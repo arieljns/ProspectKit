@@ -11,7 +11,9 @@ export const leadScoringSchema = z.object({
     .int()
     .min(0)
     .max(100)
-    .describe("How well does the lead's company industry align with target industries? 0-100"),
+    .describe(
+      "How well does the lead's company industry align with target industries? 0-100",
+    ),
 
   companyMatchScore: z
     .number()
@@ -19,7 +21,7 @@ export const leadScoringSchema = z.object({
     .min(0)
     .max(100)
     .describe(
-      "Based on company business and challenges, how likely do they need the product? 0-100"
+      "Based on company business and challenges, how likely do they need the product? 0-100",
     ),
 
   positionMatchScore: z
@@ -28,7 +30,7 @@ export const leadScoringSchema = z.object({
     .min(0)
     .max(100)
     .describe(
-      "Is this person a decision maker or potential user of the product? 0-100"
+      "Is this person a decision maker or potential user of the product? 0-100",
     ),
 
   seniorityMatchScore: z
@@ -37,7 +39,7 @@ export const leadScoringSchema = z.object({
     .min(0)
     .max(100)
     .describe(
-      "Does the lead's seniority level match target levels (C-level, VP, Director, etc.)? 0-100"
+      "Does the lead's seniority level match target levels (C-level, VP, Director, etc.)? 0-100",
     ),
 
   dealSizeScore: z
@@ -46,7 +48,7 @@ export const leadScoringSchema = z.object({
     .min(0)
     .max(100)
     .describe(
-      "Combines company size with product need to estimate revenue potential. 0-100"
+      "Combines company size with product need to estimate revenue potential. 0-100",
     ),
 
   // Reasoning for each dimension
@@ -67,9 +69,7 @@ export const leadScoringSchema = z.object({
       .string()
       .describe("1-2 sentence explanation for seniorityMatchScore"),
 
-    dealSize: z
-      .string()
-      .describe("1-2 sentence explanation for dealSizeScore"),
+    dealSize: z.string().describe("1-2 sentence explanation for dealSizeScore"),
   }),
 });
 

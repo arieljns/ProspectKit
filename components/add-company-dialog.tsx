@@ -24,7 +24,14 @@ import { toast } from "sonner";
 import { Sparkles, Loader2 } from "lucide-react";
 import { createCompany } from "@/lib/actions/companies";
 
-const COMPANY_SIZES = ["1-10", "11-50", "51-200", "201-500", "501-1000", "1000+"];
+const COMPANY_SIZES = [
+  "1-10",
+  "11-50",
+  "51-200",
+  "201-500",
+  "501-1000",
+  "1000+",
+];
 
 type AddCompanyDialogProps = {
   open: boolean;
@@ -74,7 +81,12 @@ export function AddCompanyDialog({
       const result = await response.json();
 
       if (result.success && result.data) {
-        const { industry: autoIndustry, size: autoSize, website: autoWebsite, description: autoDescription } = result.data;
+        const {
+          industry: autoIndustry,
+          size: autoSize,
+          website: autoWebsite,
+          description: autoDescription,
+        } = result.data;
 
         if (autoIndustry) setIndustry(autoIndustry);
         if (autoSize) setSize(autoSize);

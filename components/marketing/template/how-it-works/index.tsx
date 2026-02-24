@@ -9,7 +9,10 @@ import { howItWorksSteps } from "@/lib/marketing/landing-content";
 
 export const HowItWorks = () => {
   return (
-    <Container id="how-it-works" className="border-divide border-x px-4 md:px-8">
+    <Container
+      id="how-it-works"
+      className="border-divide border-x px-4 md:px-8"
+    >
       <div className="flex flex-col items-center py-16">
         <Badge text="Workflow map" />
         <SectionHeading className="mt-4">
@@ -17,8 +20,8 @@ export const HowItWorks = () => {
         </SectionHeading>
 
         <SubHeading as="p" className="mx-auto mt-6 max-w-2xl">
-          ProspectKit covers the six key outreach stages from account discovery to
-          pipeline visibility, without CRM or sequence-tool complexity.
+          ProspectKit covers the six key outreach stages from account discovery
+          to pipeline visibility, without CRM or sequence-tool complexity.
         </SubHeading>
 
         <div className="border-divide mt-14 grid w-full grid-cols-1 border-t border-b md:grid-cols-2 lg:grid-cols-3">

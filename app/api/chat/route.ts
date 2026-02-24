@@ -1,14 +1,14 @@
-import { createResource } from '@/lib/actions/resources';
-import { xai } from '@ai-sdk/xai';
+import { createResource } from "@/lib/actions/resources";
+import { xai } from "@ai-sdk/xai";
 import {
   convertToModelMessages,
   streamText,
   tool,
   UIMessage,
   stepCountIs,
-} from 'ai';
-import { z } from 'zod';
-import { findRelevantContent } from '@/lib/ai/embedding';
+} from "ai";
+import { z } from "zod";
+import { findRelevantContent } from "@/lib/ai/embedding";
 
 // Allow streaming responses up to 30 seconds
 export const maxDuration = 30;
@@ -26,7 +26,7 @@ export async function POST(req: Request) {
     providerOptions: {
       xai: {
         searchParameters: {
-          mode: 'auto',
+          mode: "auto",
           returnCitations: true,
           maxSearchResults: 10,
         },
@@ -39,34 +39,35 @@ export async function POST(req: Request) {
         inputSchema: z.object({
           content: z
             .string()
-            .describe('the content or resource to add to the knowledge base'),
+            .describe("the content or resource to add to the knowledge base"),
         }),
         execute: async ({ content }) => createResource({ content }),
       }),
       getInformation: tool({
-        description: 'Get information from your knowledge base to answer questions. The knowledge base has been updated with user\'s personal information.',
+        description:
+          "Get information from your knowledge base to answer questions. The knowledge base has been updated with user's personal information.",
         inputSchema: z.object({
-          question: z.string().describe('the users question'),
+          question: z.string().describe("the users question"),
         }),
         execute: async ({ question }) => findRelevantContent(question),
       }),
       getCurrentDate: tool({
-        description: 'Get the current date and time with timezone information',
+        description: "Get the current date and time with timezone information",
         inputSchema: z.object({}),
         execute: async () => {
           const now = new Date();
           return {
             timestamp: now.getTime(),
             iso: now.toISOString(),
-            local: now.toLocaleString('en-US', {
-              weekday: 'long',
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric',
-              hour: '2-digit',
-              minute: '2-digit',
-              second: '2-digit',
-              timeZoneName: 'short',
+            local: now.toLocaleString("en-US", {
+              weekday: "long",
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+              hour: "2-digit",
+              minute: "2-digit",
+              second: "2-digit",
+              timeZoneName: "short",
             }),
             timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
             utc: now.toUTCString(),

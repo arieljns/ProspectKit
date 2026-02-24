@@ -1,34 +1,41 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import Link from "next/link"
-import { useRouter } from "next/navigation"
-import { Building2Icon, ChevronDownIcon, ChevronUpIcon, PlusCircleIcon, UserPlusIcon, type LucideIcon } from "lucide-react"
+import * as React from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import {
+  Building2Icon,
+  ChevronDownIcon,
+  ChevronUpIcon,
+  PlusCircleIcon,
+  UserPlusIcon,
+  type LucideIcon,
+} from "lucide-react";
 
-import { Button } from "@/components/shadcnui/button"
+import { Button } from "@/components/shadcnui/button";
 import {
   SidebarGroup,
   SidebarGroupContent,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/components/shadcnui/sidebar"
-import { AddContactDialog } from "@/components/add-contact-dialog"
-import { AddCompanyDialog } from "@/components/add-company-dialog"
+} from "@/components/shadcnui/sidebar";
+import { AddContactDialog } from "@/components/add-contact-dialog";
+import { AddCompanyDialog } from "@/components/add-company-dialog";
 
 export function NavMain({
   items,
 }: {
   items: {
-    title: string
-    url: string
-    icon?: LucideIcon
-  }[]
+    title: string;
+    url: string;
+    icon?: LucideIcon;
+  }[];
 }) {
-  const router = useRouter()
-  const [isQuickAddExpanded, setIsQuickAddExpanded] = React.useState(false)
-  const [addContactDialogOpen, setAddContactDialogOpen] = React.useState(false)
-  const [addCompanyDialogOpen, setAddCompanyDialogOpen] = React.useState(false)
+  const router = useRouter();
+  const [isQuickAddExpanded, setIsQuickAddExpanded] = React.useState(false);
+  const [addContactDialogOpen, setAddContactDialogOpen] = React.useState(false);
+  const [addCompanyDialogOpen, setAddCompanyDialogOpen] = React.useState(false);
 
   return (
     <SidebarGroup>
@@ -56,8 +63,8 @@ export function NavMain({
                   size="sm"
                   className="justify-start text-sm"
                   onClick={() => {
-                    setAddContactDialogOpen(true)
-                    setIsQuickAddExpanded(false)
+                    setAddContactDialogOpen(true);
+                    setIsQuickAddExpanded(false);
                   }}
                 >
                   <UserPlusIcon className="h-4 w-4 mr-2" />
@@ -68,8 +75,8 @@ export function NavMain({
                   size="sm"
                   className="justify-start text-sm"
                   onClick={() => {
-                    setAddCompanyDialogOpen(true)
-                    setIsQuickAddExpanded(false)
+                    setAddCompanyDialogOpen(true);
+                    setIsQuickAddExpanded(false);
                   }}
                 >
                   <Building2Icon className="h-4 w-4 mr-2" />
@@ -98,18 +105,18 @@ export function NavMain({
         open={addContactDialogOpen}
         onOpenChange={setAddContactDialogOpen}
         onSuccess={() => {
-          router.push("/app/contacts")
-          router.refresh()
+          router.push("/app/contacts");
+          router.refresh();
         }}
       />
       <AddCompanyDialog
         open={addCompanyDialogOpen}
         onOpenChange={setAddCompanyDialogOpen}
         onSuccess={() => {
-          router.push("/app/dashboard")
-          router.refresh()
+          router.push("/app/dashboard");
+          router.refresh();
         }}
       />
     </SidebarGroup>
-  )
+  );
 }

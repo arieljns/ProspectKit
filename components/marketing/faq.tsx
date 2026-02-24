@@ -26,7 +26,9 @@ export function FAQ() {
     <section id="faq">
       <div className="mx-auto max-w-6xl px-6 py-16">
         <div className="max-w-2xl">
-          <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">FAQ</h2>
+          <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">
+            FAQ
+          </h2>
           <p className="mt-3 text-sm text-muted-foreground sm:text-base">
             Quick answers to common questions.
           </p>
@@ -38,7 +40,9 @@ export function FAQ() {
               <summary className="cursor-pointer list-none text-sm font-medium">
                 <div className="flex items-center justify-between gap-4">
                   <span>{item.q}</span>
-                  <span className="text-muted-foreground transition group-open:rotate-180">▾</span>
+                  <span className="text-muted-foreground transition group-open:rotate-180">
+                    ▾
+                  </span>
                 </div>
               </summary>
               <p className="mt-3 text-sm text-muted-foreground">{item.a}</p>

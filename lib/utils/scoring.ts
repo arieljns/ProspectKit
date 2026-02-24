@@ -20,7 +20,7 @@ export function calculateTotalScore(
     positionMatch: number;
     seniorityMatch: number;
     dealSizeMatch: number;
-  }
+  },
 ): number {
   const total =
     dimensionScores.industryMatchScore * (weights.industryMatch / 100) +
@@ -35,25 +35,25 @@ export function calculateTotalScore(
 /**
  * Get letter grade based on total score
  */
-export function getScoreGrade(totalScore: number): 'A' | 'B' | 'C' {
-  if (totalScore >= 85) return 'A';
-  if (totalScore >= 70) return 'B';
-  return 'C';
+export function getScoreGrade(totalScore: number): "A" | "B" | "C" {
+  if (totalScore >= 85) return "A";
+  if (totalScore >= 70) return "B";
+  return "C";
 }
 
 /**
  * Get badge color variant based on grade
  */
 export function getGradeBadgeVariant(
-  grade: 'A' | 'B' | 'C'
-): 'default' | 'secondary' | 'outline-solid' {
+  grade: "A" | "B" | "C",
+): "default" | "secondary" | "outline-solid" {
   switch (grade) {
-    case 'A':
-      return 'default'; // Green/primary color
-    case 'B':
-      return 'secondary'; // Yellow/warning color
-    case 'C':
-      return 'outline-solid'; // Gray/muted color
+    case "A":
+      return "default"; // Green/primary color
+    case "B":
+      return "secondary"; // Yellow/warning color
+    case "C":
+      return "outline-solid"; // Gray/muted color
   }
 }
 

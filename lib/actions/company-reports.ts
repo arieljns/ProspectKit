@@ -1,10 +1,10 @@
-'use server';
+"use server";
 
-import { db } from '../db';
-import { companyReports, type ReportData } from '../db/schema/company-reports';
-import { companies } from '../db/schema/companies';
-import { eq } from 'drizzle-orm';
-import { revalidatePath } from 'next/cache';
+import { db } from "../db";
+import { companyReports, type ReportData } from "../db/schema/company-reports";
+import { companies } from "../db/schema/companies";
+import { eq } from "drizzle-orm";
+import { revalidatePath } from "next/cache";
 
 /**
  * Get report by company ID
@@ -18,14 +18,14 @@ export const getReportByCompanyId = async (companyId: string) => {
       .limit(1);
 
     if (!report) {
-      return { success: false, error: 'Report not found' };
+      return { success: false, error: "Report not found" };
     }
 
     return { success: true, data: report };
   } catch (error) {
     return {
       success: false,
-      error: error instanceof Error ? error.message : 'Failed to fetch report',
+      error: error instanceof Error ? error.message : "Failed to fetch report",
     };
   }
 };
@@ -36,7 +36,7 @@ export const getReportByCompanyId = async (companyId: string) => {
  */
 export const createOrUpdateReport = async (
   companyId: string,
-  reportData: ReportData
+  reportData: ReportData,
 ) => {
   try {
     // Check if report exists
@@ -54,7 +54,7 @@ export const createOrUpdateReport = async (
         .update(companyReports)
         .set({
           reportData,
-          status: 'completed',
+          status: "completed",
           updatedAt: new Date(),
         })
         .where(eq(companyReports.id, existingReport.id))
@@ -66,7 +66,7 @@ export const createOrUpdateReport = async (
         .values({
           companyId,
           reportData,
-          status: 'completed',
+          status: "completed",
         })
         .returning();
     }
@@ -75,12 +75,12 @@ export const createOrUpdateReport = async (
     await db
       .update(companies)
       .set({
-        reportStatus: 'completed',
+        reportStatus: "completed",
         updatedAt: new Date(),
       })
       .where(eq(companies.id, companyId));
 
-    revalidatePath('/app/dashboard');
+    revalidatePath("/app/dashboard");
     revalidatePath(`/app/reports/${companyId}`);
 
     return { success: true, data: report };
@@ -88,13 +88,13 @@ export const createOrUpdateReport = async (
     // If failed, update company report status to failed
     await db
       .update(companies)
-      .set({ reportStatus: 'failed' })
+      .set({ reportStatus: "failed" })
       .where(eq(companies.id, companyId))
       .catch(() => {});
 
     return {
       success: false,
-      error: error instanceof Error ? error.message : 'Failed to save report',
+      error: error instanceof Error ? error.message : "Failed to save report",
     };
   }
 };
@@ -110,26 +110,26 @@ export const deleteReport = async (companyId: string) => {
       .returning();
 
     if (!deletedReport) {
-      return { success: false, error: 'Report not found' };
+      return { success: false, error: "Report not found" };
     }
 
     // Update company report status to none
     await db
       .update(companies)
       .set({
-        reportStatus: 'none',
+        reportStatus: "none",
         updatedAt: new Date(),
       })
       .where(eq(companies.id, companyId));
 
-    revalidatePath('/app/dashboard');
+    revalidatePath("/app/dashboard");
     revalidatePath(`/app/reports/${companyId}`);
 
-    return { success: true, message: 'Report deleted successfully' };
+    return { success: true, message: "Report deleted successfully" };
   } catch (error) {
     return {
       success: false,
-      error: error instanceof Error ? error.message : 'Failed to delete report',
+      error: error instanceof Error ? error.message : "Failed to delete report",
     };
   }
 };
@@ -143,7 +143,7 @@ export const markReportAsGenerating = async (companyId: string) => {
     await db
       .update(companies)
       .set({
-        reportStatus: 'generating',
+        reportStatus: "generating",
         updatedAt: new Date(),
       })
       .where(eq(companies.id, companyId));
@@ -156,29 +156,28 @@ export const markReportAsGenerating = async (companyId: string) => {
       .limit(1);
 
     if (!existingReport) {
-      await db
-        .insert(companyReports)
-        .values({
-          companyId,
-          reportData: {} as ReportData, // Placeholder
-          status: 'generating',
-        });
+      await db.insert(companyReports).values({
+        companyId,
+        reportData: {} as ReportData, // Placeholder
+        status: "generating",
+      });
     } else {
       await db
         .update(companyReports)
         .set({
-          status: 'generating',
+          status: "generating",
           updatedAt: new Date(),
         })
         .where(eq(companyReports.id, existingReport.id));
     }
 
-    revalidatePath('/app/dashboard');
+    revalidatePath("/app/dashboard");
     return { success: true };
   } catch (error) {
     return {
       success: false,
-      error: error instanceof Error ? error.message : 'Failed to mark as generating',
+      error:
+        error instanceof Error ? error.message : "Failed to mark as generating",
     };
   }
 };

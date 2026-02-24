@@ -1,7 +1,7 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { useRouter } from "next/navigation"
+import * as React from "react";
+import { useRouter } from "next/navigation";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -13,7 +13,7 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
-} from "@tanstack/react-table"
+} from "@tanstack/react-table";
 import {
   BuildingIcon,
   ChevronDownIcon,
@@ -28,11 +28,11 @@ import {
   SearchIcon,
   Trash2Icon,
   UsersIcon,
-} from "lucide-react"
-import { toast } from "sonner"
+} from "lucide-react";
+import { toast } from "sonner";
 
-import { updateCompanyPriority, deleteCompany } from "@/lib/actions/companies"
-import { AddCompanyDialog } from "@/components/add-company-dialog"
+import { updateCompanyPriority, deleteCompany } from "@/lib/actions/companies";
+import { AddCompanyDialog } from "@/components/add-company-dialog";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -43,26 +43,26 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/shadcnui/alert-dialog"
+} from "@/components/shadcnui/alert-dialog";
 
-import { Badge } from "@/components/shadcnui/badge"
-import { Button } from "@/components/shadcnui/button"
-import { Checkbox } from "@/components/shadcnui/checkbox"
+import { Badge } from "@/components/shadcnui/badge";
+import { Button } from "@/components/shadcnui/button";
+import { Checkbox } from "@/components/shadcnui/checkbox";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuTrigger,
-} from "@/components/shadcnui/dropdown-menu"
-import { Input } from "@/components/shadcnui/input"
-import { Label } from "@/components/shadcnui/label"
+} from "@/components/shadcnui/dropdown-menu";
+import { Input } from "@/components/shadcnui/input";
+import { Label } from "@/components/shadcnui/label";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/shadcnui/select"
+} from "@/components/shadcnui/select";
 import {
   Table,
   TableBody,
@@ -70,146 +70,147 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/shadcnui/table"
+} from "@/components/shadcnui/table";
 
 // Match database schema
 export type Company = {
-  id: string
-  companyName: string
-  industry: string | null
-  size: string | null
-  priority: string
-  reportStatus: string
-  website: string | null
-  description: string | null
-  createdAt: Date
-  updatedAt: Date
-}
+  id: string;
+  companyName: string;
+  industry: string | null;
+  size: string | null;
+  priority: string;
+  reportStatus: string;
+  website: string | null;
+  description: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+};
 
 const sortCompaniesByCreatedAt = (rows: Company[]) =>
   [...rows].sort(
-    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-  )
+    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+  );
 
 export function CompanyResearchTable({
   data: initialData,
 }: {
-  data: Company[]
+  data: Company[];
 }) {
-  const router = useRouter()
+  const router = useRouter();
   // Sort by createdAt descending on initial load
   const [data, setData] = React.useState(() =>
-    sortCompaniesByCreatedAt(initialData)
-  )
-  const [rowSelection, setRowSelection] = React.useState({})
+    sortCompaniesByCreatedAt(initialData),
+  );
+  const [rowSelection, setRowSelection] = React.useState({});
   const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({})
+    React.useState<VisibilityState>({});
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
-  )
-  const [sorting, setSorting] = React.useState<SortingState>([])
+    [],
+  );
+  const [sorting, setSorting] = React.useState<SortingState>([]);
   const [pagination, setPagination] = React.useState({
     pageIndex: 0,
     pageSize: 10,
-  })
-  const [isDeleting, setIsDeleting] = React.useState(false)
-  const [addCompanyDialogOpen, setAddCompanyDialogOpen] = React.useState(false)
+  });
+  const [isDeleting, setIsDeleting] = React.useState(false);
+  const [addCompanyDialogOpen, setAddCompanyDialogOpen] = React.useState(false);
   // Track contact finding status per company (client-side only)
   const [contactFindingStatus, setContactFindingStatus] = React.useState<
     Record<string, "none" | "finding" | "completed" | "failed">
-  >({})
+  >({});
 
   React.useEffect(() => {
-    setData(sortCompaniesByCreatedAt(initialData))
-  }, [initialData])
+    setData(sortCompaniesByCreatedAt(initialData));
+  }, [initialData]);
 
   const handleBatchDelete = async () => {
-    const selectedRows = table.getFilteredSelectedRowModel().rows
-    const selectedCompanies = selectedRows.map((row) => row.original)
+    const selectedRows = table.getFilteredSelectedRowModel().rows;
+    const selectedCompanies = selectedRows.map((row) => row.original);
 
     if (selectedCompanies.length === 0) {
-      toast.error("No companies selected")
-      return
+      toast.error("No companies selected");
+      return;
     }
 
-    setIsDeleting(true)
+    setIsDeleting(true);
 
     // Delete each company
     const deletePromises = selectedCompanies.map((company) =>
-      deleteCompany(company.id)
-    )
+      deleteCompany(company.id),
+    );
 
     try {
-      const results = await Promise.all(deletePromises)
-      const failures = results.filter((r) => !r.success)
+      const results = await Promise.all(deletePromises);
+      const failures = results.filter((r) => !r.success);
 
       if (failures.length === 0) {
         // All succeeded
         toast.success(
           `Successfully deleted ${selectedCompanies.length} ${
             selectedCompanies.length === 1 ? "company" : "companies"
-          }`
-        )
+          }`,
+        );
 
         // Remove from local state
         setData((prevData) =>
           prevData.filter(
-            (c) => !selectedCompanies.some((sc) => sc.id === c.id)
-          )
-        )
+            (c) => !selectedCompanies.some((sc) => sc.id === c.id),
+          ),
+        );
 
         // Clear selection
-        setRowSelection({})
+        setRowSelection({});
       } else {
-        toast.error(`Failed to delete ${failures.length} companies`)
+        toast.error(`Failed to delete ${failures.length} companies`);
       }
     } catch (error) {
-      toast.error("Failed to delete companies")
+      toast.error("Failed to delete companies");
     } finally {
-      setIsDeleting(false)
+      setIsDeleting(false);
     }
-  }
+  };
 
   const handlePriorityChange = async (id: string, value: string) => {
-    const company = data.find((c) => c.id === id)
-    if (!company) return
+    const company = data.find((c) => c.id === id);
+    if (!company) return;
 
     // Optimistically update UI
     setData((prevData) =>
-      prevData.map((c) =>
-        c.id === id ? { ...c, priority: value } : c
-      )
-    )
+      prevData.map((c) => (c.id === id ? { ...c, priority: value } : c)),
+    );
 
     // Update in database
-    const result = await updateCompanyPriority(id, value as "High" | "Medium" | "Low")
+    const result = await updateCompanyPriority(
+      id,
+      value as "High" | "Medium" | "Low",
+    );
 
     if (result.success) {
-      toast.success(`Updated ${company.companyName}`)
+      toast.success(`Updated ${company.companyName}`);
     } else {
       // Revert on error
       setData((prevData) =>
         prevData.map((c) =>
-          c.id === id ? { ...c, priority: company.priority } : c
-        )
-      )
-      toast.error(result.error || "Failed to update")
+          c.id === id ? { ...c, priority: company.priority } : c,
+        ),
+      );
+      toast.error(result.error || "Failed to update");
     }
-  }
+  };
 
   const handleReportClick = async (company: Company) => {
     if (company.reportStatus === "completed") {
       // Navigate to report page
-      router.push(`/app/reports/${company.id}`)
+      router.push(`/app/reports/${company.id}`);
     } else if (company.reportStatus === "generating") {
-      toast.info("Report is currently being generated...")
+      toast.info("Report is currently being generated...");
     } else {
       // Immediately update UI to show generating state
       setData((prevData) =>
         prevData.map((c) =>
-          c.id === company.id ? { ...c, reportStatus: "generating" } : c
-        )
-      )
+          c.id === company.id ? { ...c, reportStatus: "generating" } : c,
+        ),
+      );
 
       // Generate report
       toast.promise(
@@ -222,44 +223,44 @@ export function CompanyResearchTable({
             // Revert to none on error
             setData((prevData) =>
               prevData.map((c) =>
-                c.id === company.id ? { ...c, reportStatus: "failed" } : c
-              )
-            )
-            throw new Error("Failed to generate report")
+                c.id === company.id ? { ...c, reportStatus: "failed" } : c,
+              ),
+            );
+            throw new Error("Failed to generate report");
           }
-          const result = await res.json()
+          const result = await res.json();
 
           // Update to completed
           setData((prevData) =>
             prevData.map((c) =>
-              c.id === company.id ? { ...c, reportStatus: "completed" } : c
-            )
-          )
+              c.id === company.id ? { ...c, reportStatus: "completed" } : c,
+            ),
+          );
 
-          return result
+          return result;
         }),
         {
           loading: `Generating report for ${company.companyName}...`,
           success: `Report generated for ${company.companyName}!`,
           error: "Failed to generate report",
-        }
-      )
+        },
+      );
     }
-  }
+  };
 
   const handleFindContacts = async (company: Company) => {
-    const currentStatus = contactFindingStatus[company.id] || "none"
+    const currentStatus = contactFindingStatus[company.id] || "none";
 
     // If already finding or completed, do nothing
     if (currentStatus === "finding" || currentStatus === "completed") {
-      return
+      return;
     }
 
     // Update status to finding
     setContactFindingStatus((prev) => ({
       ...prev,
       [company.id]: "finding",
-    }))
+    }));
 
     // Find contacts via AI
     toast.promise(
@@ -273,27 +274,27 @@ export function CompanyResearchTable({
           setContactFindingStatus((prev) => ({
             ...prev,
             [company.id]: "failed",
-          }))
-          throw new Error("Failed to find contacts")
+          }));
+          throw new Error("Failed to find contacts");
         }
-        const result = await res.json()
+        const result = await res.json();
 
         // Update to completed
         setContactFindingStatus((prev) => ({
           ...prev,
           [company.id]: "completed",
-        }))
+        }));
 
-        return result
+        return result;
       }),
       {
         loading: `Finding contacts at ${company.companyName}...`,
         success: (data: any) =>
           `Found and saved ${data.data.contactsSaved} contacts! Go to Contacts tab to view.`,
         error: "Failed to find contacts",
-      }
-    )
-  }
+      },
+    );
+  };
 
   const columns: ColumnDef<Company>[] = [
     {
@@ -305,7 +306,9 @@ export function CompanyResearchTable({
               table.getIsAllPageRowsSelected() ||
               (table.getIsSomePageRowsSelected() && "indeterminate")
             }
-            onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+            onCheckedChange={(value) =>
+              table.toggleAllPageRowsSelected(!!value)
+            }
             aria-label="Select all"
           />
         </div>
@@ -357,7 +360,9 @@ export function CompanyResearchTable({
       cell: ({ row }) => (
         <Select
           defaultValue={row.original.priority}
-          onValueChange={(value) => handlePriorityChange(row.original.id, value)}
+          onValueChange={(value) =>
+            handlePriorityChange(row.original.id, value)
+          }
         >
           <SelectTrigger className="h-8 w-28">
             <SelectValue />
@@ -374,9 +379,9 @@ export function CompanyResearchTable({
       id: "report",
       header: "Report",
       cell: ({ row }) => {
-        const status = row.original.reportStatus
-        const isGenerating = status === "generating"
-        const hasReport = status === "completed"
+        const status = row.original.reportStatus;
+        const isGenerating = status === "generating";
+        const hasReport = status === "completed";
 
         return (
           <Button
@@ -398,17 +403,17 @@ export function CompanyResearchTable({
               </>
             )}
           </Button>
-        )
+        );
       },
     },
     {
       id: "findContacts",
       header: "Contacts",
       cell: ({ row }) => {
-        const status = contactFindingStatus[row.original.id] || "none"
-        const isFinding = status === "finding"
-        const isCompleted = status === "completed"
-        const isFailed = status === "failed"
+        const status = contactFindingStatus[row.original.id] || "none";
+        const isFinding = status === "finding";
+        const isCompleted = status === "completed";
+        const isFailed = status === "failed";
 
         return (
           <Button
@@ -435,10 +440,10 @@ export function CompanyResearchTable({
               </>
             )}
           </Button>
-        )
+        );
       },
     },
-  ]
+  ];
 
   const table = useReactTable({
     data,
@@ -461,7 +466,7 @@ export function CompanyResearchTable({
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
-  })
+  });
 
   return (
     <div className="flex w-full flex-col gap-4 px-4 lg:px-6">
@@ -477,7 +482,9 @@ export function CompanyResearchTable({
                 ""
               }
               onChange={(event) =>
-                table.getColumn("companyName")?.setFilterValue(event.target.value)
+                table
+                  .getColumn("companyName")
+                  ?.setFilterValue(event.target.value)
               }
               className="pl-8"
             />
@@ -535,7 +542,7 @@ export function CompanyResearchTable({
                 .filter(
                   (column) =>
                     typeof column.accessorFn !== "undefined" &&
-                    column.getCanHide()
+                    column.getCanHide(),
                 )
                 .map((column) => {
                   return (
@@ -549,7 +556,7 @@ export function CompanyResearchTable({
                     >
                       {column.id}
                     </DropdownMenuCheckboxItem>
-                  )
+                  );
                 })}
             </DropdownMenuContent>
           </DropdownMenu>
@@ -577,10 +584,10 @@ export function CompanyResearchTable({
                         ? null
                         : flexRender(
                             header.column.columnDef.header,
-                            header.getContext()
+                            header.getContext(),
                           )}
                     </TableHead>
-                  )
+                  );
                 })}
               </TableRow>
             ))}
@@ -596,7 +603,7 @@ export function CompanyResearchTable({
                     <TableCell key={cell.id}>
                       {flexRender(
                         cell.column.columnDef.cell,
-                        cell.getContext()
+                        cell.getContext(),
                       )}
                     </TableCell>
                   ))}
@@ -630,7 +637,7 @@ export function CompanyResearchTable({
             <Select
               value={`${table.getState().pagination.pageSize}`}
               onValueChange={(value) => {
-                table.setPageSize(Number(value))
+                table.setPageSize(Number(value));
               }}
             >
               <SelectTrigger className="w-20" id="rows-per-page">
@@ -701,9 +708,9 @@ export function CompanyResearchTable({
         onOpenChange={setAddCompanyDialogOpen}
         onSuccess={() => {
           // Refresh the page to show the new company
-          router.refresh()
+          router.refresh();
         }}
       />
     </div>
-  )
+  );
 }

@@ -3,16 +3,30 @@
 import * as React from "react";
 import { SiteHeader } from "@/components/site-header";
 import { Button } from "@/components/shadcnui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/shadcnui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/shadcnui/card";
 import { Input } from "@/components/shadcnui/input";
 import { Label } from "@/components/shadcnui/label";
 import { Textarea } from "@/components/shadcnui/textarea";
 import { Checkbox } from "@/components/shadcnui/checkbox";
 import { Slider } from "@/components/shadcnui/slider";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/shadcnui/tooltip";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/shadcnui/tooltip";
 import { InfoIcon } from "lucide-react";
 import { toast } from "sonner";
-import { getScoringConfig, updateScoringConfig, resetScoringConfig } from "@/lib/actions/scoring-config";
+import {
+  getScoringConfig,
+  updateScoringConfig,
+  resetScoringConfig,
+} from "@/lib/actions/scoring-config";
 import { validateWeights } from "@/lib/utils/scoring";
 
 // Available industries
@@ -39,7 +53,9 @@ export default function ScoringConfigPage() {
   const [companyDescription, setCompanyDescription] = React.useState("");
   const [productDescription, setProductDescription] = React.useState("");
   const [targetIndustries, setTargetIndustries] = React.useState<string[]>([]);
-  const [targetSeniorityLevels, setTargetSeniorityLevels] = React.useState<string[]>([]);
+  const [targetSeniorityLevels, setTargetSeniorityLevels] = React.useState<
+    string[]
+  >([]);
   const [weights, setWeights] = React.useState({
     industryMatch: 25,
     companyMatch: 30,
@@ -66,7 +82,7 @@ export default function ScoringConfigPage() {
           positionMatch: number;
           seniorityMatch: number;
           dealSizeMatch: number;
-        }
+        },
       );
     }
 
@@ -144,11 +160,17 @@ export default function ScoringConfigPage() {
   };
 
   const handleIndustryToggle = (industry: string) => {
-    setTargetIndustries((prev) => (prev.includes(industry) ? prev.filter((i) => i !== industry) : [...prev, industry]));
+    setTargetIndustries((prev) =>
+      prev.includes(industry)
+        ? prev.filter((i) => i !== industry)
+        : [...prev, industry],
+    );
   };
 
   const handleSeniorityToggle = (level: string) => {
-    setTargetSeniorityLevels((prev) => (prev.includes(level) ? prev.filter((l) => l !== level) : [...prev, level]));
+    setTargetSeniorityLevels((prev) =>
+      prev.includes(level) ? prev.filter((l) => l !== level) : [...prev, level],
+    );
   };
 
   const handleWeightChange = (dimension: string, value: number[]) => {
@@ -179,12 +201,21 @@ export default function ScoringConfigPage() {
         <div className="@container/main flex flex-1 flex-col gap-4 p-4 md:gap-6 md:p-6">
           {/* Top Actions */}
           <div className="flex items-center justify-between">
-            <p className="text-base text-muted-foreground">Configure your company profile and lead scoring criteria</p>
+            <p className="text-base text-muted-foreground">
+              Configure your company profile and lead scoring criteria
+            </p>
             <div className="flex gap-2">
-              <Button variant="outline" onClick={handleReset} disabled={isSaving}>
+              <Button
+                variant="outline"
+                onClick={handleReset}
+                disabled={isSaving}
+              >
                 Reset to Defaults
               </Button>
-              <Button onClick={handleSave} disabled={!isWeightValid || isSaving}>
+              <Button
+                onClick={handleSave}
+                disabled={!isWeightValid || isSaving}
+              >
                 {isSaving ? "Saving..." : "Save Configuration"}
               </Button>
             </div>
@@ -197,7 +228,9 @@ export default function ScoringConfigPage() {
               <Card>
                 <CardHeader>
                   <CardTitle>Your Company & Product</CardTitle>
-                  <CardDescription>Tell us about your company and what you are selling</CardDescription>
+                  <CardDescription>
+                    Tell us about your company and what you are selling
+                  </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="space-y-2">
@@ -211,7 +244,9 @@ export default function ScoringConfigPage() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="companyDescription">Company Description</Label>
+                    <Label htmlFor="companyDescription">
+                      Company Description
+                    </Label>
                     <Textarea
                       id="companyDescription"
                       placeholder="Briefly describe your company and what it does..."
@@ -222,7 +257,9 @@ export default function ScoringConfigPage() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="productDescription">Product/Service Description</Label>
+                    <Label htmlFor="productDescription">
+                      Product/Service Description
+                    </Label>
                     <Textarea
                       id="productDescription"
                       placeholder="Describe the product or service you're selling..."
@@ -240,7 +277,9 @@ export default function ScoringConfigPage() {
               <Card>
                 <CardHeader>
                   <CardTitle>Lead Scoring Criteria</CardTitle>
-                  <CardDescription>Define your ideal customer profile and scoring weights</CardDescription>
+                  <CardDescription>
+                    Define your ideal customer profile and scoring weights
+                  </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6">
                   {/* Target Industries */}
@@ -248,11 +287,16 @@ export default function ScoringConfigPage() {
                     <Label>Target Industries</Label>
                     <div className="grid grid-cols-2 gap-3">
                       {AVAILABLE_INDUSTRIES.map((industry) => (
-                        <div key={industry} className="flex items-center space-x-2">
+                        <div
+                          key={industry}
+                          className="flex items-center space-x-2"
+                        >
                           <Checkbox
                             id={`industry-${industry}`}
                             checked={targetIndustries.includes(industry)}
-                            onCheckedChange={() => handleIndustryToggle(industry)}
+                            onCheckedChange={() =>
+                              handleIndustryToggle(industry)
+                            }
                           />
                           <label
                             htmlFor={`industry-${industry}`}
@@ -270,7 +314,10 @@ export default function ScoringConfigPage() {
                     <Label>Target Seniority Levels</Label>
                     <div className="grid grid-cols-2 gap-3">
                       {SENIORITY_LEVELS.map((level) => (
-                        <div key={level} className="flex items-center space-x-2">
+                        <div
+                          key={level}
+                          className="flex items-center space-x-2"
+                        >
                           <Checkbox
                             id={`seniority-${level}`}
                             checked={targetSeniorityLevels.includes(level)}
@@ -291,7 +338,9 @@ export default function ScoringConfigPage() {
                   <div className="space-y-4 border-t pt-6">
                     <div className="flex items-center justify-between">
                       <Label>Dimension Weights</Label>
-                      <div className={`text-sm font-medium ${isWeightValid ? "text-green-600" : "text-destructive"}`}>
+                      <div
+                        className={`text-sm font-medium ${isWeightValid ? "text-green-600" : "text-destructive"}`}
+                      >
                         Total: {totalWeight}% {isWeightValid ? "✓" : "✗"}
                       </div>
                     </div>
@@ -309,13 +358,16 @@ export default function ScoringConfigPage() {
                             </TooltipTrigger>
                             <TooltipContent side="top" className="max-w-xs">
                               <p className="text-xs">
-                                Does the lead&apos;s company operate in your target industries? Higher score means
-                                better industry alignment with your product.
+                                Does the lead&apos;s company operate in your
+                                target industries? Higher score means better
+                                industry alignment with your product.
                               </p>
                             </TooltipContent>
                           </Tooltip>
                         </div>
-                        <span className="text-sm font-medium">{weights.industryMatch}%</span>
+                        <span className="text-sm font-medium">
+                          {weights.industryMatch}%
+                        </span>
                       </div>
                       <Slider
                         id="weight-industry"
@@ -323,7 +375,9 @@ export default function ScoringConfigPage() {
                         max={100}
                         step={5}
                         value={[weights.industryMatch]}
-                        onValueChange={(value) => handleWeightChange("industryMatch", value)}
+                        onValueChange={(value) =>
+                          handleWeightChange("industryMatch", value)
+                        }
                       />
                     </div>
 
@@ -340,13 +394,17 @@ export default function ScoringConfigPage() {
                             </TooltipTrigger>
                             <TooltipContent side="top" className="max-w-xs">
                               <p className="text-xs">
-                                Based on the company&apos;s business and challenges, how likely do they need your
-                                product? AI evaluates company fit and pain points that your solution addresses.
+                                Based on the company&apos;s business and
+                                challenges, how likely do they need your
+                                product? AI evaluates company fit and pain
+                                points that your solution addresses.
                               </p>
                             </TooltipContent>
                           </Tooltip>
                         </div>
-                        <span className="text-sm font-medium">{weights.companyMatch}%</span>
+                        <span className="text-sm font-medium">
+                          {weights.companyMatch}%
+                        </span>
                       </div>
                       <Slider
                         id="weight-company"
@@ -354,7 +412,9 @@ export default function ScoringConfigPage() {
                         max={100}
                         step={5}
                         value={[weights.companyMatch]}
-                        onValueChange={(value) => handleWeightChange("companyMatch", value)}
+                        onValueChange={(value) =>
+                          handleWeightChange("companyMatch", value)
+                        }
                       />
                     </div>
 
@@ -371,13 +431,17 @@ export default function ScoringConfigPage() {
                             </TooltipTrigger>
                             <TooltipContent side="top" className="max-w-xs">
                               <p className="text-xs">
-                                Is this person a decision maker or potential user of your product? Considers job
-                                function, department, and influence level in buying decisions.
+                                Is this person a decision maker or potential
+                                user of your product? Considers job function,
+                                department, and influence level in buying
+                                decisions.
                               </p>
                             </TooltipContent>
                           </Tooltip>
                         </div>
-                        <span className="text-sm font-medium">{weights.positionMatch}%</span>
+                        <span className="text-sm font-medium">
+                          {weights.positionMatch}%
+                        </span>
                       </div>
                       <Slider
                         id="weight-position"
@@ -385,7 +449,9 @@ export default function ScoringConfigPage() {
                         max={100}
                         step={5}
                         value={[weights.positionMatch]}
-                        onValueChange={(value) => handleWeightChange("positionMatch", value)}
+                        onValueChange={(value) =>
+                          handleWeightChange("positionMatch", value)
+                        }
                       />
                     </div>
 
@@ -402,13 +468,17 @@ export default function ScoringConfigPage() {
                             </TooltipTrigger>
                             <TooltipContent side="top" className="max-w-xs">
                               <p className="text-xs">
-                                Does the lead&apos;s seniority level match your target levels (C-level, VP, Director,
-                                etc.)? Higher seniority often means faster decision-making authority.
+                                Does the lead&apos;s seniority level match your
+                                target levels (C-level, VP, Director, etc.)?
+                                Higher seniority often means faster
+                                decision-making authority.
                               </p>
                             </TooltipContent>
                           </Tooltip>
                         </div>
-                        <span className="text-sm font-medium">{weights.seniorityMatch}%</span>
+                        <span className="text-sm font-medium">
+                          {weights.seniorityMatch}%
+                        </span>
                       </div>
                       <Slider
                         id="weight-seniority"
@@ -416,7 +486,9 @@ export default function ScoringConfigPage() {
                         max={100}
                         step={5}
                         value={[weights.seniorityMatch]}
-                        onValueChange={(value) => handleWeightChange("seniorityMatch", value)}
+                        onValueChange={(value) =>
+                          handleWeightChange("seniorityMatch", value)
+                        }
                       />
                     </div>
 
@@ -433,13 +505,16 @@ export default function ScoringConfigPage() {
                             </TooltipTrigger>
                             <TooltipContent side="top" className="max-w-xs">
                               <p className="text-xs">
-                                Combines company size with product need to estimate revenue potential. Larger companies
+                                Combines company size with product need to
+                                estimate revenue potential. Larger companies
                                 with higher need = bigger deal opportunities.
                               </p>
                             </TooltipContent>
                           </Tooltip>
                         </div>
-                        <span className="text-sm font-medium">{weights.dealSizeMatch}%</span>
+                        <span className="text-sm font-medium">
+                          {weights.dealSizeMatch}%
+                        </span>
                       </div>
                       <Slider
                         id="weight-dealsize"
@@ -447,7 +522,9 @@ export default function ScoringConfigPage() {
                         max={100}
                         step={5}
                         value={[weights.dealSizeMatch]}
-                        onValueChange={(value) => handleWeightChange("dealSizeMatch", value)}
+                        onValueChange={(value) =>
+                          handleWeightChange("dealSizeMatch", value)
+                        }
                       />
                     </div>
                   </div>

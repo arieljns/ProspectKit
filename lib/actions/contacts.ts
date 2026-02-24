@@ -1,11 +1,15 @@
-'use server';
+"use server";
 
-import { db } from '../db';
-import { contacts, insertContactSchema, type NewContactParams } from '../db/schema/contacts';
-import { companies } from '../db/schema/companies';
-import { leadScores } from '../db/schema/lead-scores';
-import { eq, desc } from 'drizzle-orm';
-import { revalidatePath } from 'next/cache';
+import { db } from "../db";
+import {
+  contacts,
+  insertContactSchema,
+  type NewContactParams,
+} from "../db/schema/contacts";
+import { companies } from "../db/schema/companies";
+import { leadScores } from "../db/schema/lead-scores";
+import { eq, desc } from "drizzle-orm";
+import { revalidatePath } from "next/cache";
 
 /**
  * Get all contacts with their company information and lead scores
@@ -27,7 +31,8 @@ export const getAllContacts = async () => {
   } catch (error) {
     return {
       success: false,
-      error: error instanceof Error ? error.message : 'Failed to fetch contacts',
+      error:
+        error instanceof Error ? error.message : "Failed to fetch contacts",
     };
   }
 };
@@ -48,14 +53,14 @@ export const getContactById = async (id: string) => {
       .limit(1);
 
     if (!result) {
-      return { success: false, error: 'Contact not found' };
+      return { success: false, error: "Contact not found" };
     }
 
     return { success: true, data: result };
   } catch (error) {
     return {
       success: false,
-      error: error instanceof Error ? error.message : 'Failed to fetch contact',
+      error: error instanceof Error ? error.message : "Failed to fetch contact",
     };
   }
 };
@@ -75,7 +80,8 @@ export const getContactsByCompanyId = async (companyId: string) => {
   } catch (error) {
     return {
       success: false,
-      error: error instanceof Error ? error.message : 'Failed to fetch contacts',
+      error:
+        error instanceof Error ? error.message : "Failed to fetch contacts",
     };
   }
 };
@@ -92,13 +98,14 @@ export const createContact = async (input: NewContactParams) => {
       .values(validatedData)
       .returning();
 
-    revalidatePath('/app/contacts');
-    revalidatePath('/app/dashboard');
+    revalidatePath("/app/contacts");
+    revalidatePath("/app/dashboard");
     return { success: true, data: contact };
   } catch (error) {
     return {
       success: false,
-      error: error instanceof Error ? error.message : 'Failed to create contact',
+      error:
+        error instanceof Error ? error.message : "Failed to create contact",
     };
   }
 };
@@ -108,7 +115,7 @@ export const createContact = async (input: NewContactParams) => {
  */
 export const updateContact = async (
   id: string,
-  input: Partial<NewContactParams>
+  input: Partial<NewContactParams>,
 ) => {
   try {
     const [updatedContact] = await db
@@ -121,16 +128,17 @@ export const updateContact = async (
       .returning();
 
     if (!updatedContact) {
-      return { success: false, error: 'Contact not found' };
+      return { success: false, error: "Contact not found" };
     }
 
-    revalidatePath('/app/contacts');
-    revalidatePath('/app/dashboard');
+    revalidatePath("/app/contacts");
+    revalidatePath("/app/dashboard");
     return { success: true, data: updatedContact };
   } catch (error) {
     return {
       success: false,
-      error: error instanceof Error ? error.message : 'Failed to update contact',
+      error:
+        error instanceof Error ? error.message : "Failed to update contact",
     };
   }
 };
@@ -146,16 +154,17 @@ export const deleteContact = async (id: string) => {
       .returning();
 
     if (!deletedContact) {
-      return { success: false, error: 'Contact not found' };
+      return { success: false, error: "Contact not found" };
     }
 
-    revalidatePath('/app/contacts');
-    revalidatePath('/app/dashboard');
+    revalidatePath("/app/contacts");
+    revalidatePath("/app/dashboard");
     return { success: true, message: `Contact ${deletedContact.name} deleted` };
   } catch (error) {
     return {
       success: false,
-      error: error instanceof Error ? error.message : 'Failed to delete contact',
+      error:
+        error instanceof Error ? error.message : "Failed to delete contact",
     };
   }
 };
@@ -165,7 +174,12 @@ export const deleteContact = async (id: string) => {
  */
 export const updateContactStatus = async (
   id: string,
-  contactStatus: 'new' | 'contacted' | 'responded' | 'qualified' | 'not_interested'
+  contactStatus:
+    | "new"
+    | "contacted"
+    | "responded"
+    | "qualified"
+    | "not_interested",
 ) => {
   try {
     const [updatedContact] = await db
@@ -178,15 +192,18 @@ export const updateContactStatus = async (
       .returning();
 
     if (!updatedContact) {
-      return { success: false, error: 'Contact not found' };
+      return { success: false, error: "Contact not found" };
     }
 
-    revalidatePath('/app/contacts');
+    revalidatePath("/app/contacts");
     return { success: true, data: updatedContact };
   } catch (error) {
     return {
       success: false,
-      error: error instanceof Error ? error.message : 'Failed to update contact status',
+      error:
+        error instanceof Error
+          ? error.message
+          : "Failed to update contact status",
     };
   }
 };
@@ -196,7 +213,7 @@ export const updateContactStatus = async (
  */
 export const updateContactPriority = async (
   id: string,
-  priority: 'High' | 'Medium' | 'Low'
+  priority: "High" | "Medium" | "Low",
 ) => {
   try {
     const [updatedContact] = await db
@@ -209,15 +226,18 @@ export const updateContactPriority = async (
       .returning();
 
     if (!updatedContact) {
-      return { success: false, error: 'Contact not found' };
+      return { success: false, error: "Contact not found" };
     }
 
-    revalidatePath('/app/contacts');
+    revalidatePath("/app/contacts");
     return { success: true, data: updatedContact };
   } catch (error) {
     return {
       success: false,
-      error: error instanceof Error ? error.message : 'Failed to update contact priority',
+      error:
+        error instanceof Error
+          ? error.message
+          : "Failed to update contact priority",
     };
   }
 };
@@ -237,15 +257,18 @@ export const updateLastContacted = async (id: string) => {
       .returning();
 
     if (!updatedContact) {
-      return { success: false, error: 'Contact not found' };
+      return { success: false, error: "Contact not found" };
     }
 
-    revalidatePath('/app/contacts');
+    revalidatePath("/app/contacts");
     return { success: true, data: updatedContact };
   } catch (error) {
     return {
       success: false,
-      error: error instanceof Error ? error.message : 'Failed to update last contacted time',
+      error:
+        error instanceof Error
+          ? error.message
+          : "Failed to update last contacted time",
     };
   }
 };

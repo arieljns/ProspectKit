@@ -73,7 +73,7 @@ export async function getAnalyticsData() {
           seniorityMatchScore: contact.leadScore.seniorityMatchScore,
           dealSizeScore: contact.leadScore.dealSizeScore,
         },
-        weights
+        weights,
       );
 
       if (totalScore >= 85) aGradeCount++;
@@ -99,8 +99,10 @@ export async function getAnalyticsData() {
 
     // 6. Calculate rates
     const contactedCount = totalLeads - statusBreakdown.new;
-    const contactedRate = totalLeads > 0 ? (contactedCount / totalLeads) * 100 : 0;
-    const qualifiedRate = totalLeads > 0 ? (statusBreakdown.qualified / totalLeads) * 100 : 0;
+    const contactedRate =
+      totalLeads > 0 ? (contactedCount / totalLeads) * 100 : 0;
+    const qualifiedRate =
+      totalLeads > 0 ? (statusBreakdown.qualified / totalLeads) * 100 : 0;
     const aGradeRate = totalLeads > 0 ? (aGradeCount / totalLeads) * 100 : 0;
 
     // 7. Get leads over time (last 30 days)
@@ -149,7 +151,7 @@ export async function getAnalyticsData() {
             seniorityMatchScore: contact.leadScore.seniorityMatchScore,
             dealSizeScore: contact.leadScore.dealSizeScore,
           },
-          weights
+          weights,
         );
 
         if (totalScore >= 85) {
@@ -174,13 +176,28 @@ export async function getAnalyticsData() {
     }
 
     // 8. Get top companies by lead count
-    const companyLeadCounts = new Map<string, { name: string; count: number; aCount: number; bCount: number; cCount: number }>();
+    const companyLeadCounts = new Map<
+      string,
+      {
+        name: string;
+        count: number;
+        aCount: number;
+        bCount: number;
+        cCount: number;
+      }
+    >();
 
     allContacts.forEach((contact) => {
       const companyName = contact.companyName || "Unknown";
 
       if (!companyLeadCounts.has(companyName)) {
-        companyLeadCounts.set(companyName, { name: companyName, count: 0, aCount: 0, bCount: 0, cCount: 0 });
+        companyLeadCounts.set(companyName, {
+          name: companyName,
+          count: 0,
+          aCount: 0,
+          bCount: 0,
+          cCount: 0,
+        });
       }
 
       const companyData = companyLeadCounts.get(companyName)!;
@@ -195,7 +212,7 @@ export async function getAnalyticsData() {
             seniorityMatchScore: contact.leadScore.seniorityMatchScore,
             dealSizeScore: contact.leadScore.dealSizeScore,
           },
-          weights
+          weights,
         );
 
         if (totalScore >= 85) companyData.aCount++;
@@ -213,7 +230,10 @@ export async function getAnalyticsData() {
 
     allContacts.forEach((contact) => {
       const industry = contact.industry || "Unknown";
-      industryLeadCounts.set(industry, (industryLeadCounts.get(industry) || 0) + 1);
+      industryLeadCounts.set(
+        industry,
+        (industryLeadCounts.get(industry) || 0) + 1,
+      );
     });
 
     const topIndustries = Array.from(industryLeadCounts.entries())
@@ -254,7 +274,8 @@ export async function getAnalyticsData() {
     console.error("Failed to get analytics data:", error);
     return {
       success: false,
-      error: error instanceof Error ? error.message : "Failed to get analytics data",
+      error:
+        error instanceof Error ? error.message : "Failed to get analytics data",
     };
   }
 }

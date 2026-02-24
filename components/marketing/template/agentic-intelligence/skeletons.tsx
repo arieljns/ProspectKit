@@ -253,7 +253,9 @@ export function ManageLeadsSkeleton() {
   return (
     <div className="relative mx-auto mt-10 w-[92%] rounded-2xl border border-gray-300 bg-white/95 p-3 shadow-xl dark:border-neutral-700 dark:bg-neutral-900/95">
       <div className="mb-3 flex items-center justify-between">
-        <p className="text-xs font-medium text-gray-500">Manage leads workspace</p>
+        <p className="text-xs font-medium text-gray-500">
+          Manage leads workspace
+        </p>
         <div className="flex items-center gap-1.5 text-[10px]">
           <span className="rounded-md border border-gray-200 bg-gray-50 px-1.5 py-1 text-gray-600 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-300">
             12 queued
@@ -327,7 +329,9 @@ export function ManageLeadsSkeleton() {
           <div className="mt-2 rounded-md border border-gray-200 bg-white p-2 dark:border-neutral-700 dark:bg-neutral-900">
             <div className="mb-1 flex items-center justify-between text-[10px] text-gray-500 dark:text-neutral-400">
               <span>Composite lead score</span>
-              <span className="font-semibold text-gray-700 dark:text-neutral-200">{activeLead.score}</span>
+              <span className="font-semibold text-gray-700 dark:text-neutral-200">
+                {activeLead.score}
+              </span>
             </div>
             <div className="h-1.5 rounded-full bg-gray-100 dark:bg-neutral-800">
               <motion.div
@@ -345,8 +349,12 @@ export function ManageLeadsSkeleton() {
                 key={signal.label}
                 className="rounded-md border border-gray-200 bg-white p-2 dark:border-neutral-700 dark:bg-neutral-900"
               >
-                <p className="text-[10px] text-gray-500 dark:text-neutral-400">{signal.label}</p>
-                <p className="mb-1 text-[11px] font-medium text-gray-700 dark:text-neutral-200">{signal.value}%</p>
+                <p className="text-[10px] text-gray-500 dark:text-neutral-400">
+                  {signal.label}
+                </p>
+                <p className="mb-1 text-[11px] font-medium text-gray-700 dark:text-neutral-200">
+                  {signal.value}%
+                </p>
                 <div className="h-1 rounded-full bg-gray-100 dark:bg-neutral-800">
                   <motion.div
                     initial={{ width: 0 }}
@@ -360,7 +368,9 @@ export function ManageLeadsSkeleton() {
           </div>
 
           <div className="mt-2 rounded-md border border-gray-200 bg-white p-2 dark:border-neutral-700 dark:bg-neutral-900">
-            <p className="text-[10px] text-gray-500 dark:text-neutral-400">Outreach draft</p>
+            <p className="text-[10px] text-gray-500 dark:text-neutral-400">
+              Outreach draft
+            </p>
             <p className="mt-1 line-clamp-3 text-[10px] leading-relaxed text-gray-600 dark:text-neutral-300">
               {activeLead.draft}
             </p>
@@ -374,7 +384,11 @@ export function ManageLeadsSkeleton() {
                     key={dot}
                     className="inline-block h-1.5 w-1.5 rounded-full bg-gray-400"
                     animate={{ opacity: [0.25, 1, 0.25] }}
-                    transition={{ duration: 1, delay: dot * 0.18, repeat: Infinity }}
+                    transition={{
+                      duration: 1,
+                      delay: dot * 0.18,
+                      repeat: Infinity,
+                    }}
                   />
                 ))}
               </div>
@@ -468,7 +482,11 @@ export function PipelineAnalyticsSkeleton() {
               <span>Leads over time</span>
               <span>30d</span>
             </div>
-            <svg viewBox="0 0 200 56" className="w-full" style={{ aspectRatio: "200/56" }}>
+            <svg
+              viewBox="0 0 200 56"
+              className="w-full"
+              style={{ aspectRatio: "200/56" }}
+            >
               {/* Area fill */}
               <motion.path
                 d="M0 44 C 20 38, 36 40, 56 30 C 72 22, 88 30, 104 20 C 120 12, 140 24, 158 16 C 172 10, 186 18, 200 8 L200 56 L0 56 Z"

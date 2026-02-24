@@ -40,7 +40,7 @@ export const scoringConfig = pgTable("scoring_config", {
       dealSizeMatch: number;
     }>()
     .default(
-      sql`'{"industryMatch": 25, "companyMatch": 30, "positionMatch": 20, "seniorityMatch": 15, "dealSizeMatch": 10}'::jsonb`
+      sql`'{"industryMatch": 25, "companyMatch": 30, "positionMatch": 20, "seniorityMatch": 15, "dealSizeMatch": 10}'::jsonb`,
     ),
 
   // Metadata
@@ -58,7 +58,9 @@ export const updateScoringConfigSchema = z.object({
   userCompanyDescription: z.string().min(1, "Company description is required"),
   productDescription: z.string().min(1, "Product description is required"),
   targetIndustries: z.array(z.string()).min(1, "Select at least one industry"),
-  targetSeniorityLevels: z.array(z.string()).min(1, "Select at least one seniority level"),
+  targetSeniorityLevels: z
+    .array(z.string())
+    .min(1, "Select at least one seniority level"),
   weights: z.object({
     industryMatch: z.number().min(0).max(100),
     companyMatch: z.number().min(0).max(100),

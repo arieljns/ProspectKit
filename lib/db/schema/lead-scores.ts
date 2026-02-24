@@ -1,5 +1,11 @@
 import { sql } from "drizzle-orm";
-import { varchar, integer, jsonb, timestamp, pgTable } from "drizzle-orm/pg-core";
+import {
+  varchar,
+  integer,
+  jsonb,
+  timestamp,
+  pgTable,
+} from "drizzle-orm/pg-core";
 import { z } from "zod";
 
 import { nanoid } from "@/lib/utils";
@@ -54,13 +60,15 @@ export const insertLeadScoreSchema = z.object({
   positionMatchScore: z.number().int().min(0).max(100),
   seniorityMatchScore: z.number().int().min(0).max(100),
   dealSizeScore: z.number().int().min(0).max(100),
-  reasoning: z.object({
-    industryMatch: z.string().optional(),
-    companyMatch: z.string().optional(),
-    positionMatch: z.string().optional(),
-    seniorityMatch: z.string().optional(),
-    dealSize: z.string().optional(),
-  }).optional(),
+  reasoning: z
+    .object({
+      industryMatch: z.string().optional(),
+      companyMatch: z.string().optional(),
+      positionMatch: z.string().optional(),
+      seniorityMatch: z.string().optional(),
+      dealSize: z.string().optional(),
+    })
+    .optional(),
 });
 
 export type LeadScore = typeof leadScores.$inferSelect;

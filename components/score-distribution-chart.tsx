@@ -1,6 +1,12 @@
 "use client";
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/shadcnui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/shadcnui/card";
 import { Badge } from "@/components/shadcnui/badge";
 
 type ScoreDistributionChartProps = {
@@ -63,13 +69,19 @@ export function ScoreDistributionChart({ data }: ScoreDistributionChartProps) {
               {/* Label and Count */}
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <Badge className={`${item.badgeClass} min-w-12 justify-center`}>
+                  <Badge
+                    className={`${item.badgeClass} min-w-12 justify-center`}
+                  >
                     {item.label}
                   </Badge>
-                  <span className="text-sm text-muted-foreground">{item.description}</span>
+                  <span className="text-sm text-muted-foreground">
+                    {item.description}
+                  </span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="text-sm font-semibold tabular-nums">{item.count}</span>
+                  <span className="text-sm font-semibold tabular-nums">
+                    {item.count}
+                  </span>
                   <span className="text-xs text-muted-foreground tabular-nums">
                     ({item.percentage.toFixed(1)}%)
                   </span>
@@ -94,7 +106,9 @@ export function ScoreDistributionChart({ data }: ScoreDistributionChartProps) {
             </div>
             <div className="flex items-center justify-between text-xs text-muted-foreground mt-1">
               <span>Scored Leads</span>
-              <span className="tabular-nums">{data.aGrade + data.bGrade + data.cGrade}</span>
+              <span className="tabular-nums">
+                {data.aGrade + data.bGrade + data.cGrade}
+              </span>
             </div>
           </div>
         </div>

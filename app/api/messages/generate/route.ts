@@ -154,6 +154,9 @@ Write the email/InMail now (no subject line, no signature):`;
     return result.toTextStreamResponse();
   } catch (error) {
     console.error("Message generation error:", error);
-    return new Response(error instanceof Error ? error.message : "Failed to generate message", { status: 500 });
+    return new Response(
+      error instanceof Error ? error.message : "Failed to generate message",
+      { status: 500 },
+    );
   }
 }

@@ -1,9 +1,6 @@
 {
   "hasSrc": false,
-  "packages": [
-    "shadcn-ui",
-    "drizzle"
-  ],
+  "packages": ["shadcn-ui", "drizzle"],
   "preferredPackageManager": "pnpm",
   "t3": false,
   "alias": "@",

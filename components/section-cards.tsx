@@ -1,13 +1,20 @@
-import { TrendingDownIcon, TrendingUpIcon, SparklesIcon, UsersIcon, TargetIcon, CheckCircle2Icon } from "lucide-react"
+import {
+  TrendingDownIcon,
+  TrendingUpIcon,
+  SparklesIcon,
+  UsersIcon,
+  TargetIcon,
+  CheckCircle2Icon,
+} from "lucide-react";
 
-import { Badge } from "@/components/shadcnui/badge"
+import { Badge } from "@/components/shadcnui/badge";
 import {
   Card,
   CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/shadcnui/card"
+} from "@/components/shadcnui/card";
 
 type SectionCardsProps = {
   data: {
@@ -51,7 +58,10 @@ export function SectionCards({ data }: SectionCardsProps) {
             {data.aGradeCount}
           </CardTitle>
           <div className="absolute right-4 top-4">
-            <Badge variant="outline" className="flex gap-1 rounded-lg text-xs bg-green-50 text-green-700 border-green-200">
+            <Badge
+              variant="outline"
+              className="flex gap-1 rounded-lg text-xs bg-green-50 text-green-700 border-green-200"
+            >
               <SparklesIcon className="size-3" />
               {data.aGradeRate.toFixed(1)}%
             </Badge>
@@ -103,11 +113,9 @@ export function SectionCards({ data }: SectionCardsProps) {
           <div className="line-clamp-1 flex gap-2 font-medium">
             Qualification success
           </div>
-          <div className="text-muted-foreground">
-            Leads marked as qualified
-          </div>
+          <div className="text-muted-foreground">Leads marked as qualified</div>
         </CardFooter>
       </Card>
     </div>
-  )
+  );
 }

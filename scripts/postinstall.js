@@ -19,7 +19,7 @@ if (skipMigrations) {
 // brittle (env may be missing/misconfigured; DB may be unreachable).
 if ((isVercel || isCI) && !forceMigrations) {
   console.log(
-    "⏭️  Skipping DB migrations during install on Vercel/CI. Set RUN_DB_MIGRATIONS=1 to force."
+    "⏭️  Skipping DB migrations during install on Vercel/CI. Set RUN_DB_MIGRATIONS=1 to force.",
   );
   process.exit(0);
 }
@@ -30,7 +30,9 @@ if (!databaseUrl && !forceMigrations) {
 }
 
 const execPath = process.env.npm_execpath;
-const args = execPath ? [execPath, "run", "db:auto-migrate"] : ["run", "db:auto-migrate"];
+const args = execPath
+  ? [execPath, "run", "db:auto-migrate"]
+  : ["run", "db:auto-migrate"];
 
 const result = spawnSync("node", args, { stdio: "inherit", env: process.env });
 
@@ -38,10 +40,9 @@ if (result.status === 0) process.exit(0);
 
 if (!forceMigrations) {
   console.log(
-    "⚠️  DB migration failed during postinstall; continuing. Set RUN_DB_MIGRATIONS=1 to make this fatal."
+    "⚠️  DB migration failed during postinstall; continuing. Set RUN_DB_MIGRATIONS=1 to make this fatal.",
   );
   process.exit(0);
 }
 
 process.exit(result.status ?? 1);
-

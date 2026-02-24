@@ -2,7 +2,13 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { AnimatePresence, motion, useScroll, useSpring, useTransform } from "motion/react";
+import {
+  AnimatePresence,
+  motion,
+  useScroll,
+  useSpring,
+  useTransform,
+} from "motion/react";
 import { CloseIcon, HamburgerIcon } from "@/icons/general";
 import { landingLinks, landingNavItems } from "@/lib/marketing/landing-content";
 import { Button } from "./button";
@@ -78,10 +84,20 @@ function MobileNav() {
               ))}
 
               <div className="mt-4 grid gap-2 p-4">
-                <Button as={Link} href={landingLinks.primaryCta} onClick={() => setOpen(false)}>
+                <Button
+                  as={Link}
+                  href={landingLinks.primaryCta}
+                  onClick={() => setOpen(false)}
+                >
                   Try the demo
                 </Button>
-                <Button as="a" href={landingLinks.repo} target="_blank" rel="noreferrer" variant="secondary">
+                <Button
+                  as="a"
+                  href={landingLinks.repo}
+                  target="_blank"
+                  rel="noreferrer"
+                  variant="secondary"
+                >
                   View source
                 </Button>
               </div>
@@ -110,7 +126,13 @@ function DesktopNav() {
       </div>
       <div className="flex items-center gap-2">
         <ModeToggle />
-        <Button as="a" href={landingLinks.repo} target="_blank" rel="noreferrer" variant="secondary">
+        <Button
+          as="a"
+          href={landingLinks.repo}
+          target="_blank"
+          rel="noreferrer"
+          variant="secondary"
+        >
           Source
         </Button>
         <Button as={Link} href={landingLinks.primaryCta}>
@@ -147,7 +169,13 @@ function FloatingNav() {
       </div>
       <div className="flex items-center gap-2">
         <ModeToggle />
-        <Button as="a" href={landingLinks.repo} target="_blank" rel="noreferrer" variant="secondary">
+        <Button
+          as="a"
+          href={landingLinks.repo}
+          target="_blank"
+          rel="noreferrer"
+          variant="secondary"
+        >
           Source
         </Button>
         <Button as={Link} href={landingLinks.primaryCta}>

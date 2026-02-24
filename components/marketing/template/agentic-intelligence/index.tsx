@@ -25,7 +25,9 @@ export const AgenticIntelligence = () => {
     <Container id="core-features" className="border-divide border-x">
       <div className="flex flex-col items-center py-16">
         <Badge text="Core capabilities" />
-        <SectionHeading className="mt-4">Product features in the prototype today</SectionHeading>
+        <SectionHeading className="mt-4">
+          Product features in the prototype today
+        </SectionHeading>
 
         <SubHeading as="p" className="mx-auto mt-6 max-w-lg px-2">
           The main working surfaces are Discover Companies, Manage Leads, and

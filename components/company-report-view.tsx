@@ -1,9 +1,15 @@
-"use client"
+"use client";
 
-import { Badge } from "@/components/shadcnui/badge"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/shadcnui/card"
-import { Separator } from "@/components/shadcnui/separator"
-import { ReportData } from "@/lib/db/schema/company-reports"
+import { Badge } from "@/components/shadcnui/badge";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/shadcnui/card";
+import { Separator } from "@/components/shadcnui/separator";
+import { ReportData } from "@/lib/db/schema/company-reports";
 import {
   BuildingIcon,
   TrendingUpIcon,
@@ -15,7 +21,7 @@ import {
   ExternalLinkIcon,
   AlertTriangleIcon,
   TargetIcon,
-} from "lucide-react"
+} from "lucide-react";
 
 export function CompanyReportView({ report }: { report: ReportData }) {
   return (
@@ -279,5 +285,5 @@ export function CompanyReportView({ report }: { report: ReportData }) {
         </Card>
       )}
     </div>
-  )
+  );
 }

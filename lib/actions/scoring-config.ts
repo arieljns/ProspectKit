@@ -1,26 +1,26 @@
-'use server';
+"use server";
 
-import { db } from '../db';
+import { db } from "../db";
 import {
   scoringConfig,
   updateScoringConfigSchema,
   type UpdateScoringConfigParams,
-} from '../db/schema/scoring-config';
-import { eq } from 'drizzle-orm';
-import { revalidatePath } from 'next/cache';
+} from "../db/schema/scoring-config";
+import { eq } from "drizzle-orm";
+import { revalidatePath } from "next/cache";
 
 /**
  * Default scoring configuration
  * Used for initial setup and reset
  */
 const DEFAULT_CONFIG: UpdateScoringConfigParams = {
-  userCompanyName: 'ProspectKit',
+  userCompanyName: "ProspectKit",
   userCompanyDescription:
-    'An open-source outbound workspace built for small teams.',
+    "An open-source outbound workspace built for small teams.",
   productDescription:
-    'ProspectKit helps teams run a lean outbound workflow: company research, contact discovery, lead scoring, and outreach drafting.',
-  targetIndustries: ['SaaS', 'Developer Tools', 'AI/ML', 'FinTech'],
-  targetSeniorityLevels: ['C-level', 'VP', 'Director'],
+    "ProspectKit helps teams run a lean outbound workflow: company research, contact discovery, lead scoring, and outreach drafting.",
+  targetIndustries: ["SaaS", "Developer Tools", "AI/ML", "FinTech"],
+  targetSeniorityLevels: ["C-level", "VP", "Director"],
   weights: {
     industryMatch: 25,
     companyMatch: 30,
@@ -39,7 +39,7 @@ export const getScoringConfig = async () => {
     const [config] = await db
       .select()
       .from(scoringConfig)
-      .where(eq(scoringConfig.id, 'default'))
+      .where(eq(scoringConfig.id, "default"))
       .limit(1);
 
     // If no config exists, create default
@@ -47,7 +47,7 @@ export const getScoringConfig = async () => {
       const [newConfig] = await db
         .insert(scoringConfig)
         .values({
-          id: 'default',
+          id: "default",
           ...DEFAULT_CONFIG,
         })
         .returning();
@@ -59,8 +59,7 @@ export const getScoringConfig = async () => {
   } catch (error) {
     return {
       success: false,
-      error:
-        error instanceof Error ? error.message : 'Failed to fetch config',
+      error: error instanceof Error ? error.message : "Failed to fetch config",
     };
   }
 };
@@ -68,9 +67,7 @@ export const getScoringConfig = async () => {
 /**
  * Update scoring configuration
  */
-export const updateScoringConfig = async (
-  input: UpdateScoringConfigParams
-) => {
+export const updateScoringConfig = async (input: UpdateScoringConfigParams) => {
   try {
     // Validate input
     const validatedData = updateScoringConfigSchema.parse(input);
@@ -78,7 +75,7 @@ export const updateScoringConfig = async (
     // Validate weights sum to 100
     const totalWeight = Object.values(validatedData.weights).reduce(
       (sum, weight) => sum + weight,
-      0
+      0,
     );
 
     if (totalWeight !== 100) {
@@ -92,7 +89,7 @@ export const updateScoringConfig = async (
     const [updatedConfig] = await db
       .insert(scoringConfig)
       .values({
-        id: 'default',
+        id: "default",
         ...validatedData,
         updatedAt: new Date(),
       })
@@ -105,14 +102,14 @@ export const updateScoringConfig = async (
       })
       .returning();
 
-    revalidatePath('/app/settings/scoring');
-    revalidatePath('/app/contacts');
+    revalidatePath("/app/settings/scoring");
+    revalidatePath("/app/contacts");
 
     return { success: true, data: updatedConfig };
   } catch (error) {
     return {
       success: false,
-      error: error instanceof Error ? error.message : 'Failed to update config',
+      error: error instanceof Error ? error.message : "Failed to update config",
     };
   }
 };
@@ -125,7 +122,7 @@ export const resetScoringConfig = async () => {
     const [resetConfig] = await db
       .insert(scoringConfig)
       .values({
-        id: 'default',
+        id: "default",
         ...DEFAULT_CONFIG,
         updatedAt: new Date(),
       })
@@ -138,14 +135,14 @@ export const resetScoringConfig = async () => {
       })
       .returning();
 
-    revalidatePath('/app/settings/scoring');
-    revalidatePath('/app/contacts');
+    revalidatePath("/app/settings/scoring");
+    revalidatePath("/app/contacts");
 
     return { success: true, data: resetConfig };
   } catch (error) {
     return {
       success: false,
-      error: error instanceof Error ? error.message : 'Failed to reset config',
+      error: error instanceof Error ? error.message : "Failed to reset config",
     };
   }
 };

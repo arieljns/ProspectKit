@@ -1,10 +1,14 @@
-import { ContactsTable, type ContactWithCompany } from "@/components/contacts-table"
-import { SiteHeader } from "@/components/site-header"
-import { getAllContacts } from "@/lib/actions/contacts"
+import {
+  ContactsTable,
+  type ContactWithCompany,
+} from "@/components/contacts-table";
+import { SiteHeader } from "@/components/site-header";
+import { getAllContacts } from "@/lib/actions/contacts";
 
 export default async function ContactsPage() {
-  const result = await getAllContacts()
-  const contacts: ContactWithCompany[] = result.success && result.data ? result.data : []
+  const result = await getAllContacts();
+  const contacts: ContactWithCompany[] =
+    result.success && result.data ? result.data : [];
 
   return (
     <>
@@ -17,5 +21,5 @@ export default async function ContactsPage() {
         </div>
       </div>
     </>
-  )
+  );
 }

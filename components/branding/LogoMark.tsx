@@ -10,10 +10,7 @@ export function LogoMark({ className, priority, ...props }: LogoMarkProps) {
   return (
     <span
       {...props}
-      className={cn(
-        "relative inline-block h-6 w-6 shrink-0",
-        className
-      )}
+      className={cn("relative inline-block h-6 w-6 shrink-0", className)}
     >
       <Image
         src="/marketing/logo.png"

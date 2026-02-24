@@ -1,33 +1,33 @@
-import { notFound } from "next/navigation"
-import { ArrowLeftIcon } from "lucide-react"
-import Link from "next/link"
+import { notFound } from "next/navigation";
+import { ArrowLeftIcon } from "lucide-react";
+import Link from "next/link";
 
-import { Button } from "@/components/shadcnui/button"
-import { CompanyReportView } from "@/components/company-report-view"
-import { SiteHeader } from "@/components/site-header"
-import { getCompanyById } from "@/lib/actions/companies"
-import { getReportByCompanyId } from "@/lib/actions/company-reports"
+import { Button } from "@/components/shadcnui/button";
+import { CompanyReportView } from "@/components/company-report-view";
+import { SiteHeader } from "@/components/site-header";
+import { getCompanyById } from "@/lib/actions/companies";
+import { getReportByCompanyId } from "@/lib/actions/company-reports";
 
 export default async function ReportPage({
   params,
 }: {
-  params: Promise<{ id: string }>
+  params: Promise<{ id: string }>;
 }) {
-  const { id } = await params
+  const { id } = await params;
 
   // Fetch company and report
   const [companyResult, reportResult] = await Promise.all([
     getCompanyById(id),
     getReportByCompanyId(id),
-  ])
+  ]);
 
   // Handle errors
   if (!companyResult.success || !reportResult.success) {
-    notFound()
+    notFound();
   }
 
-  const company = companyResult.data!
-  const report = reportResult.data!
+  const company = companyResult.data!;
+  const report = reportResult.data!;
 
   return (
     <>
@@ -51,5 +51,5 @@ export default async function ReportPage({
         </div>
       </div>
     </>
-  )
+  );
 }

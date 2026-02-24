@@ -32,14 +32,25 @@ export const Hero = () => {
         <Button as={Link} href={landingLinks.primaryCta}>
           Try the demo
         </Button>
-        <Button variant="secondary" as="a" href={PROSPECTKIT_REPO_URL} target="_blank" rel="noreferrer">
+        <Button
+          variant="secondary"
+          as="a"
+          href={PROSPECTKIT_REPO_URL}
+          target="_blank"
+          rel="noreferrer"
+        >
           View source
         </Button>
       </div>
 
       <div className="mt-6 flex items-center gap-2 text-xs text-gray-600 sm:text-sm dark:text-neutral-300">
-        <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4 }}>
-          Built for startups moving from founder-led sales to repeatable outbound.
+        <motion.span
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.4 }}
+        >
+          Built for startups moving from founder-led sales to repeatable
+          outbound.
         </motion.span>
       </div>
     </Container>

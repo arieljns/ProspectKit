@@ -14,8 +14,9 @@ export function Hero() {
             Lead gen and outreach—without the bloat.
           </h1>
           <p className="mt-4 max-w-xl text-base text-muted-foreground sm:text-lg">
-            ProspectKit is an open-source outbound workspace built for small teams and early-stage startups.
-            Research companies, find decision-makers, score leads, and draft outreach in one place.
+            ProspectKit is an open-source outbound workspace built for small
+            teams and early-stage startups. Research companies, find
+            decision-makers, score leads, and draft outreach in one place.
           </p>
 
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
@@ -30,7 +31,8 @@ export function Hero() {
           </div>
 
           <p className="mt-5 text-xs text-muted-foreground">
-            Self-host for free. Sponsor to support development. Contact us for help or partnerships.
+            Self-host for free. Sponsor to support development. Contact us for
+            help or partnerships.
           </p>
         </div>
 
@@ -47,7 +49,9 @@ export function Hero() {
                 { label: "Qualified", value: "6" },
               ].map((item) => (
                 <div key={item.label} className="rounded-md border p-3">
-                  <div className="text-xs text-muted-foreground">{item.label}</div>
+                  <div className="text-xs text-muted-foreground">
+                    {item.label}
+                  </div>
                   <div className="mt-1 text-lg font-semibold">{item.value}</div>
                 </div>
               ))}

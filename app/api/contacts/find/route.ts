@@ -1,8 +1,8 @@
-import { xai } from '@ai-sdk/xai';
-import { generateObject } from 'ai';
-import { getCompanyById } from '@/lib/actions/companies';
-import { createContact } from '@/lib/actions/contacts';
-import { contactFinderSchema } from '@/lib/ai/contact-finder-schema';
+import { xai } from "@ai-sdk/xai";
+import { generateObject } from "ai";
+import { getCompanyById } from "@/lib/actions/companies";
+import { createContact } from "@/lib/actions/contacts";
+import { contactFinderSchema } from "@/lib/ai/contact-finder-schema";
 
 export const maxDuration = 60;
 
@@ -12,8 +12,8 @@ export async function POST(req: Request) {
 
     if (!companyId) {
       return Response.json(
-        { success: false, error: 'Company ID is required' },
-        { status: 400 }
+        { success: false, error: "Company ID is required" },
+        { status: 400 },
       );
     }
 
@@ -21,8 +21,8 @@ export async function POST(req: Request) {
     const companyResult = await getCompanyById(companyId);
     if (!companyResult.success) {
       return Response.json(
-        { success: false, error: 'Company not found' },
-        { status: 404 }
+        { success: false, error: "Company not found" },
+        { status: 404 },
       );
     }
 
@@ -52,9 +52,9 @@ Extract for each contact:
 - LinkedIn profile URL (if available)`;
 
     const userPrompt = `Find key contacts at: ${company.companyName}
-${company.industry ? `Industry: ${company.industry}` : ''}
-${company.website ? `Website: ${company.website}` : ''}
-${company.description ? `Description: ${company.description}` : ''}
+${company.industry ? `Industry: ${company.industry}` : ""}
+${company.website ? `Website: ${company.website}` : ""}
+${company.description ? `Description: ${company.description}` : ""}
 
 Search for people currently working at ${company.companyName}.
 Try multiple search strategies:
@@ -70,23 +70,22 @@ Return up to 5 contacts with their name, title, department (optional), and Linke
 REMINDER: Return ONLY the JSON object, no additional text or explanations.`;
 
     const { object: result } = await generateObject({
-      model: xai('grok-4-fast-non-reasoning-latest'),
+      model: xai("grok-4-fast-non-reasoning-latest"),
       schema: contactFinderSchema,
-      schemaName: 'ContactFinderResult',
-      schemaDescription:
-        'Key contacts found at a company via web search',
+      schemaName: "ContactFinderResult",
+      schemaDescription: "Key contacts found at a company via web search",
       system: systemPrompt,
       prompt: userPrompt,
       providerOptions: {
         xai: {
           searchParameters: {
-            mode: 'on',
+            mode: "on",
             returnCitations: false,
             maxSearchResults: 15,
             // Allow broader search: LinkedIn, company websites, news sites
             sources: [
               {
-                type: 'web',
+                type: "web",
               },
             ],
           },
@@ -117,11 +116,11 @@ REMINDER: Return ONLY the JSON object, no additional text or explanations.`;
         title: contact.title,
         department: contact.department || null,
         linkedinUrl: contact.linkedinUrl || null,
-        contactStatus: 'new',
-        priority: 'Low',
+        contactStatus: "new",
+        priority: "Low",
         lastContactedAt: null,
         notes: null,
-      })
+      }),
     );
 
     const saveResults = await Promise.all(savePromises);
@@ -140,17 +139,15 @@ REMINDER: Return ONLY the JSON object, no additional text or explanations.`;
       },
     });
   } catch (error) {
-    console.error('Contact finder error:', error);
+    console.error("Contact finder error:", error);
 
     return Response.json(
       {
         success: false,
         error:
-          error instanceof Error
-            ? error.message
-            : 'Failed to find contacts',
+          error instanceof Error ? error.message : "Failed to find contacts",
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

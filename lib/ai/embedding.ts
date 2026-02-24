@@ -1,16 +1,16 @@
-import { embed, embedMany } from 'ai';
-import { openai } from '@ai-sdk/openai';
-import { db } from '../db';
-import { cosineDistance, desc, gt, sql } from 'drizzle-orm';
-import { embeddings } from '../db/schema/embeddings';
+import { embed, embedMany } from "ai";
+import { openai } from "@ai-sdk/openai";
+import { db } from "../db";
+import { cosineDistance, desc, gt, sql } from "drizzle-orm";
+import { embeddings } from "../db/schema/embeddings";
 
-const embeddingModel = openai.embedding('text-embedding-ada-002');
+const embeddingModel = openai.embedding("text-embedding-ada-002");
 
 const generateChunks = (input: string): string[] => {
   return input
     .trim()
-    .split('.')
-    .filter(i => i !== '');
+    .split(".")
+    .filter((i) => i !== "");
 };
 
 export const generateEmbeddings = async (
@@ -25,7 +25,7 @@ export const generateEmbeddings = async (
 };
 
 export const generateEmbedding = async (value: string): Promise<number[]> => {
-  const input = value.replaceAll('\\n', ' ');
+  const input = value.replaceAll("\\n", " ");
   const { embedding } = await embed({
     model: embeddingModel,
     value: input,
@@ -43,7 +43,7 @@ export const findRelevantContent = async (userQuery: string) => {
     .select({ name: embeddings.content, similarity })
     .from(embeddings)
     .where(gt(similarity, 0.5))
-    .orderBy(t => desc(t.similarity))
+    .orderBy((t) => desc(t.similarity))
     .limit(4);
   return similarGuides;
 };

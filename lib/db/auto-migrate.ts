@@ -21,7 +21,7 @@ export const autoMigrate = async () => {
     console.log("🔄 Checking for pending migrations...");
 
     const start = Date.now();
-    await migrate(db, { migrationsFolder: 'lib/db/migrations' });
+    await migrate(db, { migrationsFolder: "lib/db/migrations" });
     const end = Date.now();
 
     console.log(`✅ Database is up-to-date (${end - start}ms)`);

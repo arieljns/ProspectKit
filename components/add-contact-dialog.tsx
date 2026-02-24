@@ -12,7 +12,13 @@ import {
   DialogTitle,
   DialogFooter,
 } from "@/components/shadcnui/dialog";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/shadcnui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/shadcnui/select";
 import { toast } from "sonner";
 import { Sparkles, Loader2 } from "lucide-react";
 import { createContact } from "@/lib/actions/contacts";
@@ -29,7 +35,11 @@ type AddContactDialogProps = {
   onSuccess?: () => void;
 };
 
-export function AddContactDialog({ open, onOpenChange, onSuccess }: AddContactDialogProps) {
+export function AddContactDialog({
+  open,
+  onOpenChange,
+  onSuccess,
+}: AddContactDialogProps) {
   const [linkedinUrl, setLinkedinUrl] = React.useState("");
   const [companyId, setCompanyId] = React.useState("");
   const [name, setName] = React.useState("");
@@ -87,7 +97,12 @@ export function AddContactDialog({ open, onOpenChange, onSuccess }: AddContactDi
       const result = await response.json();
 
       if (result.success && result.data) {
-        const { name: autoName, title: autoTitle, department: autoDepartment, companyName } = result.data;
+        const {
+          name: autoName,
+          title: autoTitle,
+          department: autoDepartment,
+          companyName,
+        } = result.data;
 
         if (autoName) setName(autoName);
         if (autoTitle) setTitle(autoTitle);
@@ -95,12 +110,18 @@ export function AddContactDialog({ open, onOpenChange, onSuccess }: AddContactDi
 
         // Try to match company name with existing companies
         if (companyName) {
-          const matchedCompany = companies.find((c) => c.companyName.toLowerCase() === companyName.toLowerCase());
+          const matchedCompany = companies.find(
+            (c) => c.companyName.toLowerCase() === companyName.toLowerCase(),
+          );
           if (matchedCompany) {
             setCompanyId(matchedCompany.id);
-            toast.success(`Auto-filled and matched company: ${matchedCompany.companyName}`);
+            toast.success(
+              `Auto-filled and matched company: ${matchedCompany.companyName}`,
+            );
           } else {
-            toast.success(`Auto-filled contact info. Company "${companyName}" not found - please select manually.`);
+            toast.success(
+              `Auto-filled contact info. Company "${companyName}" not found - please select manually.`,
+            );
           }
         } else {
           toast.success("Auto-filled contact information");
@@ -224,7 +245,13 @@ export function AddContactDialog({ open, onOpenChange, onSuccess }: AddContactDi
               disabled={isAutoFilling || isSaving || isLoadingCompanies}
             >
               <SelectTrigger id="company">
-                <SelectValue placeholder={isLoadingCompanies ? "Loading companies..." : "Select a company"} />
+                <SelectValue
+                  placeholder={
+                    isLoadingCompanies
+                      ? "Loading companies..."
+                      : "Select a company"
+                  }
+                />
               </SelectTrigger>
               <SelectContent>
                 {companies.map((company) => (
@@ -283,12 +310,22 @@ export function AddContactDialog({ open, onOpenChange, onSuccess }: AddContactDi
         </div>
 
         <DialogFooter>
-          <Button variant="outline" onClick={() => onOpenChange(false)} disabled={isSaving}>
+          <Button
+            variant="outline"
+            onClick={() => onOpenChange(false)}
+            disabled={isSaving}
+          >
             Cancel
           </Button>
           <Button
             onClick={handleSave}
-            disabled={!linkedinUrl.trim() || !companyId || !name.trim() || !title.trim() || isSaving}
+            disabled={
+              !linkedinUrl.trim() ||
+              !companyId ||
+              !name.trim() ||
+              !title.trim() ||
+              isSaving
+            }
           >
             {isSaving ? (
               <>

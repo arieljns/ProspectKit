@@ -9,17 +9,13 @@ const companyInfoSchema = z.object({
     .string()
     .optional()
     .describe(
-      "The primary industry/sector (e.g., SaaS, FinTech, AI/ML, Healthcare, E-commerce)"
+      "The primary industry/sector (e.g., SaaS, FinTech, AI/ML, Healthcare, E-commerce)",
     ),
   size: z
     .enum(["1-10", "11-50", "51-200", "201-500", "501-1000", "1000+"])
     .optional()
     .describe("Approximate number of employees"),
-  website: z
-    .string()
-    .url()
-    .optional()
-    .describe("Official company website URL"),
+  website: z.string().url().optional().describe("Official company website URL"),
   description: z
     .string()
     .optional()
@@ -33,7 +29,7 @@ export async function POST(req: Request) {
     if (!companyName || !companyName.trim()) {
       return Response.json(
         { success: false, error: "Company name is required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -75,7 +71,7 @@ Be accurate and use real data from search results.`,
         success: false,
         error: error instanceof Error ? error.message : "Failed to auto-fill",
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

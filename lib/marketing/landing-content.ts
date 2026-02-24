@@ -157,23 +157,28 @@ export const landingBenefitCards: FeatureCard[] = [
   },
   {
     title: "Less context switching",
-    description: "Keep research, qualification, and drafting in one operating surface.",
+    description:
+      "Keep research, qualification, and drafting in one operating surface.",
   },
   {
     title: "More consistent prioritization",
-    description: "Use shared scoring logic so the team works the same leads first.",
+    description:
+      "Use shared scoring logic so the team works the same leads first.",
   },
   {
     title: "Higher outreach throughput",
-    description: "Generate first drafts faster while keeping personalization quality.",
+    description:
+      "Generate first drafts faster while keeping personalization quality.",
   },
   {
     title: "Clearer pipeline signal",
-    description: "Track lead status and qualification trends without heavyweight BI setup.",
+    description:
+      "Track lead status and qualification trends without heavyweight BI setup.",
   },
   {
     title: "Open-source control",
-    description: "Own the stack and evolve the workflow as your motion changes.",
+    description:
+      "Own the stack and evolve the workflow as your motion changes.",
   },
 ];
 
@@ -215,11 +220,13 @@ export const prospectKitDoes: BoundaryPoint[] = [
   },
   {
     title: "Outreach content support",
-    description: "Generate context-aware draft messages that reps can edit and send.",
+    description:
+      "Generate context-aware draft messages that reps can edit and send.",
   },
   {
     title: "Pipeline signal visibility",
-    description: "Track lead statuses, conversion stages, and score distribution.",
+    description:
+      "Track lead statuses, conversion stages, and score distribution.",
   },
 ];
 

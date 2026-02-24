@@ -27,7 +27,9 @@ export function PixelatedCanvas({
         backgroundColor,
         backgroundImage: `radial-gradient(${fillColor} 1px, transparent 1px)`,
         backgroundSize: `${size}px ${size}px`,
-        animation: isActive ? `shimmer ${duration / 1000}s linear infinite` : undefined,
+        animation: isActive
+          ? `shimmer ${duration / 1000}s linear infinite`
+          : undefined,
         imageRendering: "pixelated",
       }}
     />

@@ -1,14 +1,14 @@
-import { xai } from '@ai-sdk/xai';
-import { generateObject } from 'ai';
+import { xai } from "@ai-sdk/xai";
+import { generateObject } from "ai";
 import {
   getCompanyById,
   updateCompanyReportStatus,
-} from '@/lib/actions/companies';
+} from "@/lib/actions/companies";
 import {
   createOrUpdateReport,
   markReportAsGenerating,
-} from '@/lib/actions/company-reports';
-import { reportDataSchema } from '@/lib/db/schema/company-reports';
+} from "@/lib/actions/company-reports";
+import { reportDataSchema } from "@/lib/db/schema/company-reports";
 
 export const maxDuration = 60;
 
@@ -21,8 +21,8 @@ export async function POST(req: Request) {
 
     if (!companyId) {
       return Response.json(
-        { success: false, error: 'Company ID is required' },
-        { status: 400 }
+        { success: false, error: "Company ID is required" },
+        { status: 400 },
       );
     }
 
@@ -30,8 +30,8 @@ export async function POST(req: Request) {
     const companyResult = await getCompanyById(companyId);
     if (!companyResult.success) {
       return Response.json(
-        { success: false, error: 'Company not found' },
-        { status: 404 }
+        { success: false, error: "Company not found" },
+        { status: 404 },
       );
     }
 
@@ -54,10 +54,10 @@ Requirements:
 Return strictly structured data that matches the JSON schema.`;
 
     const userPrompt = `Research company: ${company.companyName}
-${company.industry ? `Industry: ${company.industry}` : ''}
-${company.size ? `Company size: ${company.size} employees` : ''}
-${company.website ? `Website: ${company.website}` : ''}
-${company.description ? `Description: ${company.description}` : ''}
+${company.industry ? `Industry: ${company.industry}` : ""}
+${company.size ? `Company size: ${company.size} employees` : ""}
+${company.website ? `Website: ${company.website}` : ""}
+${company.description ? `Description: ${company.description}` : ""}
 
 Generate a detailed company research report with the following structure:
 - Company overview and summary
@@ -71,22 +71,22 @@ Generate a detailed company research report with the following structure:
 Use Live Search to get the most current and accurate information about ${company.companyName}.`;
 
     const { object: reportData } = await generateObject({
-      model: xai('grok-4-fast-non-reasoning-latest'),
+      model: xai("grok-4-fast-non-reasoning-latest"),
       schema: reportDataSchema,
-      schemaName: 'CompanyResearchReport',
-      schemaDescription: 'A comprehensive company research report',
+      schemaName: "CompanyResearchReport",
+      schemaDescription: "A comprehensive company research report",
       system: systemPrompt,
       prompt: userPrompt,
       providerOptions: {
         xai: {
           searchParameters: {
-            mode: 'on', // Force search for accurate data
+            mode: "on", // Force search for accurate data
             returnCitations: true,
             maxSearchResults: 15,
             sources: [
-              { type: 'web', safeSearch: true },
-              { type: 'news', safeSearch: true },
-              { type: 'x' },
+              { type: "web", safeSearch: true },
+              { type: "news", safeSearch: true },
+              { type: "x" },
             ],
           },
         },
@@ -97,7 +97,7 @@ Use Live Search to get the most current and accurate information about ${company
     const saveResult = await createOrUpdateReport(companyId, reportData);
 
     if (!saveResult.success) {
-      throw new Error(saveResult.error || 'Failed to save report');
+      throw new Error(saveResult.error || "Failed to save report");
     }
 
     // 5. Return success
@@ -109,12 +109,12 @@ Use Live Search to get the most current and accurate information about ${company
       },
     });
   } catch (error) {
-    console.error('Report generation error:', error);
+    console.error("Report generation error:", error);
 
     // Try to update status to failed
     try {
       if (companyId) {
-        await updateCompanyReportStatus(companyId, 'failed');
+        await updateCompanyReportStatus(companyId, "failed");
       }
     } catch {
       // Ignore error during cleanup
@@ -124,9 +124,9 @@ Use Live Search to get the most current and accurate information about ${company
       {
         success: false,
         error:
-          error instanceof Error ? error.message : 'Failed to generate report',
+          error instanceof Error ? error.message : "Failed to generate report",
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

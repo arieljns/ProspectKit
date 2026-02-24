@@ -10,13 +10,18 @@ import { workflowOutcomes } from "@/lib/marketing/landing-content";
 
 export const Testimonials = () => {
   return (
-    <Container id="outcomes" className="border-divide border-x px-4 py-16 md:px-8">
+    <Container
+      id="outcomes"
+      className="border-divide border-x px-4 py-16 md:px-8"
+    >
       <div className="mx-auto flex max-w-4xl flex-col items-center">
         <Badge text="Workflow outcomes" />
-        <SectionHeading className="mt-4">What this workflow optimizes for</SectionHeading>
+        <SectionHeading className="mt-4">
+          What this workflow optimizes for
+        </SectionHeading>
         <SubHeading as="p" className="mx-auto mt-6 max-w-2xl">
-          ProspectKit is built to improve execution quality across the full outbound
-          loop, not just one isolated step.
+          ProspectKit is built to improve execution quality across the full
+          outbound loop, not just one isolated step.
         </SubHeading>
       </div>
 

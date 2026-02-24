@@ -19,7 +19,13 @@ export function Footer() {
             <Button as={Link} href={landingLinks.primaryCta}>
               Try demo
             </Button>
-            <Button as="a" href={landingLinks.repo} target="_blank" rel="noreferrer" variant="secondary">
+            <Button
+              as="a"
+              href={landingLinks.repo}
+              target="_blank"
+              rel="noreferrer"
+              variant="secondary"
+            >
               GitHub
             </Button>
           </div>
@@ -27,22 +33,43 @@ export function Footer() {
 
         <div className="grid grid-cols-2 gap-6">
           <div className="flex flex-col gap-3">
-            <p className="text-sm font-medium text-gray-600 dark:text-neutral-300">Sections</p>
+            <p className="text-sm font-medium text-gray-600 dark:text-neutral-300">
+              Sections
+            </p>
             {landingNavItems.map((item) => (
-              <a key={item.title} href={item.href} className="text-footer-link text-sm font-medium">
+              <a
+                key={item.title}
+                href={item.href}
+                className="text-footer-link text-sm font-medium"
+              >
                 {item.title}
               </a>
             ))}
           </div>
           <div className="flex flex-col gap-3">
-            <p className="text-sm font-medium text-gray-600 dark:text-neutral-300">Project</p>
-            <a href={landingLinks.repo} className="text-footer-link text-sm font-medium" target="_blank" rel="noreferrer">
+            <p className="text-sm font-medium text-gray-600 dark:text-neutral-300">
+              Project
+            </p>
+            <a
+              href={landingLinks.repo}
+              className="text-footer-link text-sm font-medium"
+              target="_blank"
+              rel="noreferrer"
+            >
               Repository
             </a>
-            <a href={landingLinks.sponsor} className="text-footer-link text-sm font-medium" target="_blank" rel="noreferrer">
+            <a
+              href={landingLinks.sponsor}
+              className="text-footer-link text-sm font-medium"
+              target="_blank"
+              rel="noreferrer"
+            >
               Sponsor
             </a>
-            <a href={landingLinks.contact} className="text-footer-link text-sm font-medium">
+            <a
+              href={landingLinks.contact}
+              className="text-footer-link text-sm font-medium"
+            >
               Contact
             </a>
           </div>
@@ -64,10 +91,20 @@ export function Footer() {
           <Link href={landingLinks.primaryCta} className="text-footer-link">
             App
           </Link>
-          <a href={landingLinks.repo} className="text-footer-link" target="_blank" rel="noreferrer">
+          <a
+            href={landingLinks.repo}
+            className="text-footer-link"
+            target="_blank"
+            rel="noreferrer"
+          >
             GitHub
           </a>
-          <a href={landingLinks.sponsor} className="text-footer-link" target="_blank" rel="noreferrer">
+          <a
+            href={landingLinks.sponsor}
+            className="text-footer-link"
+            target="_blank"
+            rel="noreferrer"
+          >
             Sponsor
           </a>
         </div>

@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { Toaster } from "@/components/shared/ui/sonner";
-import { TooltipProvider } from "@/components/shared/ui/tooltip";
 import { ThemeProvider } from "@/components/shared/providers/theme-provider";
 import { interDisplay } from "@/app/fonts/inter-display/inter";
 import { dmMono } from "@/app/fonts/dm-mono";
@@ -22,10 +20,7 @@ export default function RootLayout({
         className={`${interDisplay.variable} ${dmMono.variable} min-h-screen font-primary antialiased`}
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <TooltipProvider>
-            {children}
-            <Toaster />
-          </TooltipProvider>
+          {children}
         </ThemeProvider>
       </body>
     </html>

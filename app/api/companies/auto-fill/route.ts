@@ -48,15 +48,6 @@ Use Live Search to find:
 4. Description - What does this company do? (1-2 sentences)
 
 Be accurate and use real data from search results.`,
-      providerOptions: {
-        xai: {
-          searchParameters: {
-            mode: "on",
-            returnCitations: false,
-            maxSearchResults: 5,
-          },
-        },
-      },
     });
 
     return Response.json({

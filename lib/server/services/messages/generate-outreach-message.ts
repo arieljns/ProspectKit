@@ -154,15 +154,6 @@ Write the email/InMail now (no subject line, no signature):`;
       model: xai("grok-4-fast-non-reasoning-latest"),
       system: systemPrompt,
       prompt: userPrompt,
-      providerOptions: {
-        xai: {
-          searchParameters: {
-            mode: "on",
-            returnCitations: true,
-            maxSearchResults: 5,
-          },
-        },
-      },
     });
 
     return ok({ stream });

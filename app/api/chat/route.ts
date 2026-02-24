@@ -23,15 +23,6 @@ export async function POST(req: Request) {
     When users ask about current events, news, or real-time information, use Live Search to get the latest data.`,
     messages: convertToModelMessages(messages),
     stopWhen: stepCountIs(5),
-    providerOptions: {
-      xai: {
-        searchParameters: {
-          mode: "auto",
-          returnCitations: true,
-          maxSearchResults: 10,
-        },
-      },
-    },
     tools: {
       addResource: tool({
         description: `add a resource to your knowledge base.

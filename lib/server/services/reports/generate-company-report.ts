@@ -94,20 +94,6 @@ Use Live Search to get the most current and accurate information about ${company
         schemaDescription: "A comprehensive company research report",
         system: systemPrompt,
         prompt: userPrompt,
-        providerOptions: {
-          xai: {
-            searchParameters: {
-              mode: "on",
-              returnCitations: true,
-              maxSearchResults: 15,
-              sources: [
-                { type: "web", safeSearch: true },
-                { type: "news", safeSearch: true },
-                { type: "x" },
-              ],
-            },
-          },
-        },
       });
       reportData = generated.object;
     } catch (error) {

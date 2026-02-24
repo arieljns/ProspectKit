@@ -45,21 +45,6 @@ Use Live Search to access the LinkedIn profile and extract:
 4. Company name where they currently work
 
 Be accurate and use real data from the LinkedIn profile.`,
-      providerOptions: {
-        xai: {
-          searchParameters: {
-            mode: "on",
-            returnCitations: false,
-            maxSearchResults: 3,
-            sources: [
-              {
-                type: "web",
-                allowedWebsites: ["linkedin.com"],
-              },
-            ],
-          },
-        },
-      },
     });
 
     return Response.json({

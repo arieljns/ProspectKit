@@ -105,16 +105,6 @@ REMINDER: Return ONLY the JSON object, no additional text or explanations.`;
         schemaDescription: "Key contacts found at a company via web search",
         system: systemPrompt,
         prompt: userPrompt,
-        providerOptions: {
-          xai: {
-            searchParameters: {
-              mode: "on",
-              returnCitations: false,
-              maxSearchResults: 15,
-              sources: [{ type: "web" }],
-            },
-          },
-        },
       });
       result = generated.object;
     } catch (error) {

@@ -160,21 +160,6 @@ Provide scores and 1-2 sentence reasoning for each dimension.`;
           "AI-generated lead qualification scores across 5 dimensions",
         system: systemPrompt,
         prompt: userPrompt,
-        providerOptions: {
-          xai: {
-            searchParameters: {
-              mode: "on",
-              returnCitations: false,
-              maxSearchResults: 5,
-              sources: [
-                {
-                  type: "web",
-                  allowedWebsites: ["linkedin.com", "crunchbase.com"],
-                },
-              ],
-            },
-          },
-        },
       });
 
       result = generated.object;

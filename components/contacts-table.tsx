@@ -13,6 +13,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
+import { useRouter } from "next/navigation";
 import {
   ArrowUpDownIcon,
   ChevronDownIcon,
@@ -102,10 +103,18 @@ export type ContactWithCompany = {
   leadScore: LeadScore;
 };
 
+const sortContactsByCreatedAt = (rows: ContactWithCompany[]) =>
+  [...rows].sort(
+    (a, b) =>
+      new Date(b.contact.createdAt).getTime() -
+      new Date(a.contact.createdAt).getTime()
+  );
+
 export function ContactsTable({ data: initialData }: { data: ContactWithCompany[] }) {
+  const router = useRouter();
   // Sort by createdAt descending on initial load
   const [data, setData] = React.useState(() =>
-    [...initialData].sort((a, b) => new Date(b.contact.createdAt).getTime() - new Date(a.contact.createdAt).getTime())
+    sortContactsByCreatedAt(initialData)
   );
   const [rowSelection, setRowSelection] = React.useState({});
   const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
@@ -138,6 +147,10 @@ export function ContactsTable({ data: initialData }: { data: ContactWithCompany[
     };
     loadWeights();
   }, []);
+
+  React.useEffect(() => {
+    setData(sortContactsByCreatedAt(initialData));
+  }, [initialData]);
 
   const handleBatchDelete = async () => {
     const selectedRows = table.getFilteredSelectedRowModel().rows;
@@ -256,18 +269,21 @@ export function ContactsTable({ data: initialData }: { data: ContactWithCompany[
     try {
       const results = await Promise.all(scorePromises);
       const failures = results.filter((r) => !r.success);
+      const successCount = results.filter((r) => r.success).length;
 
       if (failures.length === 0) {
         toast.success(
           `Successfully scored ${selectedContacts.length} ${selectedContacts.length === 1 ? "contact" : "contacts"}`
         );
-        // Reload page to show new scores
-        window.location.reload();
       } else {
         // Show detailed error from first failure
         const firstError = failures[0]?.error || "Unknown error";
         toast.error(`Failed to score ${failures.length} contacts: ${firstError}`);
         console.error("Scoring failures:", failures);
+      }
+
+      if (successCount > 0) {
+        router.refresh();
       }
     } catch (error) {
       const errorMsg = error instanceof Error ? error.message : "Failed to score contacts";
@@ -303,16 +319,14 @@ export function ContactsTable({ data: initialData }: { data: ContactWithCompany[
 
       if (failures.length === 0) {
         toast.success(`Successfully scored all ${allContacts.length} contacts`);
-        // Reload page to show new scores
-        window.location.reload();
       } else {
         const successCount = results.filter((r) => r.success).length;
         const firstError = failures[0]?.error || "Unknown error";
         toast.warning(`Scored ${successCount} contacts, ${failures.length} failed: ${firstError}`);
         console.error("Scoring failures:", failures);
-        // Reload page to show new scores
-        window.location.reload();
       }
+
+      router.refresh();
     } catch (error) {
       const errorMsg = error instanceof Error ? error.message : "Failed to score contacts";
       toast.error(errorMsg);
@@ -887,8 +901,7 @@ export function ContactsTable({ data: initialData }: { data: ContactWithCompany[
         open={addContactDialogOpen}
         onOpenChange={setAddContactDialogOpen}
         onSuccess={() => {
-          // Refresh the page to show the new lead
-          window.location.reload();
+          router.refresh();
         }}
       />
       </div>

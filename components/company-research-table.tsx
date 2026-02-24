@@ -86,6 +86,11 @@ export type Company = {
   updatedAt: Date
 }
 
+const sortCompaniesByCreatedAt = (rows: Company[]) =>
+  [...rows].sort(
+    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+  )
+
 export function CompanyResearchTable({
   data: initialData,
 }: {
@@ -94,9 +99,7 @@ export function CompanyResearchTable({
   const router = useRouter()
   // Sort by createdAt descending on initial load
   const [data, setData] = React.useState(() =>
-    [...initialData].sort((a, b) =>
-      new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-    )
+    sortCompaniesByCreatedAt(initialData)
   )
   const [rowSelection, setRowSelection] = React.useState({})
   const [columnVisibility, setColumnVisibility] =
@@ -115,6 +118,10 @@ export function CompanyResearchTable({
   const [contactFindingStatus, setContactFindingStatus] = React.useState<
     Record<string, "none" | "finding" | "completed" | "failed">
   >({})
+
+  React.useEffect(() => {
+    setData(sortCompaniesByCreatedAt(initialData))
+  }, [initialData])
 
   const handleBatchDelete = async () => {
     const selectedRows = table.getFilteredSelectedRowModel().rows

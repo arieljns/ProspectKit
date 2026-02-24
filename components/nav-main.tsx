@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import { Building2Icon, ChevronDownIcon, ChevronUpIcon, PlusCircleIcon, UserPlusIcon, type LucideIcon } from "lucide-react"
 
 import { Button } from "@/components/shadcnui/button"
@@ -24,6 +25,7 @@ export function NavMain({
     icon?: LucideIcon
   }[]
 }) {
+  const router = useRouter()
   const [isQuickAddExpanded, setIsQuickAddExpanded] = React.useState(false)
   const [addContactDialogOpen, setAddContactDialogOpen] = React.useState(false)
   const [addCompanyDialogOpen, setAddCompanyDialogOpen] = React.useState(false)
@@ -96,14 +98,16 @@ export function NavMain({
         open={addContactDialogOpen}
         onOpenChange={setAddContactDialogOpen}
         onSuccess={() => {
-          window.location.href = "/app/contacts"
+          router.push("/app/contacts")
+          router.refresh()
         }}
       />
       <AddCompanyDialog
         open={addCompanyDialogOpen}
         onOpenChange={setAddCompanyDialogOpen}
         onSuccess={() => {
-          window.location.href = "/app/dashboard"
+          router.push("/app/dashboard")
+          router.refresh()
         }}
       />
     </SidebarGroup>

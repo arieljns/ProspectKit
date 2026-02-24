@@ -1,5 +1,8 @@
 import Link from "next/link";
-import { LogoMark, type LogoMarkProps } from "@/components/shared/branding/LogoMark";
+import {
+  LogoMark,
+  type LogoMarkProps,
+} from "@/components/shared/branding/LogoMark";
 
 export const LogoSVG = (props: LogoMarkProps) => {
   return <LogoMark {...props} />;

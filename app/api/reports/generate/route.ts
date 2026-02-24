@@ -13,8 +13,11 @@ import { reportDataSchema } from '@/lib/db/schema/company-reports';
 export const maxDuration = 60;
 
 export async function POST(req: Request) {
+  let companyId: string | undefined;
+
   try {
-    const { companyId } = await req.json();
+    const body = (await req.json()) as { companyId?: string };
+    companyId = body.companyId;
 
     if (!companyId) {
       return Response.json(
@@ -110,7 +113,6 @@ Use Live Search to get the most current and accurate information about ${company
 
     // Try to update status to failed
     try {
-      const { companyId } = await req.json();
       if (companyId) {
         await updateCompanyReportStatus(companyId, 'failed');
       }

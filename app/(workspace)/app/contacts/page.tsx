@@ -5,6 +5,9 @@ import {
 import { SiteHeader } from "@/components/workspace/layout/site-header";
 import { getAllContacts } from "@/lib/actions/contacts";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export default async function ContactsPage() {
   const result = await getAllContacts();
   const contacts: ContactWithCompany[] =

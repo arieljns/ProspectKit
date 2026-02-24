@@ -3,6 +3,9 @@ import { SiteHeader } from "@/components/workspace/layout/site-header";
 import { getAllCompanies } from "@/lib/actions/companies";
 import { Company } from "@/components/workspace/companies/company-research-table";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export default async function DashboardPage() {
   const result = await getAllCompanies();
   const companies = result.success ? result.data : [];

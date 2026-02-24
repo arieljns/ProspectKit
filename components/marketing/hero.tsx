@@ -1,69 +1,58 @@
+"use client";
+import React from "react";
+import { Container } from "./container";
+import { Heading } from "./heading";
+import { SubHeading } from "./subheading";
+import { motion } from "motion/react";
+import { Button } from "./button";
+import { Badge } from "./badge";
 import Link from "next/link";
-
-import { Badge } from "@/components/shadcnui/badge";
-import { Button } from "@/components/shadcnui/button";
+import { landingLinks } from "@/lib/marketing/landing-content";
 import { PROSPECTKIT_REPO_URL } from "@/lib/marketing/links";
 
-export function Hero() {
+export const Hero = () => {
   return (
-    <section className="border-b">
-      <div className="mx-auto grid max-w-6xl gap-10 px-6 py-16 md:grid-cols-2 md:py-24">
-        <div>
-          <Badge variant="secondary">Open-source • Clay/Apollo-lite</Badge>
-          <h1 className="mt-5 text-4xl font-semibold tracking-tight sm:text-5xl">
-            Lead gen and outreach—without the bloat.
-          </h1>
-          <p className="mt-4 max-w-xl text-base text-muted-foreground sm:text-lg">
-            ProspectKit is an open-source outbound workspace built for small
-            teams and early-stage startups. Research companies, find
-            decision-makers, score leads, and draft outreach in one place.
-          </p>
+    <Container
+      id="hero"
+      className="border-divide flex flex-col items-center justify-center border-x px-4 pt-10 pb-10 md:pt-32 md:pb-20"
+    >
+      <Badge text="Open-source • Built for teams under 5" />
+      <Heading className="mt-4">
+        Complete the essential SDR loop <br />
+        with a <span className="text-brand">tiny team</span>
+      </Heading>
 
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-            <Button asChild size="lg">
-              <Link href="/app">Try the demo</Link>
-            </Button>
-            <Button asChild variant="outline" size="lg">
-              <a href={PROSPECTKIT_REPO_URL} target="_blank" rel="noreferrer">
-                View source
-              </a>
-            </Button>
-          </div>
+      <SubHeading className="mx-auto mt-6 max-w-lg">
+        ProspectKit is a lightweight alternative to heavier outbound suites:
+        discover accounts, research contacts, score leads, draft outreach, and
+        monitor pipeline signal in one focused workspace.
+      </SubHeading>
 
-          <p className="mt-5 text-xs text-muted-foreground">
-            Self-host for free. Sponsor to support development. Contact us for
-            help or partnerships.
-          </p>
-        </div>
-
-        <div className="rounded-xl border bg-linear-to-b from-muted/50 to-background p-6">
-          <div className="rounded-lg border bg-background p-4">
-            <div className="flex items-center justify-between">
-              <div className="text-sm font-medium">Pipeline snapshot</div>
-              <span className="text-xs text-muted-foreground">Example</span>
-            </div>
-            <div className="mt-4 grid grid-cols-3 gap-3">
-              {[
-                { label: "New", value: "42" },
-                { label: "Contacted", value: "18" },
-                { label: "Qualified", value: "6" },
-              ].map((item) => (
-                <div key={item.label} className="rounded-md border p-3">
-                  <div className="text-xs text-muted-foreground">
-                    {item.label}
-                  </div>
-                  <div className="mt-1 text-lg font-semibold">{item.value}</div>
-                </div>
-              ))}
-            </div>
-            <div className="mt-4 space-y-2">
-              <div className="h-2 w-full rounded bg-muted" />
-              <div className="h-2 w-11/12 rounded bg-muted" />
-              <div className="h-2 w-9/12 rounded bg-muted" />
-            </div>
-          </div>
-        </div>
+      <div className="mt-6 flex items-center gap-4">
+        <Button as={Link} href={landingLinks.primaryCta}>
+          Try the demo
+        </Button>
+        <Button
+          variant="secondary"
+          as="a"
+          href={PROSPECTKIT_REPO_URL}
+          target="_blank"
+          rel="noreferrer"
+        >
+          View source
+        </Button>
       </div>
-    </section>
+
+      <div className="mt-6 flex items-center gap-2 text-xs text-gray-600 sm:text-sm dark:text-neutral-300">
+        <motion.span
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.4 }}
+        >
+          Built for startups moving from founder-led sales to repeatable
+          outbound.
+        </motion.span>
+      </div>
+    </Container>
   );
-}
+};

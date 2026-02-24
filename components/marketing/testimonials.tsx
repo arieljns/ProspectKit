@@ -4,7 +4,7 @@ import React from "react";
 import { motion } from "motion/react";
 import { Container } from "./container";
 import { Badge } from "./badge";
-import { SectionHeading } from "./seciton-heading";
+import { SectionHeading } from "./section-heading";
 import { SubHeading } from "./subheading";
 import { workflowOutcomes } from "@/lib/marketing/landing-content";
 

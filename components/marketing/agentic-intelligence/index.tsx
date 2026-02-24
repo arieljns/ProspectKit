@@ -3,7 +3,7 @@ import React from "react";
 import { Container } from "../container";
 import { Badge } from "../badge";
 import { SubHeading } from "../subheading";
-import { SectionHeading } from "../seciton-heading";
+import { SectionHeading } from "../section-heading";
 import { Card, CardDescription, CardTitle } from "./card";
 import {
   BrainIcon,

@@ -1,17 +1,17 @@
 import type { Metadata } from "next";
-import { MarketingNav } from "@/components/marketing/template/marketing-nav";
-import { DivideX } from "@/components/marketing/template/divide";
-import { Hero } from "@/components/marketing/template/hero";
-import { HeroImage } from "@/components/marketing/template/hero-image";
-import { LogoCloud } from "@/components/marketing/template/logo-cloud";
-import { HowItWorks } from "@/components/marketing/template/how-it-works";
-import { AgenticIntelligence } from "@/components/marketing/template/agentic-intelligence";
-import { Benefits } from "@/components/marketing/template/benefits";
-import { Testimonials } from "@/components/marketing/template/testimonials";
-import { Security } from "@/components/marketing/template/security";
-import { FAQ } from "@/components/marketing/template/faq";
-import { CTA } from "@/components/marketing/template/cta";
-import { Footer } from "@/components/marketing/template/footer";
+import { MarketingNav } from "@/components/marketing/marketing-nav";
+import { DivideX } from "@/components/marketing/divide";
+import { Hero } from "@/components/marketing/hero";
+import { HeroImage } from "@/components/marketing/hero-image";
+import { LogoCloud } from "@/components/marketing/logo-cloud";
+import { HowItWorks } from "@/components/marketing/how-it-works";
+import { AgenticIntelligence } from "@/components/marketing/agentic-intelligence";
+import { Benefits } from "@/components/marketing/benefits";
+import { Testimonials } from "@/components/marketing/testimonials";
+import { Security } from "@/components/marketing/security";
+import { FAQ } from "@/components/marketing/faq";
+import { CTA } from "@/components/marketing/cta";
+import { Footer } from "@/components/marketing/footer";
 
 export const metadata: Metadata = {
   title: "ProspectKit — Essential SDR Workflow for Tiny Teams",

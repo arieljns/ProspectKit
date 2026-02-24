@@ -1,96 +1,138 @@
-import { Button } from "@/components/shadcnui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/shadcnui/card";
-import {
-  PROSPECTKIT_CONTACT_MAILTO,
-  PROSPECTKIT_REPO_URL,
-  PROSPECTKIT_SPONSOR_URL,
-} from "@/lib/marketing/links";
+"use client";
+import React, { useState } from "react";
+import { Container } from "./container";
+import { Badge } from "./badge";
+import { SectionHeading } from "./section-heading";
+import { motion } from "motion/react";
+import { DivideX } from "./divide";
+import { Button } from "./button";
+import { SlidingNumber } from "./sliding-number";
+import { CheckIcon } from "@/icons/card-icons";
+import { Scale } from "./scale";
+import { tiers } from "@/constants/pricing";
+import Link from "next/link";
 
-export function Pricing() {
+export const Pricing = () => {
+  const tabs = [
+    {
+      title: "Monthly",
+      value: "monthly",
+      badge: "",
+    },
+    {
+      title: "Yearly",
+      value: "yearly",
+      badge: "Save 20%",
+    },
+  ];
+  const [activeTier, setActiveTier] = useState<"monthly" | "yearly">("monthly");
   return (
-    <section id="pricing" className="border-b">
-      <div className="mx-auto max-w-6xl px-6 py-16">
-        <div className="max-w-2xl">
-          <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">
-            Pricing
-          </h2>
-          <p className="mt-3 text-sm text-muted-foreground sm:text-base">
-            ProspectKit is open-source. Self-host for free, or sponsor
-            development to keep it moving.
-          </p>
+    <section id="pricing">
+      <Container className="border-divide flex flex-col items-center justify-center border-x pt-10 pb-10">
+        <Badge text="Pricing" />
+        <SectionHeading className="mt-4">
+          Flexible open-source model
+        </SectionHeading>
+        <div className="relative mt-8 flex items-center gap-4 rounded-xl bg-gray-50 p-2 dark:bg-neutral-800">
+          <Scale className="opacity-50" />
+          {tabs.map((tab) => (
+            <button
+              key={tab.value}
+              onClick={() => setActiveTier(tab.value as "monthly" | "yearly")}
+              className="relative z-20 flex w-32 justify-center py-1 text-center sm:w-40"
+            >
+              {activeTier === tab.value && (
+                <motion.div
+                  layoutId="active-span"
+                  className="shadow-aceternity absolute inset-0 h-full w-full rounded-md bg-white dark:bg-neutral-950"
+                ></motion.div>
+              )}
+              <span className="relative z-20 flex items-center gap-2 text-sm sm:text-base">
+                {tab.title}{" "}
+                {tab.badge && (
+                  <span className="bg-brand/10 text-brand rounded-full px-2 py-1 text-xs font-medium">
+                    {tab.badge}
+                  </span>
+                )}
+              </span>
+            </button>
+          ))}
         </div>
+      </Container>
+      <DivideX />
+      <Container className="border-divide border-x">
+        <div className="divide-divide grid grid-cols-1 divide-y md:grid-cols-3 md:divide-x md:divide-y-0">
+          {tiers.map((tier, tierIdx) => (
+            <div className="p-4 md:p-8" key={tier.title + "tier-meta"}>
+              <h3 className="text-charcoal-700 text-xl font-medium dark:text-neutral-100">
+                {tier.title}
+              </h3>
+              <p className="text-base text-gray-600 dark:text-neutral-400">
+                {tier.subtitle}
+              </p>
+              <span className="mt-6 flex items-baseline-last text-2xl font-medium dark:text-white">
+                $
+                <Price
+                  value={activeTier === "monthly" ? tier.monthly : tier.yearly}
+                />
+                <span className="ml-2 text-sm font-normal">/seat</span>
+              </span>
 
-        <div className="mt-10 grid grid-cols-1 gap-4 md:grid-cols-3">
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-base">Free self-hosted</CardTitle>
-              <CardDescription>
-                Run it on your own infrastructure.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="text-sm text-muted-foreground">
-              Get the full codebase and deploy it your way. Great for startups
-              that want control and low cost.
-            </CardContent>
-            <CardFooter>
-              <Button asChild className="w-full" variant="outline">
-                <a href={PROSPECTKIT_REPO_URL} target="_blank" rel="noreferrer">
-                  View setup
-                </a>
+              <div
+                key={tier.title + "tier-list-of-items"}
+                className="flex flex-col gap-4 px-0 py-4 md:hidden md:p-8"
+              >
+                {tier.features.map((tierFeature, idx) => (
+                  <Step key={tierFeature + tierIdx + idx}>{tierFeature}</Step>
+                ))}
+              </div>
+              <Button
+                className="mt-6 w-full"
+                as={
+                  tier.ctaLink.startsWith("http") ||
+                  tier.ctaLink.startsWith("mailto:")
+                    ? "a"
+                    : Link
+                }
+                href={tier.ctaLink}
+                target={tier.ctaLink.startsWith("http") ? "_blank" : undefined}
+                rel={tier.ctaLink.startsWith("http") ? "noreferrer" : undefined}
+                variant={tier.featured ? "brand" : "secondary"}
+              >
+                {tier.ctaText}
               </Button>
-            </CardFooter>
-          </Card>
-
-          <Card className="border-primary/30">
-            <CardHeader>
-              <CardTitle className="text-base">Sponsor us</CardTitle>
-              <CardDescription>
-                Support maintenance and new features.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="text-sm text-muted-foreground">
-              Sponsorship helps us keep improving the product and shipping
-              polished demos for the community.
-            </CardContent>
-            <CardFooter>
-              <Button asChild className="w-full">
-                <a
-                  href={PROSPECTKIT_SPONSOR_URL}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  Sponsor on GitHub
-                </a>
-              </Button>
-            </CardFooter>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-base">Contact us</CardTitle>
-              <CardDescription>
-                Questions, feedback, or partnerships.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="text-sm text-muted-foreground">
-              Want help deploying or extending ProspectKit for your workflow?
-              Reach out and we’ll respond.
-            </CardContent>
-            <CardFooter>
-              <Button asChild className="w-full" variant="outline">
-                <a href={PROSPECTKIT_CONTACT_MAILTO}>Email us</a>
-              </Button>
-            </CardFooter>
-          </Card>
+            </div>
+          ))}
         </div>
-      </div>
+      </Container>
+      <DivideX />
+      <Container className="border-divide hidden border-x md:block">
+        <div className="divide-divide grid grid-cols-1 md:grid-cols-3 md:divide-x">
+          {tiers.map((tier, index) => (
+            <div
+              key={tier.title + "tier-list-of-items"}
+              className="flex flex-col gap-4 p-4 md:p-8"
+            >
+              {tier.features.map((tierFeature, idx) => (
+                <Step key={tierFeature + index + idx}>{tierFeature}</Step>
+              ))}
+            </div>
+          ))}
+        </div>
+      </Container>
     </section>
   );
-}
+};
+
+const Step = ({ children }: { children: React.ReactNode }) => {
+  return (
+    <div className="text-charcoal-700 flex items-center gap-2 dark:text-neutral-100">
+      <CheckIcon className="h-4 w-4 shrink-0" />
+      {children}
+    </div>
+  );
+};
+
+const Price = ({ value }: { value: number }) => {
+  return <SlidingNumber value={value} />;
+};

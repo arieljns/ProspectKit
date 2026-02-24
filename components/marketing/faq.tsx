@@ -1,55 +1,170 @@
-const faqs = [
-  {
-    q: "Who is ProspectKit for?",
-    a: "Small teams and early-stage startups that want a lightweight Clay/Apollo-style workflow for lead generation and outreach—without stitching together too many tools.",
-  },
-  {
-    q: "Is this production-ready?",
-    a: "It’s a prototype and a great starting point. For production use, plan to add hardening (auth, rate limits, audit logs, monitoring, and stricter secrets handling).",
-  },
-  {
-    q: "Can I self-host it?",
-    a: "Yes. ProspectKit is open-source and can be self-hosted for free.",
-  },
-  {
-    q: "Does it support customizable scoring?",
-    a: "Yes. You can configure your ICP and scoring weights, then score leads consistently with clear reasoning.",
-  },
-  {
-    q: "How can I contribute?",
-    a: "Open issues, submit pull requests, or sponsor development to help us keep shipping improvements.",
-  },
-];
+"use client";
 
-export function FAQ() {
+import React, { useMemo, useState } from "react";
+import { SubHeading } from "./subheading";
+import { Container } from "./container";
+import { SectionHeading } from "./section-heading";
+import { Badge } from "./badge";
+import { Button } from "./button";
+import { DivideX } from "./divide";
+import { faqs } from "@/constants/faqs";
+import { AnimatePresence, motion } from "motion/react";
+import useMeasure from "react-use-measure";
+import { landingLinks } from "@/lib/marketing/landing-content";
+
+const ChevronDownIcon = (
+  props: React.SVGProps<SVGSVGElement> & { rotated?: boolean },
+) => {
+  const { rotated, className, ...rest } = props;
   return (
-    <section id="faq">
-      <div className="mx-auto max-w-6xl px-6 py-16">
-        <div className="max-w-2xl">
-          <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">
-            FAQ
-          </h2>
-          <p className="mt-3 text-sm text-muted-foreground sm:text-base">
-            Quick answers to common questions.
-          </p>
-        </div>
-
-        <div className="mt-10 max-w-3xl divide-y rounded-xl border">
-          {faqs.map((item) => (
-            <details key={item.q} className="group p-5">
-              <summary className="cursor-pointer list-none text-sm font-medium">
-                <div className="flex items-center justify-between gap-4">
-                  <span>{item.q}</span>
-                  <span className="text-muted-foreground transition group-open:rotate-180">
-                    ▾
-                  </span>
-                </div>
-              </summary>
-              <p className="mt-3 text-sm text-muted-foreground">{item.a}</p>
-            </details>
-          ))}
-        </div>
-      </div>
-    </section>
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 16 16"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      {...rest}
+    >
+      <path
+        d="M3.75 6.5L8 10.75L12.25 6.5"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
   );
-}
+};
+
+export const FAQ = () => {
+  const [openItems, setOpenItems] = useState<Set<number>>(new Set());
+
+  const toggle = (index: number) => {
+    setOpenItems((prev) => {
+      const next = new Set(prev);
+      if (next.has(index)) next.delete(index);
+      else next.add(index);
+      return next;
+    });
+  };
+
+  return (
+    <Container
+      id="faq"
+      className="border-divide flex flex-col items-center border-x pt-12"
+    >
+      <Badge text="FAQs" />
+      <SectionHeading className="mt-4">
+        Frequently Asked Questions
+      </SectionHeading>
+
+      <SubHeading as="p" className="mx-auto mt-6 max-w-lg px-2">
+        Questions about fit, scope, and how ProspectKit supports the core
+        outbound workflow.
+      </SubHeading>
+      <div className="mt-8 mb-12 flex w-full flex-col justify-center gap-4 px-4 sm:flex-row">
+        <Button
+          variant="primary"
+          className="w-full sm:w-auto"
+          as="a"
+          href={landingLinks.repo}
+          target="_blank"
+          rel="noreferrer"
+        >
+          View repository
+        </Button>
+        <Button
+          as="a"
+          href={landingLinks.contact}
+          variant="secondary"
+          className="w-full sm:w-auto"
+        >
+          Contact Us
+        </Button>
+      </div>
+      <DivideX />
+      <div className="divide-divide w-full divide-y">
+        {faqs.map((item, index) => (
+          <AccordionItem
+            key={item.question}
+            index={index}
+            question={item.question}
+            answer={item.answer}
+            isOpen={openItems.has(index)}
+            onToggle={() => toggle(index)}
+          />
+        ))}
+      </div>
+    </Container>
+  );
+};
+
+const AccordionItem = ({
+  index,
+  question,
+  answer,
+  isOpen,
+  onToggle,
+}: {
+  index: number;
+  question: string;
+  answer: string;
+  isOpen: boolean;
+  onToggle: () => void;
+}) => {
+  const [ref, { height }] = useMeasure();
+  const targetHeight = useMemo(() => (isOpen ? height : 0), [isOpen, height]);
+
+  return (
+    <div className="group">
+      <button
+        type="button"
+        aria-expanded={isOpen}
+        aria-controls={`faq-panel-${index}`}
+        onClick={onToggle}
+        className="flex w-full items-center justify-between gap-4 px-8 py-6 text-left"
+      >
+        <span className="text-charcoal-700 text-base font-medium dark:text-neutral-100">
+          {question}
+        </span>
+        <motion.span
+          className="text-charcoal-700 shadow-aceternity inline-flex size-6 items-center justify-center rounded-md bg-white dark:bg-neutral-950"
+          initial={false}
+          animate={{ rotate: isOpen ? 180 : 0 }}
+          transition={{ duration: 0.25 }}
+        >
+          <ChevronDownIcon className="dark:text-neutral-100" />
+        </motion.span>
+      </button>
+
+      <motion.div
+        id={`faq-panel-${index}`}
+        role="region"
+        aria-hidden={!isOpen}
+        initial={false}
+        animate={{ height: targetHeight, opacity: isOpen ? 1 : 0 }}
+        transition={{ height: { duration: 0.35 }, opacity: { duration: 0.2 } }}
+        className="overflow-hidden px-8"
+        onClick={onToggle}
+      >
+        <div ref={ref} className="pr-2 pb-5 pl-2 sm:pr-0 sm:pl-0">
+          <AnimatePresence mode="popLayout">
+            {isOpen && (
+              <motion.p
+                key="content"
+                initial={{ y: -6, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                exit={{ y: -6, opacity: 0 }}
+                transition={{ duration: 0.25 }}
+                className="text-gray-600 dark:text-neutral-400"
+              >
+                {answer}
+              </motion.p>
+            )}
+          </AnimatePresence>
+        </div>
+      </motion.div>
+    </div>
+  );
+};

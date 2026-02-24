@@ -1,7 +1,7 @@
 import React from "react";
 import { Container } from "./container";
 import { Badge } from "./badge";
-import { SectionHeading } from "./seciton-heading";
+import { SectionHeading } from "./section-heading";
 import { SubHeading } from "./subheading";
 import {
   prospectKitDoes,

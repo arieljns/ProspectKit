@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { motion } from "motion/react";
 import { Container } from "./container";
-import { SectionHeading } from "./seciton-heading";
+import { SectionHeading } from "./section-heading";
 import { Button } from "./button";
 import { landingLinks } from "@/lib/marketing/landing-content";
 import { LogoSVG } from "./logo";

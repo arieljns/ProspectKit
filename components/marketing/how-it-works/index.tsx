@@ -4,7 +4,7 @@ import React from "react";
 import { Container } from "../container";
 import { Badge } from "../badge";
 import { SubHeading } from "../subheading";
-import { SectionHeading } from "../seciton-heading";
+import { SectionHeading } from "../section-heading";
 import { howItWorksSteps } from "@/lib/marketing/landing-content";
 
 export const HowItWorks = () => {

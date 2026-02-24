@@ -14,3 +14,19 @@ export async function findCompanyById(companyId: string) {
 
   return company ?? null;
 }
+
+export async function setCompanyReportStatus(
+  companyId: string,
+  reportStatus: "none" | "generating" | "completed" | "failed",
+) {
+  const [updatedCompany] = await db
+    .update(companies)
+    .set({
+      reportStatus,
+      updatedAt: new Date(),
+    })
+    .where(eq(companies.id, companyId))
+    .returning();
+
+  return updatedCompany ?? null;
+}

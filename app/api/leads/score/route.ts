@@ -1,4 +1,5 @@
 import { scoreLeadForContact } from "@/lib/server/services/leads/score-lead-for-contact";
+import { toServiceJsonErrorResponse } from "@/lib/server/http/error-response";
 
 export const maxDuration = 60;
 
@@ -13,29 +14,7 @@ export async function POST(req: Request) {
         data: result.data,
       });
     }
-
-    if (result.error.code === "INVALID_INPUT") {
-      return Response.json(
-        { success: false, error: result.error.message },
-        { status: 400 },
-      );
-    }
-
-    if (
-      result.error.code === "CONTACT_NOT_FOUND" ||
-      result.error.code === "CONTACT_COMPANY_NOT_FOUND" ||
-      result.error.code === "SCORING_CONFIG_MISSING"
-    ) {
-      return Response.json(
-        { success: false, error: result.error.message },
-        { status: 404 },
-      );
-    }
-
-    return Response.json(
-      { success: false, error: result.error.message },
-      { status: 500 },
-    );
+    return toServiceJsonErrorResponse(result.error);
   } catch (error) {
     console.error("Lead scoring error:", error);
 
@@ -45,13 +24,10 @@ export async function POST(req: Request) {
       console.error("Error message:", error.message);
     }
 
-    return Response.json(
-      {
-        success: false,
-        error: error instanceof Error ? error.message : "Failed to score lead",
-        details: error instanceof Error ? error.stack : undefined,
-      },
-      { status: 500 },
-    );
+    return toServiceJsonErrorResponse({
+      code: "UNKNOWN",
+      message: error instanceof Error ? error.message : "Failed to score lead",
+      details: error instanceof Error ? error.stack : undefined,
+    });
   }
 }

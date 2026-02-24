@@ -1,4 +1,3 @@
-import { createResource } from "@/lib/actions/resources";
 import { xai } from "@ai-sdk/xai";
 import {
   convertToModelMessages,
@@ -9,6 +8,7 @@ import {
 } from "ai";
 import { z } from "zod";
 import { findRelevantContent } from "@/lib/ai/embedding";
+import { createResource } from "@/lib/server/services/resources/create-resource";
 
 // Allow streaming responses up to 30 seconds
 export const maxDuration = 30;

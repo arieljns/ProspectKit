@@ -17,6 +17,7 @@ This document is the tracked source of truth for repository-level setup details.
 - Validation commands:
   - `pnpm exec tsc --noEmit`
   - `pnpm lint`
+  - `pnpm format:check`
   - `pnpm build`
 
 ## Notes on Ignored Docs

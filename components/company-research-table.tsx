@@ -373,7 +373,7 @@ export function CompanyResearchTable({
 
         return (
           <Button
-            variant={hasReport ? "outline-solid" : "default"}
+            variant={hasReport ? "outline" : "default"}
             size="sm"
             className="gap-1.5"
             onClick={() => handleReportClick(row.original)}
@@ -405,7 +405,7 @@ export function CompanyResearchTable({
 
         return (
           <Button
-            variant={isCompleted ? "outline-solid" : "default"}
+            variant={isCompleted ? "outline" : "default"}
             size="sm"
             className="gap-1.5"
             onClick={() => handleFindContacts(row.original)}

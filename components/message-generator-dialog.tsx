@@ -133,7 +133,7 @@ export function MessageGeneratorDialog({ open, onOpenChange, contact, company }:
             <Label>Message Type</Label>
             <div className="flex gap-2">
               <Button
-                variant={messageType === "linkedin-connection" ? "default" : "outline-solid"}
+                variant={messageType === "linkedin-connection" ? "default" : "outline"}
                 size="sm"
                 onClick={() => setMessageType("linkedin-connection")}
                 disabled={isGenerating}
@@ -141,7 +141,7 @@ export function MessageGeneratorDialog({ open, onOpenChange, contact, company }:
                 LinkedIn Connection Request
               </Button>
               <Button
-                variant={messageType === "linkedin-email" ? "default" : "outline-solid"}
+                variant={messageType === "linkedin-email" ? "default" : "outline"}
                 size="sm"
                 onClick={() => setMessageType("linkedin-email")}
                 disabled={isGenerating}

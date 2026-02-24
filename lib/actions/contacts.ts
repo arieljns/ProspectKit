@@ -92,8 +92,8 @@ export const createContact = async (input: NewContactParams) => {
       .values(validatedData)
       .returning();
 
-    revalidatePath('/contacts');
-    revalidatePath('/dashboard');
+    revalidatePath('/app/contacts');
+    revalidatePath('/app/dashboard');
     return { success: true, data: contact };
   } catch (error) {
     return {
@@ -124,8 +124,8 @@ export const updateContact = async (
       return { success: false, error: 'Contact not found' };
     }
 
-    revalidatePath('/contacts');
-    revalidatePath('/dashboard');
+    revalidatePath('/app/contacts');
+    revalidatePath('/app/dashboard');
     return { success: true, data: updatedContact };
   } catch (error) {
     return {
@@ -149,8 +149,8 @@ export const deleteContact = async (id: string) => {
       return { success: false, error: 'Contact not found' };
     }
 
-    revalidatePath('/contacts');
-    revalidatePath('/dashboard');
+    revalidatePath('/app/contacts');
+    revalidatePath('/app/dashboard');
     return { success: true, message: `Contact ${deletedContact.name} deleted` };
   } catch (error) {
     return {
@@ -181,7 +181,7 @@ export const updateContactStatus = async (
       return { success: false, error: 'Contact not found' };
     }
 
-    revalidatePath('/contacts');
+    revalidatePath('/app/contacts');
     return { success: true, data: updatedContact };
   } catch (error) {
     return {
@@ -212,7 +212,7 @@ export const updateContactPriority = async (
       return { success: false, error: 'Contact not found' };
     }
 
-    revalidatePath('/contacts');
+    revalidatePath('/app/contacts');
     return { success: true, data: updatedContact };
   } catch (error) {
     return {
@@ -240,7 +240,7 @@ export const updateLastContacted = async (id: string) => {
       return { success: false, error: 'Contact not found' };
     }
 
-    revalidatePath('/contacts');
+    revalidatePath('/app/contacts');
     return { success: true, data: updatedContact };
   } catch (error) {
     return {

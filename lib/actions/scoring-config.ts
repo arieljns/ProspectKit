@@ -105,8 +105,8 @@ export const updateScoringConfig = async (
       })
       .returning();
 
-    revalidatePath('/settings/scoring');
-    revalidatePath('/contacts');
+    revalidatePath('/app/settings/scoring');
+    revalidatePath('/app/contacts');
 
     return { success: true, data: updatedConfig };
   } catch (error) {
@@ -138,8 +138,8 @@ export const resetScoringConfig = async () => {
       })
       .returning();
 
-    revalidatePath('/settings/scoring');
-    revalidatePath('/contacts');
+    revalidatePath('/app/settings/scoring');
+    revalidatePath('/app/contacts');
 
     return { success: true, data: resetConfig };
   } catch (error) {

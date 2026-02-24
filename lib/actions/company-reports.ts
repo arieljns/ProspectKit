@@ -80,8 +80,8 @@ export const createOrUpdateReport = async (
       })
       .where(eq(companies.id, companyId));
 
-    revalidatePath('/dashboard');
-    revalidatePath(`/reports/${companyId}`);
+    revalidatePath('/app/dashboard');
+    revalidatePath(`/app/reports/${companyId}`);
 
     return { success: true, data: report };
   } catch (error) {
@@ -122,8 +122,8 @@ export const deleteReport = async (companyId: string) => {
       })
       .where(eq(companies.id, companyId));
 
-    revalidatePath('/dashboard');
-    revalidatePath(`/reports/${companyId}`);
+    revalidatePath('/app/dashboard');
+    revalidatePath(`/app/reports/${companyId}`);
 
     return { success: true, message: 'Report deleted successfully' };
   } catch (error) {
@@ -173,7 +173,7 @@ export const markReportAsGenerating = async (companyId: string) => {
         .where(eq(companyReports.id, existingReport.id));
     }
 
-    revalidatePath('/dashboard');
+    revalidatePath('/app/dashboard');
     return { success: true };
   } catch (error) {
     return {

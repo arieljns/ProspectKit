@@ -4,8 +4,9 @@ import { db } from "@/lib/db";
 import { contacts } from "@/lib/db/schema/contacts";
 import { leadScores } from "@/lib/db/schema/lead-scores";
 import { companies } from "@/lib/db/schema/companies";
-import { sql, count, eq, gte, and, desc } from "drizzle-orm";
+import { count, eq, gte } from "drizzle-orm";
 import { calculateTotalScore } from "@/lib/utils/scoring";
+import { getScoringConfig } from "@/lib/actions/scoring-config";
 
 /**
  * Get analytics data for the Pipeline Analytics page
@@ -38,14 +39,19 @@ export async function getAnalyticsData() {
       .leftJoin(leadScores, eq(contacts.id, leadScores.contactId))
       .leftJoin(companies, eq(contacts.companyId, companies.id));
 
-    // 3. Get scoring config weights (default if not found)
-    const weights = {
+    // 3. Get scoring config weights (fallback to defaults if unavailable)
+    const defaultWeights = {
       industryMatch: 25,
       companyMatch: 30,
       positionMatch: 20,
       seniorityMatch: 15,
       dealSizeMatch: 10,
     };
+    const configResult = await getScoringConfig();
+    const weights =
+      configResult.success && configResult.data
+        ? (configResult.data.weights as typeof defaultWeights)
+        : defaultWeights;
 
     // 4. Calculate grade distribution
     let aGradeCount = 0;

@@ -74,7 +74,7 @@ export const saveLeadScore = async (input: NewLeadScoreParams) => {
       })
       .returning();
 
-    revalidatePath('/contacts');
+    revalidatePath('/app/contacts');
 
     return { success: true, data: savedScore };
   } catch (error) {
@@ -99,7 +99,7 @@ export const deleteLeadScore = async (contactId: string) => {
       return { success: false, error: 'Score not found' };
     }
 
-    revalidatePath('/contacts');
+    revalidatePath('/app/contacts');
 
     return { success: true, message: 'Score deleted' };
   } catch (error) {

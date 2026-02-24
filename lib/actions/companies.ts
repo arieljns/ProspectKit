@@ -60,7 +60,7 @@ export const createCompany = async (input: NewCompanyParams) => {
       .values(validatedData)
       .returning();
 
-    revalidatePath('/dashboard');
+    revalidatePath('/app/dashboard');
     return { success: true, data: company };
   } catch (error) {
     return {
@@ -91,7 +91,7 @@ export const updateCompany = async (
       return { success: false, error: 'Company not found' };
     }
 
-    revalidatePath('/dashboard');
+    revalidatePath('/app/dashboard');
     return { success: true, data: updatedCompany };
   } catch (error) {
     return {
@@ -115,7 +115,7 @@ export const deleteCompany = async (id: string) => {
       return { success: false, error: 'Company not found' };
     }
 
-    revalidatePath('/dashboard');
+    revalidatePath('/app/dashboard');
     return { success: true, message: `Company ${deletedCompany.companyName} deleted` };
   } catch (error) {
     return {
@@ -146,7 +146,7 @@ export const updateCompanyPriority = async (
       return { success: false, error: 'Company not found' };
     }
 
-    revalidatePath('/dashboard');
+    revalidatePath('/app/dashboard');
     return { success: true, data: updatedCompany };
   } catch (error) {
     return {
@@ -177,7 +177,7 @@ export const updateCompanyReportStatus = async (
       return { success: false, error: 'Company not found' };
     }
 
-    revalidatePath('/dashboard');
+    revalidatePath('/app/dashboard');
     return { success: true, data: updatedCompany };
   } catch (error) {
     return {

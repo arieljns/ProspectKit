@@ -1,6 +1,10 @@
-import { xai } from "@ai-sdk/xai";
 import { generateObject } from "ai";
 import { z } from "zod";
+import { getChatModel } from "@/lib/ai/model";
+import {
+  formatExaResultsForPrompt,
+  searchExa,
+} from "@/lib/server/services/search/exa";
 
 export const maxDuration = 60;
 
@@ -33,21 +37,38 @@ export async function POST(req: Request) {
       );
     }
 
-    // Use an AI model with Live Search to find company information
+    const searchResults = await searchExa({
+      query: `${companyName} official website industry employee count company description`,
+      type: "auto",
+      category: "company",
+      numResults: 5,
+      contents: {
+        highlights: {
+          maxCharacters: 1400,
+          query:
+            "Find the company's official website, primary industry, approximate employee count, and a concise description of what it does.",
+        },
+      },
+    });
+
     const { object: companyInfo } = await generateObject({
-      model: xai("grok-4-fast-non-reasoning-latest"),
+      model: getChatModel(),
       schema: companyInfoSchema,
       schemaName: "CompanyInfo",
       schemaDescription: "Information about a company",
-      prompt: `Search for information about the company: "${companyName}"
+      system: `You extract company information from Exa web search results.
+Use only the provided search context.
+Prefer the official website and first-party company descriptions when available.
+If a field is not supported by the context, omit it.`,
+      prompt: `Company name: "${companyName}"
 
-Use Live Search to find:
-1. Industry/Sector - What industry does this company operate in?
-2. Company Size - Approximate number of employees (choose from: 1-10, 11-50, 51-200, 201-500, 501-1000, 1000+)
-3. Website - Official website URL
-4. Description - What does this company do? (1-2 sentences)
+${formatExaResultsForPrompt(searchResults, "Exa company search context")}
 
-Be accurate and use real data from search results.`,
+Extract:
+1. Industry/Sector
+2. Approximate company size (choose from: 1-10, 11-50, 51-200, 201-500, 501-1000, 1000+)
+3. Official website URL
+4. Brief company description (1-2 sentences)`,
     });
 
     return Response.json({

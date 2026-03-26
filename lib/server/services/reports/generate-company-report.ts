@@ -1,12 +1,16 @@
 import "server-only";
 
 import { generateObject } from "ai";
-import { xai } from "@ai-sdk/xai";
 
+import { getChatModel } from "@/lib/ai/model";
 import {
   reportDataSchema,
   type ReportData,
 } from "@/lib/db/schema/company-reports";
+import {
+  formatExaResultsForPrompt,
+  searchExa,
+} from "@/lib/server/services/search/exa";
 import {
   findCompanyReportByCompanyId,
   upsertCompanyReportByCompanyId,
@@ -20,6 +24,7 @@ import { err, ok, type ServiceResult } from "@/lib/server/shared/result";
 export type GenerateCompanyReportErrorCode =
   | "INVALID_INPUT"
   | "COMPANY_NOT_FOUND"
+  | "EXTERNAL_SEARCH_FAILED"
   | "AI_GENERATION_FAILED"
   | "DB_WRITE_FAILED"
   | "UNKNOWN";
@@ -56,15 +61,66 @@ export async function generateCompanyReport(input: {
       "generating",
     );
 
+    const recentNewsStartDate = new Date();
+    recentNewsStartDate.setMonth(recentNewsStartDate.getMonth() - 12);
+
+    let companySearchContext = "";
+    try {
+      const [overviewResults, newsResults] = await Promise.all([
+        searchExa({
+          query: `${company.companyName} company overview products services customers competitors market position`,
+          type: "auto",
+          numResults: 6,
+          contents: {
+            highlights: {
+              maxCharacters: 1200,
+              query:
+                "Find company overview, products, customers, competitors, market position, and business opportunities.",
+            },
+          },
+        }),
+        searchExa({
+          query: `${company.companyName} recent news updates announcements funding launches partnerships`,
+          type: "auto",
+          category: "news",
+          numResults: 5,
+          startPublishedDate: recentNewsStartDate.toISOString().slice(0, 10),
+          contents: {
+            highlights: {
+              maxCharacters: 1200,
+              query:
+                "Find recent news, launches, partnerships, funding updates, and notable business developments.",
+            },
+            maxAgeHours: 0,
+          },
+        }),
+      ]);
+
+      companySearchContext = [
+        formatExaResultsForPrompt(overviewResults, "Exa company research results"),
+        formatExaResultsForPrompt(newsResults, "Exa recent news results"),
+      ].join("\n\n");
+    } catch (error) {
+      return err(
+        "EXTERNAL_SEARCH_FAILED",
+        error instanceof Error ? error.message : "Failed to search the web",
+      );
+    }
+
     const systemPrompt = `You are a professional business research analyst.
-Research the given company using Live Search to gather the latest information and generate a comprehensive structured research report.
+Use the provided Exa search context to generate a comprehensive structured research report.
 
 Requirements:
-1. Use Live Search to get current data (news, websites, social media)
+1. Stay grounded in the provided search context
 2. Analyze company strengths, challenges, and market position
 3. Identify key products and services
 4. Provide market analysis and competitor information
 5. Discover business opportunities
+
+If a field is not supported by the context:
+- Use "Not enough public information found." for required text fields
+- Use [] for required arrays
+- Omit optional fields when necessary
 
 Return strictly structured data that matches the JSON schema.`;
 
@@ -83,12 +139,12 @@ Generate a detailed company research report with the following structure:
 - Recent news and updates (if available)
 - Business opportunities (3-5 points)
 
-Use Live Search to get the most current and accurate information about ${company.companyName}.`;
+${companySearchContext}`;
 
     let reportData: ReportData;
     try {
       const generated = await generateObject({
-        model: xai("grok-4-fast-non-reasoning-latest"),
+        model: getChatModel(),
         schema: reportDataSchema,
         schemaName: "CompanyResearchReport",
         schemaDescription: "A comprehensive company research report",

@@ -9,7 +9,12 @@ This document is the tracked source of truth for repository-level setup details.
 - Required keys:
   - `DATABASE_URL`
   - `DATABASE_MIGRATIONS_URL` (optional but recommended for migrations)
+  - `OPENAI_API_KEY`
+  - `EXA_API_KEY`
+- Optional keys:
   - `XAI_API_KEY`
+  - `AI_MODEL_PROVIDER`
+  - `AI_MODEL_ID`
 
 ## Build and Type Safety
 

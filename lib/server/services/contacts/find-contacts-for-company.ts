@@ -1,12 +1,17 @@
 import "server-only";
 
 import { generateObject } from "ai";
-import { xai } from "@ai-sdk/xai";
 
 import { contactFinderSchema } from "@/lib/ai/contact-finder-schema";
+import { getChatModel } from "@/lib/ai/model";
 import { type NewContactParams } from "@/lib/db/schema/contacts";
 import { findCompanyById } from "@/lib/server/repositories/companies-repo";
 import { insertContact } from "@/lib/server/repositories/contacts-repo";
+import {
+  extractDomain,
+  formatExaResultsForPrompt,
+  searchExa,
+} from "@/lib/server/services/search/exa";
 import { err, ok, type ServiceResult } from "@/lib/server/shared/result";
 
 export type FindContactsForCompanyOutput = {
@@ -21,6 +26,7 @@ export type FindContactsForCompanyErrorCode =
   | "INVALID_INPUT"
   | "COMPANY_NOT_FOUND"
   | "NO_CONTACTS_FOUND"
+  | "EXTERNAL_SEARCH_FAILED"
   | "AI_GENERATION_FAILED"
   | "UNKNOWN";
 
@@ -56,12 +62,57 @@ export async function findContactsForCompany(input: {
       return err("COMPANY_NOT_FOUND", "Company not found");
     }
 
+    const companyDomain = extractDomain(company.website);
+
+    let searchContext = "";
+    try {
+      const [linkedinResults, websiteResults] = await Promise.all([
+        searchExa({
+          query: `people currently working at ${company.companyName} in leadership, engineering, sales, and marketing roles`,
+          type: "auto",
+          numResults: 8,
+          includeDomains: ["linkedin.com"],
+          contents: {
+            highlights: {
+              maxCharacters: 900,
+              query:
+                "Find current employees at the company. Extract full name, current title, department, and LinkedIn profile URL when available.",
+            },
+          },
+        }),
+        companyDomain
+          ? searchExa({
+              query: `${company.companyName} leadership team about executives staff`,
+              type: "auto",
+              numResults: 5,
+              includeDomains: [companyDomain],
+              contents: {
+                highlights: {
+                  maxCharacters: 900,
+                  query:
+                    "Find employee or executive names, titles, and departments from official company pages.",
+                },
+              },
+            })
+          : Promise.resolve([]),
+      ]);
+
+      searchContext = [
+        formatExaResultsForPrompt(linkedinResults, "Exa LinkedIn search results"),
+        formatExaResultsForPrompt(websiteResults, "Exa official website results"),
+      ].join("\n\n");
+    } catch (error) {
+      return err(
+        "EXTERNAL_SEARCH_FAILED",
+        error instanceof Error ? error.message : "Failed to search the web",
+      );
+    }
+
     const systemPrompt = `You are a Sales Development Representative (SDR) assistant.
-Your job is to find key contacts and decision makers at a given company using Live Search.
+Your job is to find key contacts and decision makers at a given company from the provided Exa search context.
 
 CRITICAL INSTRUCTIONS:
-- Use Live Search to find real contacts from LinkedIn and company websites
-- Return ONLY contacts you find through search results
+- Return ONLY contacts supported by the provided search context
 - Do NOT make up or invent names or details
 - Focus on finding people currently working at the company
 - Return approximately 5 contacts (or fewer if less are found)
@@ -83,12 +134,7 @@ ${company.industry ? `Industry: ${company.industry}` : ""}
 ${company.website ? `Website: ${company.website}` : ""}
 ${company.description ? `Description: ${company.description}` : ""}
 
-Search for people currently working at ${company.companyName}.
-Try multiple search strategies:
-1. LinkedIn employee searches
-2. Company website team/about pages
-3. News articles mentioning executives
-4. Press releases with contact names
+${searchContext}
 
 Look for contacts across different departments (Engineering, Sales, Marketing, Executive).
 
@@ -99,10 +145,10 @@ REMINDER: Return ONLY the JSON object, no additional text or explanations.`;
     let result: { contacts: FoundContact[] };
     try {
       const generated = await generateObject({
-        model: xai("grok-4-fast-non-reasoning-latest"),
+        model: getChatModel(),
         schema: contactFinderSchema,
         schemaName: "ContactFinderResult",
-        schemaDescription: "Key contacts found at a company via web search",
+        schemaDescription: "Key contacts found at a company from Exa search results",
         system: systemPrompt,
         prompt: userPrompt,
       });

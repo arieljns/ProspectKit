@@ -1,8 +1,8 @@
 import "server-only";
 
 import { streamText } from "ai";
-import { xai } from "@ai-sdk/xai";
 
+import { getChatModel } from "@/lib/ai/model";
 import { DEFAULT_SCORING_CONFIG } from "@/lib/server/domain/default-scoring-config";
 import { findContactWithCompanyById } from "@/lib/server/repositories/contacts-repo";
 import { findLeadScoreByContactId } from "@/lib/server/repositories/lead-scores-repo";
@@ -151,7 +151,7 @@ Write the email/InMail now (no subject line, no signature):`;
     }
 
     const stream = streamText({
-      model: xai("grok-4-fast-non-reasoning-latest"),
+      model: getChatModel(),
       system: systemPrompt,
       prompt: userPrompt,
     });

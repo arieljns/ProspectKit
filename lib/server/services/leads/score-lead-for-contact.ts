@@ -1,14 +1,19 @@
 import "server-only";
 
 import { generateObject } from "ai";
-import { xai } from "@ai-sdk/xai";
 
+import { getChatModel } from "@/lib/ai/model";
 import { leadScoringSchema } from "@/lib/ai/lead-scoring-schema";
 import { type NewLeadScoreParams } from "@/lib/db/schema/lead-scores";
 import { DEFAULT_SCORING_CONFIG } from "@/lib/server/domain/default-scoring-config";
 import { findContactWithCompanyById } from "@/lib/server/repositories/contacts-repo";
 import { upsertLeadScore } from "@/lib/server/repositories/lead-scores-repo";
 import { getOrCreateDefaultScoringConfig } from "@/lib/server/repositories/scoring-config-repo";
+import {
+  extractDomain,
+  formatExaResultsForPrompt,
+  searchExa,
+} from "@/lib/server/services/search/exa";
 import { err, ok, type ServiceResult } from "@/lib/server/shared/result";
 
 export type ScoreLeadForContactOutput = {
@@ -72,6 +77,35 @@ export async function scoreLeadForContact(input: {
       );
     }
 
+    let researchContext = "";
+    try {
+      const includeDomains = [
+        extractDomain(company.website),
+        contact.linkedinUrl ? "linkedin.com" : null,
+      ].filter((value): value is string => Boolean(value));
+
+      const searchResults = await searchExa({
+        query: `${contact.name} ${contact.title} ${company.companyName} company overview responsibilities priorities`,
+        type: "auto",
+        numResults: 4,
+        includeDomains: includeDomains.length ? includeDomains : undefined,
+        contents: {
+          highlights: {
+            maxCharacters: 900,
+            query:
+              "Find current role context, company priorities, business model, and sales-relevant facts.",
+          },
+        },
+      });
+
+      researchContext = formatExaResultsForPrompt(
+        searchResults,
+        "Optional Exa lead research context",
+      );
+    } catch (error) {
+      console.warn("Lead scoring Exa search failed:", error);
+    }
+
     const systemPrompt = `You are an expert Sales Development Representative (SDR) analyst specialized in lead qualification.
 
 Your task is to evaluate a sales lead across 5 key dimensions and provide scores (0-100) with reasoning.
@@ -84,10 +118,10 @@ SCORING GUIDELINES:
 - 81-100: Excellent fit - highly qualified lead
 
 IMPORTANT:
-- Use Live Search to gather additional context about the contact and company if needed
 - Base your scores on factual information, not assumptions
 - Provide one sentence reasoning for each score
-- Consider the user's product and target customer profile in your evaluation`;
+- Consider the user's product and target customer profile in your evaluation
+- Use the optional Exa research context only when it is relevant and reliable`;
 
     const userPrompt = `Evaluate this sales lead:
 
@@ -111,6 +145,8 @@ ${company.industry ? `Industry: ${company.industry}` : ""}
 ${company.size ? `Company Size: ${company.size}` : ""}
 ${company.description ? `Company Description: ${company.description}` : ""}
 ${company.website ? `Website: ${company.website}` : ""}
+
+${researchContext ? `\n=== OPTIONAL EXTERNAL CONTEXT ===\n${researchContext}\n` : ""}
 
 === SCORING DIMENSIONS ===
 
@@ -153,7 +189,7 @@ Provide scores and 1-2 sentence reasoning for each dimension.`;
 
     try {
       const generated = await generateObject({
-        model: xai("grok-4-fast-non-reasoning-latest"),
+        model: getChatModel(),
         schema: leadScoringSchema,
         schemaName: "LeadScoringResult",
         schemaDescription:

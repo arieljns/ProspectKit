@@ -1,6 +1,10 @@
-import { xai } from "@ai-sdk/xai";
 import { generateObject } from "ai";
 import { z } from "zod";
+import { getChatModel } from "@/lib/ai/model";
+import {
+  formatExaResultsForPrompt,
+  getExaContents,
+} from "@/lib/server/services/search/exa";
 
 export const maxDuration = 60;
 
@@ -30,21 +34,45 @@ export async function POST(req: Request) {
       );
     }
 
-    // Use an AI model with Live Search to extract LinkedIn profile information
+    const profileContents = await getExaContents({
+      urls: [linkedinUrl],
+      text: {
+        maxCharacters: 7000,
+      },
+      highlights: {
+        maxCharacters: 1600,
+        query:
+          "Identify this person's full name, current role, department or function, and current employer.",
+      },
+    });
+
+    if (profileContents.length === 0) {
+      return Response.json(
+        {
+          success: false,
+          error: "No profile content found for the provided LinkedIn URL",
+        },
+        { status: 404 },
+      );
+    }
+
     const { object: contactInfo } = await generateObject({
-      model: xai("grok-4-fast-non-reasoning-latest"),
+      model: getChatModel(),
       schema: contactInfoSchema,
       schemaName: "ContactInfo",
       schemaDescription: "Information extracted from a LinkedIn profile",
-      prompt: `Extract information from this LinkedIn profile: ${linkedinUrl}
+      system: `You extract LinkedIn profile information from Exa page contents.
+Use only the provided profile context.
+If a field is not supported by the context, omit it.`,
+      prompt: `LinkedIn profile URL: ${linkedinUrl}
 
-Use Live Search to access the LinkedIn profile and extract:
-1. Full name of the person
+${formatExaResultsForPrompt(profileContents, "Exa profile contents")}
+
+Extract:
+1. Full name
 2. Current job title
-3. Department/function (if identifiable from the title or profile)
-4. Company name where they currently work
-
-Be accurate and use real data from the LinkedIn profile.`,
+3. Department/function, if identifiable
+4. Current company name`,
     });
 
     return Response.json({

@@ -98,8 +98,14 @@ export async function findContactsForCompany(input: {
       ]);
 
       searchContext = [
-        formatExaResultsForPrompt(linkedinResults, "Exa LinkedIn search results"),
-        formatExaResultsForPrompt(websiteResults, "Exa official website results"),
+        formatExaResultsForPrompt(
+          linkedinResults,
+          "Exa LinkedIn search results",
+        ),
+        formatExaResultsForPrompt(
+          websiteResults,
+          "Exa official website results",
+        ),
       ].join("\n\n");
     } catch (error) {
       return err(
@@ -148,7 +154,8 @@ REMINDER: Return ONLY the JSON object, no additional text or explanations.`;
         model: getChatModel(),
         schema: contactFinderSchema,
         schemaName: "ContactFinderResult",
-        schemaDescription: "Key contacts found at a company from Exa search results",
+        schemaDescription:
+          "Key contacts found at a company from Exa search results",
         system: systemPrompt,
         prompt: userPrompt,
       });

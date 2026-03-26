@@ -10,9 +10,8 @@ const DEFAULT_MODEL_BY_PROVIDER = {
 
 type ChatModelProvider = keyof typeof DEFAULT_MODEL_BY_PROVIDER;
 
-const isChatModelProvider = (
-  value: string,
-): value is ChatModelProvider => value in DEFAULT_MODEL_BY_PROVIDER;
+const isChatModelProvider = (value: string): value is ChatModelProvider =>
+  value in DEFAULT_MODEL_BY_PROVIDER;
 
 export function getChatModel() {
   const provider =

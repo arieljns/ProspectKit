@@ -97,7 +97,10 @@ export async function generateCompanyReport(input: {
       ]);
 
       companySearchContext = [
-        formatExaResultsForPrompt(overviewResults, "Exa company research results"),
+        formatExaResultsForPrompt(
+          overviewResults,
+          "Exa company research results",
+        ),
         formatExaResultsForPrompt(newsResults, "Exa recent news results"),
       ].join("\n\n");
     } catch (error) {

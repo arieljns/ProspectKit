@@ -83,10 +83,7 @@ export async function POST(req: Request) {
         execute: async ({ query, focus, fresh }) => {
           const results = await searchExa({
             query,
-            category:
-              focus && focus !== "general"
-                ? focus
-                : undefined,
+            category: focus && focus !== "general" ? focus : undefined,
             numResults: 5,
             contents: {
               highlights: {

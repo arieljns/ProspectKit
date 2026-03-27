@@ -84,39 +84,6 @@ export const landingLogos = [
   },
 ];
 
-export const howItWorksSteps: WorkflowStep[] = [
-  {
-    title: "Find accounts",
-    description:
-      "Build and maintain your target company list in a single workspace.",
-  },
-  {
-    title: "Research accounts",
-    description:
-      "Generate structured company reports with market context, products, and opportunities.",
-  },
-  {
-    title: "Find contacts",
-    description:
-      "Discover key people at each account and capture role-level context quickly.",
-  },
-  {
-    title: "Qualify leads",
-    description:
-      "Score every contact across five configurable dimensions tied to your ICP.",
-  },
-  {
-    title: "Draft outreach",
-    description:
-      "Generate personalized LinkedIn and email drafts from contact and company context.",
-  },
-  {
-    title: "Monitor pipeline",
-    description:
-      "Track status progression and lead quality with lightweight pipeline analytics.",
-  },
-];
-
 export const coreFeatureCards: FeatureCard[] = [
   {
     title: "Manage leads workspace",

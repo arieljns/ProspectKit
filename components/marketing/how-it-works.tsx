@@ -3,7 +3,7 @@ import {
   CardContent,
   CardHeader,
   CardTitle,
-} from "@/components/shadcnui/card";
+} from "@/components/shared/ui/card";
 
 const steps = [
   {

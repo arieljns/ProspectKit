@@ -1,0 +1,19 @@
+commands:
+  install: pnpm install
+  typecheck: pnpm exec tsc --noEmit
+  build: pnpm build
+  lint: pnpm lint
+  format: pnpm format
+  format_check: pnpm format:check
+  db_migrate: pnpm db:auto-migrate
+  db_seed: pnpm db:seed
+  db_generate: pnpm db:generate
+  db_studio: pnpm db:studio
+
+services:
+  web:
+    start: pnpm dev
+    stop: lsof -ti :3000 | xargs kill
+    healthcheck: curl -sf http://localhost:3000
+    port: 3000
+    depends_on: []

@@ -1,5 +1,5 @@
 {
-  "id": "a5f6598a-e1fd-4230-a084-0ae699eed500",
+  "id": "15d32c4b-2af1-4468-b1c3-3e8e4fff0659",
   "prevId": "ab270498-0532-4efe-aac3-bb80ffc07ce2",
   "version": "7",
   "dialect": "postgresql",
@@ -32,12 +32,12 @@
           "primaryKey": false,
           "notNull": false
         },
-        "reviewed": {
-          "name": "reviewed",
+        "priority": {
+          "name": "priority",
           "type": "text",
           "primaryKey": false,
           "notNull": true,
-          "default": "'Not yet'"
+          "default": "'Low'"
         },
         "report_status": {
           "name": "report_status",
@@ -128,8 +128,12 @@
           "name": "company_reports_company_id_companies_id_fk",
           "tableFrom": "company_reports",
           "tableTo": "companies",
-          "columnsFrom": ["company_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "company_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -137,8 +141,8 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "public.embeddings": {
-      "name": "embeddings",
+    "public.contacts": {
+      "name": "contacts",
       "schema": "",
       "columns": {
         "id": {
@@ -147,50 +151,89 @@
           "primaryKey": true,
           "notNull": true
         },
-        "resource_id": {
-          "name": "resource_id",
+        "company_id": {
+          "name": "company_id",
           "type": "varchar(191)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "title": {
+          "name": "title",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "department": {
+          "name": "department",
+          "type": "text",
           "primaryKey": false,
           "notNull": false
         },
-        "content": {
-          "name": "content",
+        "linkedin_url": {
+          "name": "linkedin_url",
           "type": "text",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
-        "embedding": {
-          "name": "embedding",
-          "type": "vector(1536)",
+        "contact_status": {
+          "name": "contact_status",
+          "type": "text",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "default": "'new'"
+        },
+        "priority": {
+          "name": "priority",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'Low'"
+        },
+        "last_contacted_at": {
+          "name": "last_contacted_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "notes": {
+          "name": "notes",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
         }
       },
-      "indexes": {
-        "embeddingIndex": {
-          "name": "embeddingIndex",
-          "columns": [
-            {
-              "expression": "embedding",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last",
-              "opclass": "vector_cosine_ops"
-            }
-          ],
-          "isUnique": false,
-          "concurrently": false,
-          "method": "hnsw",
-          "with": {}
-        }
-      },
+      "indexes": {},
       "foreignKeys": {
-        "embeddings_resource_id_resources_id_fk": {
-          "name": "embeddings_resource_id_resources_id_fk",
-          "tableFrom": "embeddings",
-          "tableTo": "resources",
-          "columnsFrom": ["resource_id"],
-          "columnsTo": ["id"],
+        "contacts_company_id_companies_id_fk": {
+          "name": "contacts_company_id_companies_id_fk",
+          "tableFrom": "contacts",
+          "tableTo": "companies",
+          "columnsFrom": [
+            "company_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -198,8 +241,8 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "public.resources": {
-      "name": "resources",
+    "public.lead_scores": {
+      "name": "lead_scores",
       "schema": "",
       "columns": {
         "id": {
@@ -208,11 +251,139 @@
           "primaryKey": true,
           "notNull": true
         },
-        "content": {
-          "name": "content",
+        "contact_id": {
+          "name": "contact_id",
+          "type": "varchar(191)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "industry_match_score": {
+          "name": "industry_match_score",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "company_match_score": {
+          "name": "company_match_score",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "position_match_score": {
+          "name": "position_match_score",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "seniority_match_score": {
+          "name": "seniority_match_score",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "deal_size_score": {
+          "name": "deal_size_score",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "reasoning": {
+          "name": "reasoning",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "lead_scores_contact_id_contacts_id_fk": {
+          "name": "lead_scores_contact_id_contacts_id_fk",
+          "tableFrom": "lead_scores",
+          "tableTo": "contacts",
+          "columnsFrom": [
+            "contact_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "lead_scores_contact_id_unique": {
+          "name": "lead_scores_contact_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "contact_id"
+          ]
+        }
+      }
+    },
+    "public.scoring_config": {
+      "name": "scoring_config",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "'default'"
+        },
+        "user_company_name": {
+          "name": "user_company_name",
           "type": "text",
           "primaryKey": false,
           "notNull": true
+        },
+        "user_company_description": {
+          "name": "user_company_description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "product_description": {
+          "name": "product_description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "target_industries": {
+          "name": "target_industries",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'[]'::jsonb"
+        },
+        "target_seniority_levels": {
+          "name": "target_seniority_levels",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'[]'::jsonb"
+        },
+        "weights": {
+          "name": "weights",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'{\"industryMatch\": 25, \"companyMatch\": 30, \"positionMatch\": 20, \"seniorityMatch\": 15, \"dealSizeMatch\": 10}'::jsonb"
         },
         "created_at": {
           "name": "created_at",

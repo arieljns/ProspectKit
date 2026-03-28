@@ -12,8 +12,6 @@ This repository now handles external web research through Exa instead of relying
 
 ### Search-first flows
 
-- `app/api/chat/route.ts`
-  - Exposes a `searchWeb` tool backed by Exa.
 - `app/api/companies/auto-fill/route.ts`
   - Searches Exa for company data, then asks the configured model to extract structured fields.
 - `app/api/contacts/auto-fill/route.ts`
@@ -37,5 +35,5 @@ The goal is to keep search independent from model choice so provider changes onl
 ## Environment
 
 - Required for external search: `EXA_API_KEY`
-- Required for embeddings: `OPENAI_API_KEY`
+- Required only when using OpenAI as the model provider: `OPENAI_API_KEY`
 - Required only when using xAI as the chat model provider: `XAI_API_KEY`

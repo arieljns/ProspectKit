@@ -3,6 +3,7 @@
 import { findCompanyById } from "@/lib/server/repositories/companies-repo";
 import { findCompanyReportByCompanyId } from "@/lib/server/repositories/company-reports-repo";
 import { findLeadScoresByContactIds } from "@/lib/server/repositories/lead-scores-repo";
+import { findDefaultScoringConfig } from "@/lib/server/repositories/scoring-config-repo";
 import { calculateTotalScore, getScoreGrade } from "@/lib/utils/scoring";
 import { db } from "@/lib/db";
 import { contacts } from "@/lib/db/schema/contacts";
@@ -10,6 +11,7 @@ import { eq, desc } from "drizzle-orm";
 import { companies } from "@/lib/db/schema/companies";
 import { companyReports } from "@/lib/db/schema/company-reports";
 import type { LeadScore } from "@/lib/db/schema/lead-scores";
+import type { ScoringConfig } from "@/lib/db/schema/scoring-config";
 
 type Company = typeof companies.$inferSelect;
 type CompanyReport = typeof companyReports.$inferSelect;
@@ -28,6 +30,7 @@ export type BriefData = {
   contacts: Contact[];
   scores: LeadScore[];
   recommendations: RecommendedContact[];
+  scoringConfig: ScoringConfig | null;
 };
 
 /**
@@ -90,6 +93,14 @@ export const getBriefData = async (
       scores = [];
     }
 
+    // Load scoring config — null if not found
+    let scoringConfigData: ScoringConfig | null = null;
+    try {
+      scoringConfigData = await findDefaultScoringConfig();
+    } catch {
+      scoringConfigData = null;
+    }
+
     // Build a lookup map: contactId -> LeadScore
     const scoreByContactId = new Map<string, LeadScore>();
     for (const score of scores) {
@@ -125,6 +136,7 @@ export const getBriefData = async (
         contacts: companyContacts,
         scores,
         recommendations: scoredContacts,
+        scoringConfig: scoringConfigData,
       },
     };
   } catch (error) {

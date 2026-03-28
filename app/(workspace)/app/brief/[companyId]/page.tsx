@@ -57,7 +57,12 @@ export default async function BriefPage({ params }: BriefPageProps) {
               companyId={briefData.company.id}
               initialContacts={briefData.contacts}
             />
-            <ScoringSection />
+            <ScoringSection
+              companyId={briefData.company.id}
+              initialContacts={briefData.contacts}
+              initialScores={briefData.scores}
+              scoringConfig={briefData.scoringConfig}
+            />
             <OutreachSection />
           </div>
         </div>

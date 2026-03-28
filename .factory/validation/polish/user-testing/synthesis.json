@@ -1,36 +1,18 @@
 {
   "milestone": "polish",
-  "round": 1,
-  "status": "fail",
+  "round": 2,
+  "status": "pass",
   "assertionsSummary": {
-    "total": 9,
-    "passed": 8,
-    "failed": 1,
+    "total": 1,
+    "passed": 1,
+    "failed": 0,
     "blocked": 0
   },
   "passedAssertions": [
-    "VAL-CROSS-001",
-    "VAL-CROSS-002",
-    "VAL-CROSS-003",
-    "VAL-CROSS-004",
-    "VAL-CROSS-005",
-    "VAL-CROSS-006",
-    "VAL-CROSS-008",
-    "VAL-CROSS-009"
+    "VAL-CROSS-007"
   ],
-  "failedAssertions": [
-    {
-      "id": "VAL-CROSS-007",
-      "reason": "Outreach section does not auto-update after scoring rerun. After rescoring contacts, the Outreach section continues showing stale scores and old ranking (e.g., Saurabh Kumar #3 at 83/100 instead of new Jamie Michaels #3 at 86/100). A full page reload is required to see updated outreach recommendations. The scoring rerun's revalidatePath/server action does not propagate updated scores to the Outreach section's client-side state."
-    }
-  ],
+  "failedAssertions": [],
   "blockedAssertions": [],
-  "appliedUpdates": [
-    {
-      "target": "user-testing.md",
-      "description": "Updated session naming convention for polish milestone validators",
-      "source": "setup"
-    }
-  ],
-  "previousRound": null
+  "appliedUpdates": [],
+  "previousRound": ".factory/validation/polish/user-testing/synthesis-round1.json"
 }

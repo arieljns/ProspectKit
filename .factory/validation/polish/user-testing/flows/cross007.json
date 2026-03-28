@@ -1,0 +1,28 @@
+{
+  "flowId": "cross007",
+  "testedAt": "2026-03-28T00:00:00.000Z",
+  "isolation": {
+    "appUrl": "http://localhost:3000",
+    "testCompany": "xAI",
+    "companyId": "delngtdbuimkdqewm6ebn",
+    "browserSession": "3cf4ab51301b__cross007"
+  },
+  "toolsUsed": ["agent-browser"],
+  "assertions": {
+    "VAL-CROSS-007": {
+      "status": "pass",
+      "observation": "After clicking the Rerun button in the Lead Scoring section, all 5 contacts were rescored with new values. The scores changed from (Toby Pohlen: 92, Tony Cheema: 87, Jamie Michaels: 86, Saurabh Kumar: 82, Andrew Mi: 75) to (Toby Pohlen: 91, Tony Cheema: 91, Jamie Michaels: 85, Saurabh Kumar: 84, Andrew Mi: 74). The Outreach section automatically updated to reflect the new scores without a page reload: Toby Pohlen now shows 91/100 (was 92/100), Tony Cheema now shows 91/100 (was 87/100), and Jamie Michaels now shows 85/100 (was 86/100). The top 3 recommendations in Outreach match the top 3 scored contacts from the updated Scoring section, in the correct ranking order. No console errors were observed.",
+      "evidence": [
+        "polish/cross007/VAL-CROSS-007-outreach-before-scoring-rerun.png",
+        "polish/cross007/VAL-CROSS-007-scoring-before-rerun.png",
+        "polish/cross007/VAL-CROSS-007-scoring-before-rerun-part2.png",
+        "polish/cross007/VAL-CROSS-007-scoring-during-rerun.png",
+        "polish/cross007/VAL-CROSS-007-scoring-after-rerun-full.png",
+        "polish/cross007/VAL-CROSS-007-outreach-after-rerun.png"
+      ]
+    }
+  },
+  "frictions": [],
+  "blockers": [],
+  "summary": "Tested 1 assertion: 1 passed. VAL-CROSS-007 confirmed that after rescoring contacts via the Rerun button, the Outreach section automatically updates to reflect the new scores and rankings without a page reload."
+}

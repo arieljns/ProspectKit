@@ -290,6 +290,13 @@ export function BriefRunController({ initialData }: BriefRunControllerProps) {
                   updateSectionState("scoring", state);
                 }
               }}
+              onComplete={() => {
+                // When scoring reruns independently (not part of full orchestration),
+                // refresh all data so OutreachSection gets updated recommendations.
+                if (!isRunning) {
+                  void refreshData();
+                }
+              }}
             />
             <OutreachSection
               key={`outreach-${dataVersion}`}

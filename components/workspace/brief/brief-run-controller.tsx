@@ -2,6 +2,7 @@
 
 import { useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 import { BriefHeader } from "./brief-header";
 import { ResearchSection } from "./research-section";
 import { ContactsSection } from "./contacts-section";
@@ -92,7 +93,9 @@ export function BriefRunController({ initialData }: BriefRunControllerProps) {
         router.refresh();
       }
     } catch {
-      // Silently handle refresh errors
+      toast.error(
+        "The brief was generated, but we couldn't refresh the page data. Please reload the page.",
+      );
     }
   }, [initialData.company.id, router]);
 
@@ -289,8 +292,8 @@ export function BriefRunController({ initialData }: BriefRunControllerProps) {
               }}
             />
             <OutreachSection
+              key={`outreach-${dataVersion}`}
               recommendations={recommendations}
-              companyId={initialData.company.id}
             />
           </div>
         </div>

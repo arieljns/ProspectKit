@@ -1,6 +1,6 @@
 import "server-only";
 
-import { eq } from "drizzle-orm";
+import { eq, desc } from "drizzle-orm";
 
 import { db } from "@/lib/db";
 import { contacts, type NewContactParams } from "@/lib/db/schema/contacts";
@@ -18,6 +18,14 @@ export async function findContactWithCompanyById(contactId: string) {
     .limit(1);
 
   return result ?? null;
+}
+
+export async function findContactsByCompanyId(companyId: string) {
+  return db
+    .select()
+    .from(contacts)
+    .where(eq(contacts.companyId, companyId))
+    .orderBy(desc(contacts.createdAt));
 }
 
 export async function insertContact(input: NewContactParams) {

@@ -32,12 +32,9 @@ type ContactMessageState = {
 
 type OutreachSectionProps = {
   recommendations: RecommendedContact[];
-  companyId: string;
 };
 
-export function OutreachSection({
-  recommendations,
-}: OutreachSectionProps) {
+export function OutreachSection({ recommendations }: OutreachSectionProps) {
   // Per-contact message states
   const [contactStates, setContactStates] = useState<
     Record<string, ContactMessageState>

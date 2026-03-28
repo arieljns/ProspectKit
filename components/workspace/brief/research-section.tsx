@@ -173,7 +173,7 @@ export function ResearchSection({
         </p>
       )}
 
-      {/* Running state (loading skeleton) */}
+      {/* Running state (loading skeleton — only when no prior data) */}
       {state === "running" && !reportData && (
         <div className="flex flex-col gap-3">
           <Skeleton className="h-4 w-full" />
@@ -186,10 +186,14 @@ export function ResearchSection({
         </div>
       )}
 
-      {/* Report content (shown in success state, and in error state if prior data exists) */}
-      {(state === "success" || (state === "error" && reportData)) &&
+      {/* Report content (shown in success/error states, and during rerun with prior data at reduced opacity) */}
+      {(state === "success" ||
+        (state === "error" && reportData) ||
+        (state === "running" && reportData)) &&
         reportData && (
-          <div className="flex flex-col gap-4">
+          <div
+            className={`flex flex-col gap-4 ${state === "running" ? "opacity-50 pointer-events-none" : ""}`}
+          >
             {/* Updated indicator */}
             {updatedJustNow && state === "success" && (
               <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
@@ -283,19 +287,6 @@ export function ResearchSection({
             )}
           </div>
         )}
-
-      {/* Running with prior data: show skeleton overlay */}
-      {state === "running" && reportData && (
-        <div className="flex flex-col gap-3 opacity-50">
-          <Skeleton className="h-4 w-full" />
-          <Skeleton className="h-4 w-3/4" />
-          <Skeleton className="h-4 w-5/6" />
-          <div className="mt-2 grid grid-cols-1 gap-3 md:grid-cols-2">
-            <Skeleton className="h-24 w-full rounded-lg" />
-            <Skeleton className="h-24 w-full rounded-lg" />
-          </div>
-        </div>
-      )}
     </div>
   );
 }

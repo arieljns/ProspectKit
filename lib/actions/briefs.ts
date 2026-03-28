@@ -2,13 +2,12 @@
 
 import { findCompanyById } from "@/lib/server/repositories/companies-repo";
 import { findCompanyReportByCompanyId } from "@/lib/server/repositories/company-reports-repo";
+import { findContactsByCompanyId } from "@/lib/server/repositories/contacts-repo";
 import { findLeadScoresByContactIds } from "@/lib/server/repositories/lead-scores-repo";
 import { findDefaultScoringConfig } from "@/lib/server/repositories/scoring-config-repo";
-import { calculateTotalScore, getScoreGrade } from "@/lib/utils/scoring";
-import { db } from "@/lib/db";
-import { contacts } from "@/lib/db/schema/contacts";
-import { eq, desc } from "drizzle-orm";
+import { calculateTotalScore, getScoreGrade, DEFAULT_WEIGHTS } from "@/lib/utils/scoring";
 import { companies } from "@/lib/db/schema/companies";
+import { contacts } from "@/lib/db/schema/contacts";
 import { companyReports } from "@/lib/db/schema/company-reports";
 import type { LeadScore } from "@/lib/db/schema/lead-scores";
 import type { ScoringConfig } from "@/lib/db/schema/scoring-config";
@@ -31,17 +30,6 @@ export type BriefData = {
   scores: LeadScore[];
   recommendations: RecommendedContact[];
   scoringConfig: ScoringConfig | null;
-};
-
-/**
- * Default scoring weights used when no scoring config is available
- */
-const DEFAULT_WEIGHTS = {
-  industryMatch: 25,
-  companyMatch: 30,
-  positionMatch: 20,
-  seniorityMatch: 15,
-  dealSizeMatch: 10,
 };
 
 /**
@@ -75,11 +63,7 @@ export const getBriefData = async (
     // Load contacts — empty array if none
     let companyContacts: Contact[] = [];
     try {
-      companyContacts = await db
-        .select()
-        .from(contacts)
-        .where(eq(contacts.companyId, companyId))
-        .orderBy(desc(contacts.createdAt));
+      companyContacts = await findContactsByCompanyId(companyId);
     } catch {
       companyContacts = [];
     }

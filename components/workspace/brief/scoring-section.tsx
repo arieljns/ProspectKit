@@ -17,6 +17,7 @@ import {
   calculateTotalScore,
   getScoreGrade,
   getGradeBadgeVariant,
+  DEFAULT_WEIGHTS,
 } from "@/lib/utils/scoring";
 import type { SectionState } from "./types";
 import type { contacts } from "@/lib/db/schema/contacts";
@@ -24,17 +25,6 @@ import type { LeadScore } from "@/lib/db/schema/lead-scores";
 import type { ScoringConfig } from "@/lib/db/schema/scoring-config";
 
 type Contact = typeof contacts.$inferSelect;
-
-/**
- * Default scoring weights used when no scoring config is available
- */
-const DEFAULT_WEIGHTS = {
-  industryMatch: 25,
-  companyMatch: 30,
-  positionMatch: 20,
-  seniorityMatch: 15,
-  dealSizeMatch: 10,
-};
 
 type ScoredContact = {
   contact: Contact;

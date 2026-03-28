@@ -1,11 +1,9 @@
 import { findCompanyById } from "@/lib/server/repositories/companies-repo";
+import { findContactsByCompanyId } from "@/lib/server/repositories/contacts-repo";
 import { generateCompanyReport } from "@/lib/server/services/reports/generate-company-report";
 import { findContactsForCompany } from "@/lib/server/services/contacts/find-contacts-for-company";
 import { scoreLeadForContact } from "@/lib/server/services/leads/score-lead-for-contact";
 import { toServiceJsonErrorResponse } from "@/lib/server/http/error-response";
-import { db } from "@/lib/db";
-import { contacts } from "@/lib/db/schema/contacts";
-import { eq } from "drizzle-orm";
 
 export const maxDuration = 120;
 
@@ -89,10 +87,7 @@ export async function POST(req: Request) {
     };
 
     // Step 3: Score each contact
-    const companyContacts = await db
-      .select()
-      .from(contacts)
-      .where(eq(contacts.companyId, companyId));
+    const companyContacts = await findContactsByCompanyId(companyId);
 
     let scoredCount = 0;
     let failedCount = 0;

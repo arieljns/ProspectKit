@@ -4,6 +4,18 @@
  */
 
 /**
+ * Default scoring weights used when no scoring config is available.
+ * These must sum to 100.
+ */
+export const DEFAULT_WEIGHTS = {
+  industryMatch: 25,
+  companyMatch: 30,
+  positionMatch: 20,
+  seniorityMatch: 15,
+  dealSizeMatch: 10,
+};
+
+/**
  * Calculate weighted total score from dimension scores
  */
 export function calculateTotalScore(

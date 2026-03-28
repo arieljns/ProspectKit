@@ -31,6 +31,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 
+import Link from "next/link";
 import { updateCompanyPriority, deleteCompany } from "@/lib/actions/companies";
 import { AddCompanyDialog } from "@/components/workspace/companies/add-company-dialog";
 import {
@@ -331,7 +332,12 @@ export function CompanyResearchTable({
       cell: ({ row }) => (
         <div className="flex items-center gap-2">
           <BuildingIcon className="h-4 w-4 text-muted-foreground" />
-          <span className="font-medium">{row.original.companyName}</span>
+          <Link
+            href={`/app/brief/${row.original.id}`}
+            className="font-medium hover:underline"
+          >
+            {row.original.companyName}
+          </Link>
         </div>
       ),
       enableHiding: false,

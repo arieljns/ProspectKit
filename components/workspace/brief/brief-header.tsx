@@ -74,9 +74,10 @@ function CompletionIndicator({ state }: { state: BriefCompletionState }) {
 type BriefHeaderProps = {
   data: BriefData;
   onGenerateBrief?: () => void;
+  isRunning?: boolean;
 };
 
-export function BriefHeader({ data, onGenerateBrief }: BriefHeaderProps) {
+export function BriefHeader({ data, onGenerateBrief, isRunning = false }: BriefHeaderProps) {
   const { company } = data;
   const completionState = getBriefCompletionState(data);
 
@@ -155,9 +156,10 @@ export function BriefHeader({ data, onGenerateBrief }: BriefHeaderProps) {
           <Button
             size="default"
             onClick={onGenerateBrief}
+            disabled={isRunning}
             className="gap-2"
           >
-            Generate Brief
+            {isRunning ? "Generating…" : "Generate Brief"}
           </Button>
         </div>
       </div>

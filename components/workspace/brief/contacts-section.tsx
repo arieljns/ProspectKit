@@ -24,6 +24,8 @@ type ContactsSectionProps = {
   initialContacts: Contact[];
   onComplete?: (success: boolean) => void;
   onStateChange?: (state: SectionState) => void;
+  /** When set, overrides the section's internal state (used by BriefRunController during orchestration) */
+  externalState?: SectionState;
 };
 
 function deriveInitialState(contactList: Contact[]): SectionState {
@@ -36,15 +38,19 @@ export function ContactsSection({
   initialContacts,
   onComplete,
   onStateChange,
+  externalState,
 }: ContactsSectionProps) {
-  const [state, setState] = useState<SectionState>(() =>
+  const [internalState, setInternalState] = useState<SectionState>(() =>
     deriveInitialState(initialContacts),
   );
   const [contactsList, setContactsList] = useState<Contact[]>(initialContacts);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
+  // Use externalState if provided (during orchestration), else internal state
+  const state = externalState ?? internalState;
+
   const updateState = (newState: SectionState) => {
-    setState(newState);
+    setInternalState(newState);
     onStateChange?.(newState);
   };
 

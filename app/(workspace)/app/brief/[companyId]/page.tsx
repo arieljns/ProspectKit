@@ -1,11 +1,7 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { getBriefData } from "@/lib/actions/briefs";
-import { BriefHeader } from "@/components/workspace/brief/brief-header";
-import { ResearchSection } from "@/components/workspace/brief/research-section";
-import { ContactsSection } from "@/components/workspace/brief/contacts-section";
-import { ScoringSection } from "@/components/workspace/brief/scoring-section";
-import { OutreachSection } from "@/components/workspace/brief/outreach-section";
+import { BriefRunController } from "@/components/workspace/brief/brief-run-controller";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -40,33 +36,5 @@ export default async function BriefPage({ params }: BriefPageProps) {
     );
   }
 
-  const briefData = result.data;
-
-  return (
-    <>
-      <BriefHeader data={briefData} />
-      <div className="flex flex-1 flex-col">
-        <div className="@container/main flex flex-1 flex-col gap-2">
-          <div className="flex flex-col gap-4 p-4 md:gap-6 md:p-6">
-            <ResearchSection
-              companyId={briefData.company.id}
-              initialReport={briefData.report?.reportData ?? null}
-              reportStatus={briefData.report?.status ?? "none"}
-            />
-            <ContactsSection
-              companyId={briefData.company.id}
-              initialContacts={briefData.contacts}
-            />
-            <ScoringSection
-              companyId={briefData.company.id}
-              initialContacts={briefData.contacts}
-              initialScores={briefData.scores}
-              scoringConfig={briefData.scoringConfig}
-            />
-            <OutreachSection />
-          </div>
-        </div>
-      </div>
-    </>
-  );
+  return <BriefRunController initialData={result.data} />;
 }

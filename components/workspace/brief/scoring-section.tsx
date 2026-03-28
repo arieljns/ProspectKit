@@ -50,6 +50,10 @@ type ScoringSectionProps = {
   scoringConfig: ScoringConfig | null;
   onComplete?: (success: boolean) => void;
   onStateChange?: (state: SectionState) => void;
+  /** When set, overrides the section's internal state (used by BriefRunController during orchestration) */
+  externalState?: SectionState;
+  /** When set, provides live scores during orchestration (e.g., incrementally updated) */
+  externalScores?: LeadScore[];
 };
 
 function deriveInitialState(
@@ -98,18 +102,25 @@ export function ScoringSection({
   scoringConfig,
   onComplete,
   onStateChange,
+  externalState,
+  externalScores,
 }: ScoringSectionProps) {
   const weights = scoringConfig?.weights ?? DEFAULT_WEIGHTS;
 
-  const [state, setState] = useState<SectionState>(() =>
+  const [internalState, setInternalState] = useState<SectionState>(() =>
     deriveInitialState(initialContacts, initialScores),
   );
   const [contactsList, setContactsList] = useState<Contact[]>(initialContacts);
   const [scoresList, setScoresList] = useState<LeadScore[]>(initialScores);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
+  // Use externalState if provided (during orchestration), else internal state
+  const state = externalState ?? internalState;
+  // Use externalScores if provided (for incremental updates during orchestration)
+  const displayScores = externalScores ?? scoresList;
+
   const updateState = (newState: SectionState) => {
-    setState(newState);
+    setInternalState(newState);
     onStateChange?.(newState);
   };
 
@@ -198,9 +209,9 @@ export function ScoringSection({
   const isRunning = state === "running";
   const hasNoContacts = contactsList.length === 0;
 
-  const scoredContacts = buildScoredContacts(contactsList, scoresList, weights);
+  const scoredContacts = buildScoredContacts(contactsList, displayScores, weights);
   const unscoredContacts = contactsList.filter(
-    (c) => !scoresList.some((s) => s.contactId === c.id),
+    (c) => !displayScores.some((s) => s.contactId === c.id),
   );
 
   return (
@@ -284,7 +295,7 @@ export function ScoringSection({
       )}
 
       {/* Running state (loading skeletons when no prior scores) */}
-      {state === "running" && scoresList.length === 0 && (
+      {state === "running" && displayScores.length === 0 && (
         <div className="flex flex-col gap-2">
           {contactsList.map((contact) => (
             <div
@@ -304,7 +315,7 @@ export function ScoringSection({
       )}
 
       {/* Running with prior scores: show faded scored contacts */}
-      {state === "running" && scoresList.length > 0 && (
+      {state === "running" && displayScores.length > 0 && (
         <div className="flex flex-col gap-2 opacity-50">
           {scoredContacts.map((item) => (
             <ScoredContactCard key={item.contact.id} item={item} />

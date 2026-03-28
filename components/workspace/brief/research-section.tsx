@@ -30,6 +30,8 @@ type ResearchSectionProps = {
   reportStatus: string;
   onComplete?: (success: boolean) => void;
   onStateChange?: (state: SectionState) => void;
+  /** When set, overrides the section's internal state (used by BriefRunController during orchestration) */
+  externalState?: SectionState;
 };
 
 function deriveInitialState(
@@ -49,8 +51,9 @@ export function ResearchSection({
   reportStatus,
   onComplete,
   onStateChange,
+  externalState,
 }: ResearchSectionProps) {
-  const [state, setState] = useState<SectionState>(() =>
+  const [internalState, setInternalState] = useState<SectionState>(() =>
     deriveInitialState(initialReport, reportStatus),
   );
   const [reportData, setReportData] = useState<ReportData | null>(
@@ -59,8 +62,11 @@ export function ResearchSection({
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [updatedJustNow, setUpdatedJustNow] = useState(false);
 
+  // Use externalState if provided (during orchestration), else internal state
+  const state = externalState ?? internalState;
+
   const updateState = (newState: SectionState) => {
-    setState(newState);
+    setInternalState(newState);
     onStateChange?.(newState);
   };
 

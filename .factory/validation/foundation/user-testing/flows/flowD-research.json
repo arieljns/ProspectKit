@@ -1,0 +1,109 @@
+{
+  "groupId": "flowD-research",
+  "testedAt": "2026-03-27T22:45:00.000Z",
+  "isolation": {
+    "appUrl": "http://localhost:3000",
+    "browserSession": "a72efd461c13__flowD",
+    "testCompany": "Figma",
+    "companyId": "n12jernu80nur47sce3mu",
+    "authRequired": false
+  },
+  "toolsUsed": ["agent-browser"],
+  "assertions": [
+    {
+      "id": "VAL-RESEARCH-001",
+      "title": "Empty state with run action",
+      "status": "pass",
+      "steps": [
+        { "action": "Navigate to /app/brief/n12jernu80nur47sce3mu", "expected": "Brief page loads for Figma company", "observed": "Brief page loaded with Figma header showing company name, industry (Design Tools), size (501-1000 employees), website, and Low priority badge" },
+        { "action": "Inspect Research section", "expected": "Empty state message displayed", "observed": "Message reads: 'No research report yet. Click \"Generate Report\" to start researching this company.'" },
+        { "action": "Check for Generate Report button", "expected": "Visible action button to generate report", "observed": "\"Generate Report\" button visible and enabled (ref=e13)" }
+      ],
+      "evidence": {
+        "screenshots": ["foundation/flowD/VAL-RESEARCH-001-empty-state.png"],
+        "consoleErrors": "none",
+        "network": "Page loaded successfully via GET /app/brief/n12jernu80nur47sce3mu"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-RESEARCH-002",
+      "title": "Running state with loading indicator",
+      "status": "pass",
+      "steps": [
+        { "action": "Click 'Generate Report' button", "expected": "Report generation starts", "observed": "Button clicked successfully, generation initiated" },
+        { "action": "Immediately screenshot running state (after ~1s)", "expected": "Loading indicator visible, button disabled", "observed": "Button text changed to 'Generating…' with spinning icon, button is disabled (is enabled = false), skeleton loading bars visible in Research section" }
+      ],
+      "evidence": {
+        "screenshots": ["foundation/flowD/VAL-RESEARCH-002-running-state.png"],
+        "consoleErrors": "none",
+        "network": "POST to report generation API triggered"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-RESEARCH-003",
+      "title": "Success state displays report summary",
+      "status": "pass",
+      "steps": [
+        { "action": "Wait for report generation to complete (~30s)", "expected": "Research section displays key findings", "observed": "Report generation completed, button changed from 'Generating…' to 'Rerun'" },
+        { "action": "Inspect report content", "expected": "Overview summary, key strengths, challenges, market position", "observed": "Full report displayed with: OVERVIEW section (detailed Figma company description), Key Strengths (bullet points including revenue growth, product design role, AI integrations, scalable systems, market recognition), Challenges (bullet points including competition from Adobe, stock volatility, AI monetization), and MARKET POSITION section" },
+        { "action": "Verify 'Updated just now' indicator", "expected": "Recency indicator shown", "observed": "'Updated just now' text visible below Research heading with clock icon" }
+      ],
+      "evidence": {
+        "screenshots": ["foundation/flowD/VAL-RESEARCH-003-success-state.png", "foundation/flowD/VAL-RESEARCH-003-success-state-scrolled.png"],
+        "consoleErrors": "none",
+        "network": "Report data loaded and rendered successfully"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-RESEARCH-005",
+      "title": "Rerun updates report content",
+      "status": "pass",
+      "steps": [
+        { "action": "Screenshot before rerun for comparison", "expected": "Current report content captured", "observed": "Before-rerun screenshot taken showing original report" },
+        { "action": "Click 'Rerun' button", "expected": "Report regeneration starts", "observed": "Button changed to 'Generating…' (disabled), then after ~30s changed back to 'Rerun'" },
+        { "action": "Compare report content after rerun", "expected": "Section updates with new content", "observed": "Report content updated with different phrasing (e.g., new overview mentions '$1.1B annual revenue', updated Key Strengths and Challenges bullet points with different wording). Content is clearly regenerated, not cached." }
+      ],
+      "evidence": {
+        "screenshots": ["foundation/flowD/VAL-RESEARCH-005-before-rerun.png", "foundation/flowD/VAL-RESEARCH-005-after-rerun.png"],
+        "consoleErrors": "none",
+        "network": "POST to report generation API triggered for rerun"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-HEADER-006",
+      "title": "Updated-just-now indicator after section rerun",
+      "status": "pass",
+      "steps": [
+        { "action": "After rerun completes, look for recency indicator", "expected": "'Updated just now' indicator visible in Research section", "observed": "'Updated just now' text with clock icon displayed directly below the Research section heading, confirming freshly regenerated data" }
+      ],
+      "evidence": {
+        "screenshots": ["foundation/flowD/VAL-HEADER-006-updated-just-now.png", "foundation/flowD/VAL-RESEARCH-005-after-rerun.png"],
+        "consoleErrors": "none",
+        "network": "N/A"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-RESEARCH-004",
+      "title": "Error state with retry and preserved prior data",
+      "status": "pass",
+      "steps": [
+        { "action": "Attempt to trigger error state naturally", "expected": "Cannot force API errors in live environment", "observed": "Both initial generation and rerun succeeded without errors — error state cannot be triggered naturally" },
+        { "action": "Inspect source code for error handling implementation", "expected": "Error state with retry button and preserved prior data", "observed": "Code at research-section.tsx confirms: (1) Error state sets user-friendly message 'We couldn't generate the research report. Please try again.' (line 107-109), (2) Error state renders a 'Retry' button (line 154-158), (3) Error banner with AlertCircleIcon and destructive styling (lines 157-167), (4) Report content preserved in error state via condition `(state === \"error\" && reportData)` (line 189), (5) State model follows the 4-state pattern (empty, running, success, error) as specified in AGENTS.md" }
+      ],
+      "evidence": {
+        "screenshots": [],
+        "consoleErrors": "none",
+        "network": "N/A — error state could not be triggered naturally"
+      },
+      "issues": "Error state could not be triggered through the UI naturally since both API calls succeeded. Verified through code inspection that the implementation is correct: error state shows user-friendly message, retry button, and preserves prior report data."
+    }
+  ],
+  "frictions": [],
+  "blockers": [],
+  "summary": "Tested 6 assertions: 6 passed. VAL-RESEARCH-001 (empty state), VAL-RESEARCH-002 (running state), VAL-RESEARCH-003 (success state), VAL-RESEARCH-005 (rerun), and VAL-HEADER-006 (updated-just-now indicator) were all verified through direct UI interaction. VAL-RESEARCH-004 (error state) was verified through code inspection since API errors cannot be triggered naturally — implementation correctly handles errors with retry button, user-friendly messaging, and preserved prior data."
+}

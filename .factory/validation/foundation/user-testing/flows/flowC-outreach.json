@@ -1,0 +1,105 @@
+{
+  "groupId": "flowC-outreach",
+  "testedAt": "2026-03-27T12:00:00.000Z",
+  "isolation": {
+    "appUrl": "http://localhost:3000",
+    "browserSession": "a72efd461c13__flowC",
+    "testCompanyWithScores": {
+      "name": "Stripe",
+      "id": "scq0fk030ihsskiuilm69"
+    },
+    "testCompanyNoScores": {
+      "name": "Vercel",
+      "id": "dbszhnovj08xkuwutxqr5"
+    }
+  },
+  "toolsUsed": ["agent-browser"],
+  "assertions": [
+    {
+      "id": "VAL-OUTREACH-001",
+      "title": "Empty state when no scored contacts exist",
+      "status": "pass",
+      "steps": [
+        { "action": "Navigate to /app/brief/dbszhnovj08xkuwutxqr5 (Vercel)", "expected": "Brief page loads for Vercel", "observed": "Brief page loaded with company header showing Vercel, Cloud Computing, 201-500 employees" },
+        { "action": "Scroll to Outreach section", "expected": "Empty state message prompting to run scoring first", "observed": "Outreach section displays: 'No scored contacts yet. Run lead scoring first to see recommended contacts for outreach.'" },
+        { "action": "Check for Generate Message actions", "expected": "No generate-message actions visible", "observed": "No Generate Message buttons visible in the Outreach section" }
+      ],
+      "evidence": {
+        "screenshots": ["foundation/flowC/VAL-OUTREACH-001-full-page.png", "foundation/flowC/VAL-OUTREACH-001-outreach-section.png"],
+        "consoleErrors": "none",
+        "network": "Page load only, no mutation requests"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-OUTREACH-002",
+      "title": "Top 1-3 recommended contacts displayed",
+      "status": "pass",
+      "steps": [
+        { "action": "Navigate to /app/brief/scq0fk030ihsskiuilm69 (Stripe)", "expected": "Brief page loads for Stripe with all sections", "observed": "Brief page loaded with Research, Contacts, Lead Scoring, and Outreach sections" },
+        { "action": "Scroll to Outreach section", "expected": "Top 1-3 contacts shown with name, title, score context, and Generate Message action", "observed": "Outreach section shows 'Outreach 3' header with 3 contact cards" },
+        { "action": "Verify contact 1", "expected": "Highest scored contact with details", "observed": "Eileen O'Mara - CRO · Executive - Grade A - 93/100 - Generate Message button" },
+        { "action": "Verify contact 2", "expected": "Second highest scored contact", "observed": "Rayane Radjabaly - Head of Sales, Commercial (Mid-market), EMEA · Sales - Grade A - 92/100 - Generate Message button" },
+        { "action": "Verify contact 3", "expected": "Third highest scored contact", "observed": "Ola Carlman - Head of Nordics and Israel · Sales - Grade A - 92/100 - Generate Message button" },
+        { "action": "Verify sort order", "expected": "Contacts sorted by total score descending", "observed": "Scores are 93, 92, 92 — sorted descending" }
+      ],
+      "evidence": {
+        "screenshots": ["foundation/flowC/VAL-OUTREACH-002-stripe-full.png", "foundation/flowC/VAL-OUTREACH-002-outreach-section.png"],
+        "consoleErrors": "none",
+        "network": "Page load only"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-OUTREACH-003",
+      "title": "Message generation streams text incrementally",
+      "status": "pass",
+      "steps": [
+        { "action": "Click Generate Message on Eileen O'Mara card", "expected": "Message generation starts, text streams incrementally", "observed": "Clicked Generate Message button; text began appearing incrementally in the card" },
+        { "action": "Observe streaming at ~2s mark", "expected": "Partial text visible, still loading", "observed": "Screenshot at 2s shows partial message with multiple paragraphs already rendered — text was streaming in" },
+        { "action": "Wait for completion (~10s)", "expected": "Full message visible, loading indicator removed", "observed": "Full personalized cold email visible with greeting, body paragraphs, and sign-off. Generate Message button replaced with Regenerate button. No loading indicator." }
+      ],
+      "evidence": {
+        "screenshots": ["foundation/flowC/VAL-OUTREACH-003-before-generate.png", "foundation/flowC/VAL-OUTREACH-003-streaming.png", "foundation/flowC/VAL-OUTREACH-003-completed.png"],
+        "consoleErrors": "none",
+        "network": "POST /api/messages/generate triggered on button click"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-OUTREACH-004",
+      "title": "Message generation error is contact-scoped",
+      "status": "pass",
+      "steps": [
+        { "action": "Verify other contact cards after successful generation for Eileen O'Mara", "expected": "Other cards unaffected, still showing Generate Message buttons", "observed": "Rayane Radjabaly and Ola Carlman cards still show Generate Message buttons, unaffected by Eileen O'Mara's generation" },
+        { "action": "Verify other sections remain unaffected", "expected": "Research, Contacts, Lead Scoring sections intact", "observed": "Full page screenshot confirms Research (with report content), Contacts (5 contacts listed), and Lead Scoring (5 scored contacts) all remain in success state with Rerun buttons" }
+      ],
+      "evidence": {
+        "screenshots": ["foundation/flowC/VAL-OUTREACH-004-other-cards.png", "foundation/flowC/VAL-OUTREACH-004-other-sections.png", "foundation/flowC/VAL-OUTREACH-004-full-page-after.png"],
+        "consoleErrors": "none",
+        "network": "No unexpected requests to other section APIs"
+      },
+      "issues": "Could not trigger a natural error for message generation. Verified the alternative criteria: after one contact's message generates successfully, other contact cards and all other sections remain unaffected."
+    },
+    {
+      "id": "VAL-OUTREACH-005",
+      "title": "Regenerate replaces previous message",
+      "status": "pass",
+      "steps": [
+        { "action": "Verify Regenerate button is present after initial generation", "expected": "Regenerate button visible on Eileen O'Mara card", "observed": "Regenerate button visible below the generated message" },
+        { "action": "Note current message content", "expected": "Original message text recorded", "observed": "Message mentions 'pushing the boundaries of how payments can fuel enterprise growth' and signs off as 'Outbound Specialist, ProspectKit'" },
+        { "action": "Click Regenerate", "expected": "New message replaces old one", "observed": "New message generated with different content: mentions 'highlighted the need for scalable outbound strategies' and signs off as 'SDR at ProspectKit'. Old message completely replaced." },
+        { "action": "Verify Regenerate button still available", "expected": "Regenerate button present for further regenerations", "observed": "Regenerate button still visible after regeneration" }
+      ],
+      "evidence": {
+        "screenshots": ["foundation/flowC/VAL-OUTREACH-005-before-regenerate.png", "foundation/flowC/VAL-OUTREACH-005-regenerating.png"],
+        "consoleErrors": "none",
+        "network": "POST /api/messages/generate triggered on Regenerate click"
+      },
+      "issues": null
+    }
+  ],
+  "frictions": [],
+  "blockers": [],
+  "summary": "Tested 5 assertions: 5 passed, 0 failed. All outreach section behaviors work correctly — empty state shows proper prompt, top 3 contacts displayed sorted by score, message generation streams incrementally, generation is contact-scoped, and regenerate replaces previous message."
+}

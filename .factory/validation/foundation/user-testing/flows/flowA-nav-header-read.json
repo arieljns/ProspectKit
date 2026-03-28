@@ -1,0 +1,143 @@
+{
+  "groupId": "flowA-nav-header-read",
+  "testedAt": "2026-03-27T12:00:00.000Z",
+  "isolation": {
+    "appUrl": "http://localhost:3000",
+    "browserSession": "a72efd461c13__flowA",
+    "primaryTestCompany": "Stripe (scq0fk030ihsskiuilm69)",
+    "secondaryTestCompany": "nonexistent-id (for error testing)",
+    "readOnly": true,
+    "authRequired": false
+  },
+  "toolsUsed": ["agent-browser"],
+  "assertions": [
+    {
+      "id": "VAL-NAV-001",
+      "title": "Dashboard navigates to brief page",
+      "status": "pass",
+      "steps": [
+        { "action": "Navigate to /app/dashboard", "expected": "Company table displayed", "observed": "Company table displayed with paginated list" },
+        { "action": "Navigate to page 2 (Stripe is on page 2)", "expected": "Second page of companies shown", "observed": "Page 2 shown with Stripe and Apple" },
+        { "action": "Click on 'Stripe' link in company table", "expected": "URL changes to /app/brief/scq0fk030ihsskiuilm69", "observed": "URL changed to http://localhost:3000/app/brief/scq0fk030ihsskiuilm69, brief page loaded with Stripe data" }
+      ],
+      "evidence": {
+        "screenshots": ["foundation/flowA/VAL-NAV-001-dashboard.png", "foundation/flowA/VAL-NAV-001-after-click.png", "foundation/flowA/VAL-NAV-001-brief-page.png"],
+        "consoleErrors": "none",
+        "network": "GET /app/brief/scq0fk030ihsskiuilm69 -> 200"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-NAV-002",
+      "title": "Direct URL access works",
+      "status": "pass",
+      "steps": [
+        { "action": "Navigate directly to /app/brief/scq0fk030ihsskiuilm69", "expected": "Brief page loads with correct company name 'Stripe' in header", "observed": "Brief page loaded with 'Stripe' as h1 heading, all metadata displayed correctly" }
+      ],
+      "evidence": {
+        "screenshots": ["foundation/flowA/VAL-NAV-002-direct-url.png"],
+        "consoleErrors": "none",
+        "network": "GET /app/brief/scq0fk030ihsskiuilm69 -> 200"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-NAV-003",
+      "title": "Back navigation to dashboard",
+      "status": "pass",
+      "steps": [
+        { "action": "On brief page, identify sidebar navigation", "expected": "Sidebar has navigation links including one to dashboard", "observed": "Sidebar contains 'Discover Companies' link (dashboard)" },
+        { "action": "Click 'Discover Companies' sidebar link", "expected": "URL changes to /app/dashboard", "observed": "URL changed to http://localhost:3000/app/dashboard, dashboard loaded with company table" }
+      ],
+      "evidence": {
+        "screenshots": ["foundation/flowA/VAL-NAV-003-back-to-dashboard.png"],
+        "consoleErrors": "none",
+        "network": "GET /app/dashboard -> 200"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-NAV-004",
+      "title": "Brief page loads existing data without forcing rerun",
+      "status": "pass",
+      "steps": [
+        { "action": "Navigate to /app/brief/scq0fk030ihsskiuilm69 (Stripe has report + contacts + scores)", "expected": "All sections show data, no generation POST requests triggered", "observed": "All four sections (Research, Contacts, Lead Scoring, Outreach) display populated data. Network tab shows only document/static asset requests, no generation POST requests." },
+        { "action": "Take full-page screenshot to verify all sections", "expected": "Research shows report, Contacts shows 5 people, Scoring shows grades, Outreach shows recommendations", "observed": "Research shows full report with overview/strengths/challenges. Contacts shows 5 contacts. Lead Scoring shows all contacts with letter grades (A/B). Outreach shows top 3 recommendations with Generate Message buttons." }
+      ],
+      "evidence": {
+        "screenshots": ["foundation/flowA/VAL-NAV-004-full-brief.png"],
+        "consoleErrors": "none",
+        "network": "No POST requests to /api/reports/generate, /api/contacts/find, /api/leads/score, or /api/briefs/generate on page load"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-HEADER-001",
+      "title": "Company metadata renders on load",
+      "status": "pass",
+      "steps": [
+        { "action": "On brief page for Stripe, inspect header area", "expected": "Header shows: company name 'Stripe', industry 'Financial Technology', website 'https://stripe.com', size '5001-10000', priority 'Low'", "observed": "Header displays: h1 'Stripe', 'Financial Technology', '5001-10000 employees', link 'https://stripe.com', 'Low priority', 'Complete' badge, 'Updated just now'" },
+        { "action": "Check for null text or broken layout", "expected": "No 'null' text or broken layout", "observed": "No null text, no broken layout. All fields properly formatted with dot separators." }
+      ],
+      "evidence": {
+        "screenshots": ["foundation/flowA/VAL-HEADER-001-metadata.png"],
+        "consoleErrors": "none",
+        "network": "N/A (already loaded)"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-HEADER-002",
+      "title": "Brief completion state reflects actual section states",
+      "status": "pass",
+      "steps": [
+        { "action": "On Stripe brief (fully populated: report + contacts + scores), check header for completion indicator", "expected": "Header shows 'Complete' indicator since all sections exist", "observed": "Header shows green 'Complete' badge. Text in header reads: 'Complete Updated just now'. This accurately reflects all three sections being in success state." }
+      ],
+      "evidence": {
+        "screenshots": ["foundation/flowA/VAL-HEADER-002-complete-state.png"],
+        "consoleErrors": "none",
+        "network": "N/A (already loaded)"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-HEADER-005",
+      "title": "Invalid companyId shows error page",
+      "status": "pass",
+      "steps": [
+        { "action": "Navigate to /app/brief/nonexistent-id", "expected": "User-friendly error or 404 page shown, not a crash or empty shell", "observed": "Page shows 'Company not found' heading with message 'The company you're looking for doesn't exist or may have been removed.' and a 'Back to dashboard' link. Sidebar navigation remains functional." },
+        { "action": "Check console for unhandled errors", "expected": "No unhandled console errors", "observed": "No console errors detected" }
+      ],
+      "evidence": {
+        "screenshots": ["foundation/flowA/VAL-HEADER-005-invalid-id.png"],
+        "consoleErrors": "none",
+        "network": "GET /app/brief/nonexistent-id -> 200 (renders error page)"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-READ-001",
+      "title": "Aggregated read path returns page-ready payload",
+      "status": "pass",
+      "steps": [
+        { "action": "Navigate to /app/brief/scq0fk030ihsskiuilm69 and monitor network tab", "expected": "Page loads data in a single payload (server-rendered), not multiple sequential client-side fetches", "observed": "Network tab shows a single document request (GET /app/brief/scq0fk030ihsskiuilm69) followed only by standard Next.js static assets (JS chunks, CSS, fonts, images). No separate API data-fetch requests (/api/briefs/*, /api/reports/*, /api/contacts/*, /api/leads/*) were made. All brief data (company, report, contacts, scores) came server-rendered in the initial HTML." }
+      ],
+      "evidence": {
+        "screenshots": ["foundation/flowA/VAL-READ-001-server-rendered.png"],
+        "consoleErrors": "none",
+        "network": "Single GET /app/brief/scq0fk030ihsskiuilm69 (document) + static assets only. No /api/* data fetches."
+      },
+      "issues": null
+    }
+  ],
+  "frictions": [
+    {
+      "description": "Stripe is on page 2 of the dashboard company table, requiring pagination navigation before being able to click on it. The test needed to click 'Go to next page' first.",
+      "resolved": true,
+      "resolution": "Clicked the pagination 'Go to next page' button to navigate to page 2 where Stripe was listed.",
+      "affectedAssertions": ["VAL-NAV-001"]
+    }
+  ],
+  "blockers": [],
+  "summary": "Tested 8 assertions: all 8 passed. Navigation flows (dashboard→brief, direct URL, back to dashboard) all work correctly. Brief page loads existing data server-rendered without triggering generation API calls. Company metadata renders completely with no broken fields. Completion indicator accurately shows 'Complete' for fully populated brief. Invalid company IDs show a user-friendly error page. Data aggregation is server-side with no client-side fetch orchestration."
+}

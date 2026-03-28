@@ -1,0 +1,58 @@
+{
+  "groupId": "flowB-orch-api",
+  "testedAt": "2026-03-27T12:00:00.000Z",
+  "isolation": {
+    "appUrl": "http://localhost:3000",
+    "testCompany": "Apple",
+    "testCompanyId": "nno04xt47i58ldi7dyx4m",
+    "authRequired": false
+  },
+  "toolsUsed": ["curl"],
+  "assertions": [
+    {
+      "id": "VAL-ORCH-004",
+      "title": "POST /api/briefs/generate with valid companyId",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "POST /api/briefs/generate with body {\"companyId\":\"nno04xt47i58ldi7dyx4m\"}",
+          "expected": "200 response with JSON containing step results (report, contacts, scoring)",
+          "observed": "200 response: {\"success\":true,\"steps\":{\"report\":{\"success\":true},\"contacts\":{\"success\":true,\"found\":5,\"saved\":5},\"scoring\":{\"success\":true,\"scored\":5,\"failed\":0}}}"
+        }
+      ],
+      "evidence": {
+        "curlLogs": ["foundation/flowB/VAL-ORCH-004-valid-request.txt"],
+        "network": "POST /api/briefs/generate -> 200, response contains success:true with report, contacts (5 found/saved), scoring (5 scored/0 failed)"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-ORCH-005",
+      "title": "POST /api/briefs/generate validation",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "POST /api/briefs/generate with empty body {}",
+          "expected": "400 response for missing companyId",
+          "observed": "400 response: {\"success\":false,\"error\":\"companyId is required\"}"
+        },
+        {
+          "action": "POST /api/briefs/generate with body {\"companyId\":\"totally-fake-invalid-id\"}",
+          "expected": "404 response for non-existent companyId",
+          "observed": "404 response: {\"success\":false,\"error\":\"Company not found\"}"
+        }
+      ],
+      "evidence": {
+        "curlLogs": [
+          "foundation/flowB/VAL-ORCH-005-missing-companyId.txt",
+          "foundation/flowB/VAL-ORCH-005-invalid-companyId.txt"
+        ],
+        "network": "POST /api/briefs/generate with empty body -> 400; POST with fake ID -> 404"
+      },
+      "issues": null
+    }
+  ],
+  "frictions": [],
+  "blockers": [],
+  "summary": "Tested 2 assertions: 2 passed. VAL-ORCH-004 confirmed orchestration endpoint returns 200 with complete step results (report, contacts, scoring) for valid companyId. VAL-ORCH-005 confirmed proper validation: 400 for missing companyId, 404 for non-existent companyId."
+}

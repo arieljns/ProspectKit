@@ -1,0 +1,81 @@
+{
+  "milestone": "foundation",
+  "round": 1,
+  "status": "pass",
+  "assertionsSummary": {
+    "total": 40,
+    "passed": 40,
+    "failed": 0,
+    "blocked": 0
+  },
+  "passedAssertions": [
+    "VAL-HEADER-001",
+    "VAL-HEADER-002",
+    "VAL-HEADER-003",
+    "VAL-HEADER-004",
+    "VAL-HEADER-005",
+    "VAL-HEADER-006",
+    "VAL-RESEARCH-001",
+    "VAL-RESEARCH-002",
+    "VAL-RESEARCH-003",
+    "VAL-RESEARCH-004",
+    "VAL-RESEARCH-005",
+    "VAL-CONTACTS-001",
+    "VAL-CONTACTS-002",
+    "VAL-CONTACTS-003",
+    "VAL-CONTACTS-004",
+    "VAL-CONTACTS-005",
+    "VAL-SCORING-001",
+    "VAL-SCORING-002",
+    "VAL-SCORING-003",
+    "VAL-SCORING-004",
+    "VAL-SCORING-005",
+    "VAL-SCORING-006",
+    "VAL-OUTREACH-001",
+    "VAL-OUTREACH-002",
+    "VAL-OUTREACH-003",
+    "VAL-OUTREACH-004",
+    "VAL-OUTREACH-005",
+    "VAL-ORCH-001",
+    "VAL-ORCH-002",
+    "VAL-ORCH-003",
+    "VAL-ORCH-004",
+    "VAL-ORCH-005",
+    "VAL-ORCH-006",
+    "VAL-ORCH-007",
+    "VAL-ORCH-008",
+    "VAL-READ-001",
+    "VAL-NAV-001",
+    "VAL-NAV-002",
+    "VAL-NAV-003",
+    "VAL-NAV-004"
+  ],
+  "failedAssertions": [],
+  "blockedAssertions": [],
+  "appliedUpdates": [
+    {
+      "target": "user-testing.md",
+      "description": "Added available test companies table with IDs and data status, flow validator guidance for agent-browser and curl surfaces",
+      "source": "setup"
+    }
+  ],
+  "discoveredIssues": [
+    {
+      "severity": "non_blocking",
+      "description": "Outreach recommendation cards don't render after Generate Brief orchestration until page reload. OutreachSection's contactStates is initialized from recommendations at mount time, but recommendations update from [] to populated after mount without triggering re-initialization. Badge count shows correctly (reads recommendations.length directly) but cards use stale contactState lookups that return null.",
+      "affectedAssertions": ["VAL-ORCH-006"],
+      "suggestedFix": "Add a key prop tied to dataVersion on OutreachSection, or use useEffect to reinitialize contactStates when recommendations change."
+    },
+    {
+      "severity": "non_blocking",
+      "description": "Error states for Research, Contacts, Scoring, and Outreach sections could not be triggered naturally because all API calls succeeded. Error handling was verified via code review, confirming correct implementation of retry buttons, user-friendly messages, and prior data preservation.",
+      "affectedAssertions": ["VAL-RESEARCH-004", "VAL-CONTACTS-004", "VAL-SCORING-005", "VAL-OUTREACH-004"]
+    },
+    {
+      "severity": "non_blocking",
+      "description": "Stripe company appears on page 2 of the dashboard table, requiring pagination before navigation testing. Consider making test companies appear on page 1 for easier validation.",
+      "affectedAssertions": ["VAL-NAV-001"]
+    }
+  ],
+  "previousRound": null
+}

@@ -1,0 +1,56 @@
+{
+  "featureId": "polish-cross-area-flows",
+  "milestone": "polish",
+  "reviewer": "scrutiny-feature-reviewer",
+  "reviewedAt": "2026-03-28T07:10:00.000Z",
+  "commitId": "8e2b51b",
+  "transcriptSkeletonReviewed": true,
+  "diffReviewed": true,
+  "status": "pass",
+  "codeReview": {
+    "summary": "All 6 scrutiny fixes from the foundation review were correctly addressed. The diff is clean, focused, and net-negative in lines (42 added, 62 removed). Each fix is well-scoped: (1) ResearchSection now shows prior data at opacity-50 during rerun instead of a skeleton overlay, matching the pattern used by ContactsSection and ScoringSection. (2) DEFAULT_WEIGHTS extracted to lib/utils/scoring.ts with both consumers importing from there. (3) findContactsByCompanyId() added to contacts-repo.ts and used by both briefs.ts and the orchestration route, eliminating direct DB queries. (4) Silent catch in BriefRunController replaced with a toast.error() with user-friendly messaging. (5) Unused companyId prop removed from OutreachSection. (6) OutreachSection given a key prop tied to dataVersion so it remounts when data updates, fixing stale contactStates. Cross-area flow verification was done via agent-browser with comprehensive interactive checks. TypeScript and ESLint both pass cleanly.",
+    "issues": [
+      {
+        "file": "components/workspace/brief/research-section.tsx",
+        "line": 195,
+        "severity": "non-blocking",
+        "description": "ResearchSection adds `pointer-events-none` alongside `opacity-50` during rerun, while ContactsSection (line 183) and ScoringSection (line 309) only use `opacity-50`. This is a minor pattern inconsistency — the visual effect is correct, but the interaction model differs slightly across sections. pointer-events-none is arguably the better pattern (prevents user interaction with stale data during refresh), but it should ideally be applied consistently to all sections."
+      },
+      {
+        "file": "components/workspace/brief/research-section.tsx",
+        "line": 190,
+        "severity": "non-blocking",
+        "description": "The condition `(state === 'running' && reportData) && reportData` has a redundant `&& reportData` check — the outer condition already checks `reportData` is truthy. This is cosmetically redundant but functionally correct."
+      }
+    ]
+  },
+  "issues": [
+    {
+      "severity": "non-blocking",
+      "description": "ResearchSection adds `pointer-events-none` alongside `opacity-50` during rerun, while ContactsSection and ScoringSection only use `opacity-50`. Minor pattern inconsistency across sections.",
+      "file": "components/workspace/brief/research-section.tsx",
+      "line": "195"
+    },
+    {
+      "severity": "non-blocking",
+      "description": "Redundant `&& reportData` check in the combined render condition — the outer disjunction already verifies `reportData` is truthy for the running case.",
+      "file": "components/workspace/brief/research-section.tsx",
+      "line": "190"
+    },
+    {
+      "severity": "suggestion",
+      "description": "The discovered issue about outreach section scores using DEFAULT_WEIGHTS while scoring section uses scoringConfig.weights (when configured) is a real divergence risk. If a user sets custom weights in scoring config, the outreach section's ranked order may differ from the scoring section. Consider passing scoringConfig weights through to getBriefData's recommendation calculation.",
+      "file": "lib/actions/briefs.ts",
+      "line": "107"
+    }
+  ],
+  "sharedStateObservations": [
+    {
+      "target": "library",
+      "observation": "architecture.md section 4 (Repository Layer) still contains the note: 'No findContactsByCompanyId repo function exists. Workers needing contacts by company must either use the getContactsByCompanyId server action or query directly.' This function now exists and is in active use. The note should be updated to list findContactsByCompanyId alongside the other contacts-repo functions.",
+      "evidence": ".factory/library/architecture.md line 111 says function doesn't exist; lib/server/repositories/contacts-repo.ts:23 now exports it; used by lib/actions/briefs.ts:5 and app/api/briefs/generate/route.ts:2"
+    }
+  ],
+  "addressesFailureFrom": null,
+  "summary": "All 6 scrutiny-discovered fixes from the foundation review are correctly implemented: ResearchSection rerun UX now matches the other sections' opacity-50 pattern, DEFAULT_WEIGHTS is deduplicated to lib/utils/scoring.ts, findContactsByCompanyId is added to the repository layer and used by all callers, silent error swallowing is replaced with a toast notification, unused companyId prop is removed from OutreachSection, and stale contactStates are fixed via a key prop. The diff is clean and net-negative in lines. Two non-blocking inconsistencies noted (pointer-events-none only on ResearchSection, redundant condition check) and one suggestion about scoring weight divergence between sections. Architecture.md needs updating to reflect the new findContactsByCompanyId function. Pass."
+}

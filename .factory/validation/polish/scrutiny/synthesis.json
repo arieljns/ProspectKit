@@ -1,0 +1,40 @@
+{
+  "milestone": "polish",
+  "round": 1,
+  "status": "pass",
+  "validatorsRun": {
+    "test": { "passed": true, "command": "N/A — no test framework in project", "exitCode": null },
+    "typecheck": { "passed": true, "command": "pnpm exec tsc --noEmit", "exitCode": 0 },
+    "lint": { "passed": true, "command": "pnpm lint", "exitCode": 0 }
+  },
+  "reviewsSummary": {
+    "total": 1,
+    "passed": 1,
+    "failed": 0,
+    "failedFeatures": []
+  },
+  "blockingIssues": [],
+  "appliedUpdates": [
+    {
+      "target": "library",
+      "description": "Updated architecture.md to reflect that findContactsByCompanyId now exists in contacts-repo.ts (removed outdated 'Note' saying it was missing).",
+      "sourceFeature": "polish-cross-area-flows"
+    }
+  ],
+  "suggestedGuidanceUpdates": [
+    {
+      "target": "AGENTS.md",
+      "suggestion": "Add convention: when sections show prior data during rerun (opacity-50), apply pointer-events-none consistently across all sections to prevent user interaction with stale data. Currently ResearchSection has it but ContactsSection and ScoringSection do not.",
+      "evidence": "Feature polish-cross-area-flows fixed ResearchSection to show prior data at opacity-50 during rerun (matching ContactsSection/ScoringSection), but added pointer-events-none which the other sections lack. This creates an inconsistency in interaction behavior during reruns.",
+      "isSystemic": false
+    },
+    {
+      "target": "AGENTS.md",
+      "suggestion": "Add note: when calculating derived data (e.g., outreach recommendations), ensure scoring weights are sourced from scoringConfig rather than DEFAULT_WEIGHTS to avoid divergence when users configure custom weights.",
+      "evidence": "The outreach section's recommendation ranking in getBriefData (lib/actions/briefs.ts) uses DEFAULT_WEIGHTS for calculateTotalScore, while the scoring section uses scoringConfig.weights when available. If a user sets custom weights, the ranking order may differ between the scoring display and outreach recommendations.",
+      "isSystemic": false
+    }
+  ],
+  "rejectedObservations": [],
+  "previousRound": null
+}

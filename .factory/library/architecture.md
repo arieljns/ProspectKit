@@ -107,8 +107,7 @@ Repositories live under `lib/server/repositories/`. One file per table:
 
 - `companies-repo.ts` — `findCompanyById`, `setCompanyReportStatus`
 - `company-reports-repo.ts` — `findCompanyReportByCompanyId`, `upsertCompanyReportByCompanyId`
-- `contacts-repo.ts` — `insertContact`, `findContactWithCompanyById`
-  - **Note**: No `findContactsByCompanyId` repo function exists. Workers needing contacts by company must either use the `getContactsByCompanyId` server action from `lib/actions/contacts.ts` or query directly. Consider adding a repo function for this common query.
+- `contacts-repo.ts` — `insertContact`, `findContactWithCompanyById`, `findContactsByCompanyId`
 - `lead-scores-repo.ts` — `upsertLeadScore`, `findLeadScoreByContactId`, `findLeadScoresByContactIds`
 - `scoring-config-repo.ts` — `getOrCreateDefaultScoringConfig`
 

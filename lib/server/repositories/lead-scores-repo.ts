@@ -1,6 +1,6 @@
 import "server-only";
 
-import { eq } from "drizzle-orm";
+import { eq, inArray } from "drizzle-orm";
 
 import { db } from "@/lib/db";
 import {
@@ -16,6 +16,19 @@ export async function findLeadScoreByContactId(contactId: string) {
     .limit(1);
 
   return score ?? null;
+}
+
+export async function findLeadScoresByContactIds(contactIds: string[]) {
+  if (contactIds.length === 0) {
+    return [];
+  }
+
+  const scores = await db
+    .select()
+    .from(leadScores)
+    .where(inArray(leadScores.contactId, contactIds));
+
+  return scores;
 }
 
 export async function upsertLeadScore(input: NewLeadScoreParams) {

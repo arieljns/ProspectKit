@@ -79,4 +79,5 @@ EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
-DROP TABLE IF EXISTS "resources";
+DROP TABLE IF EXISTS "embeddings" CASCADE;
+DROP TABLE IF EXISTS "resources" CASCADE;

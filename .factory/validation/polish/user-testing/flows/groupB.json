@@ -1,0 +1,57 @@
+{
+  "flowId": "groupB",
+  "testedAt": "2026-03-28T12:00:00.000Z",
+  "isolation": {
+    "appUrl": "http://localhost:3000",
+    "browserSession": "e39e5f7a7956__groupB",
+    "assignedCompanies": [
+      { "name": "Stripe", "id": "scq0fk030ihsskiuilm69" },
+      { "name": "Hugging Face", "id": "79814zad3c1te68800dzl" }
+    ]
+  },
+  "toolsUsed": ["agent-browser"],
+  "assertions": {
+    "VAL-CROSS-003": {
+      "status": "pass",
+      "observation": "Rerunning the Research section on the Stripe brief page only updated Research content. Contacts section retained all 5 contacts (Fran Ryan, Rayane Radjabaly, Eileen O'Mara, Matt Karazin, Ola Carlman). Lead Scoring section retained all scored contacts with unchanged grades and scores. Outreach section retained the same 3 recommended contacts with Generate Message buttons. Before/after screenshots confirm only the Research section's content changed.",
+      "evidence": [
+        "polish/groupB/VAL-CROSS-003-stripe-before-rerun.png",
+        "polish/groupB/VAL-CROSS-003-stripe-after-rerun.png"
+      ]
+    },
+    "VAL-CROSS-004": {
+      "status": "pass",
+      "observation": "During the Research section rerun, the Research button showed 'Generating…' in disabled state. At the same time, the Contacts 'Rerun' button (ref e14) remained enabled, the Lead Scoring 'Rerun' button (ref e20) remained enabled, and all three 'Generate Message' buttons in the Outreach section remained enabled. Only the active section's button was disabled. Verified via interactive element snapshot during rerun.",
+      "evidence": [
+        "polish/groupB/VAL-CROSS-004-during-rerun.png"
+      ]
+    },
+    "VAL-CROSS-005": {
+      "status": "pass",
+      "observation": "Hugging Face brief page (has report only, no contacts/scores) rendered correct mixed states: Research section showed success state with full report content and 'Rerun' button. Contacts section showed empty state ('No contacts discovered yet') with enabled 'Find Contacts' button. Lead Scoring section showed empty state ('No contacts discovered yet. Discover contacts first') with disabled 'Score' button (appropriate since no contacts exist). Outreach section showed empty state ('No scored contacts yet'). No loading spinners or auto-generation was triggered. No console errors.",
+      "evidence": [
+        "polish/groupB/VAL-CROSS-005-huggingface-partial-data.png"
+      ]
+    },
+    "VAL-CROSS-008": {
+      "status": "pass",
+      "observation": "Starting on the Stripe brief page with all sections populated (Research report, 5 Contacts, scored Lead Scoring, 3 Outreach recommendations), navigated to /app/dashboard, then navigated back to /app/brief/scq0fk030ihsskiuilm69. All sections rendered with identical data: Research section showed the same report content, Contacts showed the same 5 contacts, Lead Scoring showed the same scores and grades, and Outreach showed the same 3 recommended contacts. Before and after screenshots are visually identical.",
+      "evidence": [
+        "polish/groupB/VAL-CROSS-008-stripe-before-nav.png",
+        "polish/groupB/VAL-CROSS-008-dashboard.png",
+        "polish/groupB/VAL-CROSS-008-stripe-after-nav.png"
+      ]
+    },
+    "VAL-CROSS-009": {
+      "status": "pass",
+      "observation": "Navigated to /app/brief/nonexistent-id which showed a product-friendly error page: 'Company not found' heading with description 'The company you're looking for doesn't exist or may have been removed.' and a 'Back to dashboard' button. No raw error codes, stack traces, or technical jargon. No console errors on the error page. Section empty states on Hugging Face brief also used friendly language: 'No contacts discovered yet. Click Find Contacts to discover key people', 'Discover contacts first, then score them to rank by fit', 'Run lead scoring first to see recommended contacts for outreach'. All messages are product-friendly throughout the application.",
+      "evidence": [
+        "polish/groupB/VAL-CROSS-009-invalid-url-error.png",
+        "polish/groupB/VAL-CROSS-005-huggingface-partial-data.png"
+      ]
+    }
+  },
+  "frictions": [],
+  "blockers": [],
+  "summary": "Tested 5 assertions: all 5 passed. VAL-CROSS-003 (rerun isolation), VAL-CROSS-004 (button scoping during rerun), VAL-CROSS-005 (partial data mixed states), VAL-CROSS-008 (navigation state preservation), and VAL-CROSS-009 (product-friendly error language) all confirmed working correctly."
+}

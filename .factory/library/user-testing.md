@@ -45,7 +45,7 @@
 
 ## Flow Validator Guidance: agent-browser
 
-**Session naming:** Use `a72efd461c13__<flow-id>` pattern for session names (e.g., `a72efd461c13__flowA`).
+**Session naming:** Use `e39e5f7a7956__<flow-id>` pattern for session names (e.g., `e39e5f7a7956__flowA`).
 
 **App URL:** http://localhost:3000
 

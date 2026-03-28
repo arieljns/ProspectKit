@@ -1,0 +1,79 @@
+{
+  "groupId": "groupC",
+  "testedAt": "2026-03-28T12:00:00Z",
+  "isolation": {
+    "appUrl": "http://localhost:3000",
+    "browserSession": "e39e5f7a7956__groupC",
+    "assignedCompanies": [
+      {
+        "name": "xAI",
+        "id": "delngtdbuimkdqewm6ebn"
+      }
+    ]
+  },
+  "toolsUsed": ["agent-browser"],
+  "assertions": [
+    {
+      "id": "VAL-CROSS-006",
+      "title": "Error recovery via section retry",
+      "status": "pass",
+      "steps": [
+        { "action": "Navigate to xAI brief page at /app/brief/delngtdbuimkdqewm6ebn", "expected": "Brief page loads with all sections populated", "observed": "Brief page loaded with Research, Contacts, Lead Scoring, and Outreach sections all populated" },
+        { "action": "Block /api/reports/generate via network route abort", "expected": "API calls to this endpoint will fail", "observed": "Network route configured to abort requests to /api/reports/generate" },
+        { "action": "Click Research section 'Rerun' button", "expected": "Research section enters running state, then fails", "observed": "Research section showed 'Generating...' button briefly, then transitioned to error state with message: 'We couldn't generate the research report. Please try again.'" },
+        { "action": "Verify error state shows retry button and preserves prior data", "expected": "Error banner visible, Retry button available, previous report content still shown", "observed": "Error banner shown with product-friendly language, 'Retry' button visible, previous report content (overview, key strengths, challenges) preserved below error message" },
+        { "action": "Remove network abort, click Retry button", "expected": "Research section reruns and succeeds", "observed": "Research section entered 'Generating...' state, then completed successfully with new report content. Button changed back to 'Rerun'. Error banner removed." },
+        { "action": "Check network requests after retry", "expected": "Only /api/reports/generate called, no contacts or scoring APIs", "observed": "Network log shows: POST /api/reports/generate, POST /app/brief/delngtdbuimkdqewm6ebn (revalidation). No calls to /api/contacts/find or /api/leads/score." },
+        { "action": "Verify other sections remain unchanged", "expected": "Contacts, Scoring, Outreach sections unchanged", "observed": "Contacts section still shows 5 contacts with Rerun button. Scoring and Outreach sections intact." }
+      ],
+      "evidence": {
+        "screenshots": [
+          "polish/groupC/CROSS-006-before-error.png",
+          "polish/groupC/CROSS-006-error-state.png",
+          "polish/groupC/CROSS-006-retry-running.png",
+          "polish/groupC/CROSS-006-retry-success.png",
+          "polish/groupC/CROSS-006-other-sections-intact.png"
+        ],
+        "consoleErrors": "none",
+        "network": "POST /api/reports/generate -> success after retry. No /api/contacts/find or /api/leads/score calls during retry."
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-CROSS-007",
+      "title": "Outreach updates when scoring changes",
+      "status": "fail",
+      "steps": [
+        { "action": "Navigate to xAI brief page and note initial Outreach section state", "expected": "Outreach shows top 3 scored contacts", "observed": "Outreach section shows 3 contacts: Toby Pohlen (A, 91/100), Tony Cheema (A, 86/100), Saurabh Kumar (B, 83/100) — matching top 3 from Scoring section" },
+        { "action": "Note initial Scoring section state", "expected": "Scoring shows ranked contacts", "observed": "Scoring: Toby Pohlen A 91, Tony Cheema A 86, Saurabh Kumar B 83, Jamie Michaels B 80, Andrew Mi B 74" },
+        { "action": "Click Lead Scoring 'Rerun' button to rescore all contacts", "expected": "Scoring section enters running state", "observed": "Scoring button changed to 'Scoring...' (disabled), contacts showed NaN/100 during scoring, then populated with new scores" },
+        { "action": "Wait for scoring to complete (~30 seconds)", "expected": "Scoring section returns to success state with updated scores", "observed": "Scoring completed with new scores: Toby Pohlen A 92, Tony Cheema A 87, Jamie Michaels A 86, Saurabh Kumar B 82, Andrew Mi B 75. Order changed — Jamie Michaels moved from #4 to #3." },
+        { "action": "Check Outreach section without reload for updated ranking", "expected": "Outreach reflects new top 3: Toby Pohlen (92), Tony Cheema (87), Jamie Michaels (86)", "observed": "Outreach still shows OLD data: Toby Pohlen (91/100), Tony Cheema (86/100), Saurabh Kumar (83/100). Scores are stale and ranking does not reflect updated scoring. Jamie Michaels not shown despite being new #3." },
+        { "action": "Reload page and check Outreach again", "expected": "After reload, Outreach should reflect updated scores", "observed": "After page reload, Outreach correctly shows: Toby Pohlen (A, 92/100), Tony Cheema (A, 87/100), Jamie Michaels (A, 86/100). Scores and ranking now match the updated scoring." }
+      ],
+      "evidence": {
+        "screenshots": [
+          "polish/groupC/CROSS-007-scoring-before.png",
+          "polish/groupC/CROSS-007-outreach-before.png",
+          "polish/groupC/CROSS-007-scoring-running.png",
+          "polish/groupC/CROSS-007-scoring-after-bottom.png",
+          "polish/groupC/CROSS-007-outreach-after-scoring.png",
+          "polish/groupC/CROSS-007-outreach-after-reload.png"
+        ],
+        "consoleErrors": "none",
+        "network": "POST /api/leads/score called during scoring rerun"
+      },
+      "issues": "The Outreach section does not automatically update after scoring rerun. After rescoring, the Outreach section continues to display stale scores and the old contact ranking (Saurabh Kumar #3 with 83/100 instead of Jamie Michaels #3 with 86/100). A full page reload is required to see the updated outreach recommendations. The scoring rerun's revalidatePath/server action does not propagate updated scores to the Outreach section's client-side state."
+    }
+  ],
+  "frictions": [
+    {
+      "description": "For VAL-CROSS-006, there is no way to naturally trigger an API error in the app — had to use agent-browser network route abort to simulate a failure",
+      "resolved": true,
+      "resolution": "Used agent-browser network route with --abort flag to block /api/reports/generate, then removed the block before clicking Retry",
+      "affectedAssertions": ["VAL-CROSS-006"]
+    }
+  ],
+  "blockers": [],
+  "summary": "Tested 2 assertions: 1 passed (VAL-CROSS-006: error recovery via section retry works correctly with error→retry→success flow and scoped API calls), 1 failed (VAL-CROSS-007: outreach section does not automatically update when scoring changes — requires page reload to reflect new rankings and scores)"
+}

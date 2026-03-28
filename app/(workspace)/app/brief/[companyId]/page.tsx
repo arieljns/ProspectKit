@@ -53,7 +53,10 @@ export default async function BriefPage({ params }: BriefPageProps) {
               initialReport={briefData.report?.reportData ?? null}
               reportStatus={briefData.report?.status ?? "none"}
             />
-            <ContactsSection />
+            <ContactsSection
+              companyId={briefData.company.id}
+              initialContacts={briefData.contacts}
+            />
             <ScoringSection />
             <OutreachSection />
           </div>

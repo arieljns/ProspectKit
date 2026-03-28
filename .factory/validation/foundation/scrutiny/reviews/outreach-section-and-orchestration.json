@@ -1,0 +1,51 @@
+{
+  "featureId": "outreach-section-and-orchestration",
+  "reviewedAt": "2026-03-28T06:30:00.000Z",
+  "commitId": "41bac8e",
+  "transcriptSkeletonReviewed": true,
+  "diffReviewed": true,
+  "status": "pass",
+  "codeReview": {
+    "summary": "Implementation is thorough and covers all requirements. The OutreachSection correctly handles empty state, displays top 1-3 contacts by score with grade badges, supports cold-email and linkedin-connection message types, streams messages via ReadableStream, and provides per-contact error isolation with retry. The orchestration API validates input (400/404), runs report→contacts→scoring sequentially, stops on report/contacts failure, tolerates partial scoring failure, and returns step-by-step results. The BriefRunController implements the recommended 'best v1 approach' of calling individual section APIs sequentially from the client for progressive UI updates, correctly managing externalState overrides for all sections during orchestration. The Generate Brief button is properly disabled during runs. Outreach is correctly NOT auto-generated after orchestration. All section components were updated with externalState support. The page was cleanly refactored to delegate to BriefRunController.",
+    "issues": [
+      {
+        "file": "components/workspace/brief/outreach-section.tsx",
+        "line": 38,
+        "severity": "non_blocking",
+        "description": "The `companyId` prop is declared in OutreachSectionProps but never destructured or used in the component body. This is a dead prop — it should either be removed from the type or used if needed in the future."
+      },
+      {
+        "file": "app/api/briefs/generate/route.ts",
+        "line": 98,
+        "severity": "non_blocking",
+        "description": "The orchestration route directly queries the database (`db.select().from(contacts).where(...)`) instead of going through a repository function. The architecture specifies API routes should delegate to services/repositories and not contain direct DB queries. The worker likely did this because no `findContactsByCompanyId` repository function exists. This is an architectural convention gap, not a functional bug."
+      },
+      {
+        "file": "components/workspace/brief/brief-run-controller.tsx",
+        "line": 133,
+        "severity": "non_blocking",
+        "description": "The report step reads `response.json()` to check `success`, but if the API returns a non-JSON response (e.g., a network error HTML page), this will throw, which is caught by the generic catch in `finally`. Behavior is correct (falls through to error handling) but could be more resilient with explicit JSON parse error handling."
+      },
+      {
+        "file": "components/workspace/brief/brief-run-controller.tsx",
+        "line": 98,
+        "severity": "non_blocking",
+        "description": "The `refreshData` callback silently swallows errors (`catch {}`) without any fallback or user notification. If the post-orchestration data refresh fails, the user sees stale data with no indication that refresh failed. Consider showing a toast or retry prompt."
+      }
+    ]
+  },
+  "sharedStateObservations": [
+    {
+      "area": "conventions",
+      "observation": "The orchestration API route (app/api/briefs/generate/route.ts) directly queries the database at line 98 (`db.select().from(contacts).where(eq(contacts.companyId, companyId))`) instead of going through a repository function. All other DB access in API routes goes through repository or service layers. A `findContactsByCompanyId` repository function doesn't exist, which led the worker to bypass the pattern. AGENTS.md says 'Do not modify existing service logic' but doesn't explicitly state that API routes must not contain direct DB queries.",
+      "evidence": "app/api/briefs/generate/route.ts:98-100 — direct `db.select().from(contacts)` call. Compare to architecture.md section 5: 'Routes do not contain business logic, database queries, or AI calls.' and section 4: 'Repositories are pure data-access functions.'"
+    },
+    {
+      "area": "conventions",
+      "observation": "The feature description was slightly ambiguous about whether the BriefRunController should use the orchestration API route or call individual section APIs. The description said 'Actually, the BEST v1 approach: make the client call the individual section APIs sequentially'. The worker correctly chose the sequential-API approach for progressive UI updates and noted this ambiguity in skillFeedback.suggestedChanges.",
+      "evidence": "Feature description contains both approaches; handoff.skillFeedback.suggestedChanges notes: 'the description was slightly unclear about whether this replaces the need for the orchestration API route or supplements it.'"
+    }
+  ],
+  "addressesFailureFrom": null,
+  "summary": "Feature passes review. All 14 expected behaviors are implemented correctly: OutreachSection with 4-state model and streaming, orchestration API with proper validation and sequential execution, BriefRunController with progressive UI updates, and proper integration of all components. Four non-blocking issues identified: unused `companyId` prop, direct DB query in orchestration route (architectural convention violation), non-resilient JSON parsing in controller, and silent refresh error swallowing. None affect correctness or user-facing behavior. The worker followed the skill procedure faithfully and delivered a comprehensive, well-structured implementation."
+}

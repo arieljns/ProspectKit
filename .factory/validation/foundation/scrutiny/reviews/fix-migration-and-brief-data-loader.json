@@ -1,0 +1,50 @@
+{
+  "featureId": "fix-migration-and-brief-data-loader",
+  "reviewedAt": "2026-03-28T05:45:00.000Z",
+  "commitId": "22a14f0",
+  "transcriptSkeletonReviewed": true,
+  "diffReviewed": true,
+  "status": "pass",
+  "codeReview": {
+    "summary": "Implementation correctly addresses both parts of the feature. The migration fix properly drops `embeddings` before `resources` with CASCADE. The `getBriefData` server action aggregates all brief data (company, report, contacts, scores, recommendations) with graceful error handling for missing data. A new `findLeadScoresByContactIds` repository function was added with proper empty-array guard. Recommendations are correctly sorted by weighted total score descending and capped at 3. TypeScript and ESLint both pass with zero errors.",
+    "issues": [
+      {
+        "file": "lib/actions/briefs.ts",
+        "line": 79,
+        "severity": "non_blocking",
+        "description": "Worker performs a direct DB query for contacts instead of reusing the existing `getContactsByCompanyId` server action from `lib/actions/contacts.ts` (line 67). The existing action performs the exact same query (select from contacts where companyId, ordered by createdAt desc). While the direct query works and avoids unwrapping the `{ success, data }` envelope, it duplicates query logic. This is a minor code-reuse concern, not a bug."
+      },
+      {
+        "file": "lib/actions/briefs.ts",
+        "line": 10,
+        "severity": "non_blocking",
+        "description": "The `companies` and `companyReports` schema imports are only used for `$inferSelect` type derivation (lines 15-16). These schema tables add unused runtime imports to the server action module. Using `import type { ... }` for the schema modules would be cleaner, though in a server-only context the impact is negligible."
+      },
+      {
+        "file": "lib/actions/briefs.ts",
+        "line": 40,
+        "severity": "non_blocking",
+        "description": "DEFAULT_WEIGHTS are hardcoded rather than loaded from the `scoring_config` table. The feature description says 'use the default weights (or load from scoring config)'. A subsequent commit (77ed343) adds `scoringConfig` loading to `BriefData`, but in this commit the scoring config weights are not used in `calculateTotalScore` — the hardcoded weights are always used. This was later addressed so not blocking."
+      }
+    ]
+  },
+  "sharedStateObservations": [
+    {
+      "area": "conventions",
+      "observation": "The contacts repo (`lib/server/repositories/contacts-repo.ts`) lacks a `findContactsByCompanyId` function, so the worker had to either use the server action `getContactsByCompanyId` from `lib/actions/contacts.ts` (which wraps result in `{ success, data }`) or query directly. The architecture says 'Repositories are pure data-access functions' and actions call repositories for reads, but this common query (contacts by company) is only available as a server action, not as a repository function. This gap caused the worker to bypass the repository layer and query the DB directly from a server action.",
+      "evidence": "lib/actions/briefs.ts:78-84 performs direct `db.select().from(contacts).where(eq(contacts.companyId, companyId))` instead of using a repo function. Compare to how `findCompanyById` and `findCompanyReportByCompanyId` are used from repos on lines 63 and 70."
+    },
+    {
+      "area": "conventions",
+      "observation": "The architecture doc (section 4) lists repository functions but is now outdated — it doesn't mention `findLeadScoresByContactIds` which was added in this feature. Future workers referencing architecture.md won't know about this bulk query function.",
+      "evidence": "architecture.md section 4 lists lead-scores-repo as only having `upsertLeadScore`, but now it also has `findLeadScoreByContactId` and `findLeadScoresByContactIds`."
+    },
+    {
+      "area": "skills",
+      "observation": "Worker followed the skill procedure correctly. The skill says to use `agent-browser` for manual verification, but the worker correctly noted this feature is backend-only (no UI) and skipped browser verification. The `skillFeedback.followedProcedure` is true with a deviation note about skipping agent-browser. This is a justified deviation — the skill should clarify that agent-browser verification is only needed when the feature includes UI components.",
+      "evidence": "Handoff skillFeedback.suggestedChanges: 'The skill mentions using agent-browser for UI verification, but this feature is backend-only (no UI components). Skipped agent-browser step since there was nothing to render in the browser.'"
+    }
+  ],
+  "addressesFailureFrom": null,
+  "summary": "Feature passes review. Migration fix is correct — drops embeddings before resources with CASCADE. The `getBriefData` server action properly aggregates all brief page data in one call with graceful handling for missing data. Three non-blocking issues noted: (1) direct DB query for contacts instead of reusing existing server action, (2) runtime imports of schema modules used only for types, (3) hardcoded default weights instead of loading from scoring config (addressed in a later commit). No bugs or blocking issues found."
+}

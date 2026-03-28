@@ -1,0 +1,34 @@
+{
+  "featureId": "brief-page-header-and-layout",
+  "reviewedAt": "2026-03-28T06:15:00.000Z",
+  "commitId": "fc27eaf",
+  "transcriptSkeletonReviewed": true,
+  "diffReviewed": true,
+  "status": "pass",
+  "codeReview": {
+    "summary": "Solid implementation covering all four deliverables: page route, BriefHeader component, company table navigation, and section placeholders. The worker followed the established workspace patterns (SidebarTrigger, force-dynamic, standard flex layout), correctly used the existing getBriefData server action, and handled edge cases (null company fields, invalid companyId via notFound(), generic errors with fallback UI). The BriefHeader completion indicator logic correctly derives state from report/contacts/scores presence. The company table navigation uses a clean Link component without breaking existing table functionality. The worker created a custom not-found.tsx with a back-to-dashboard affordance. TypeScript and ESLint both passed, and comprehensive browser verification was performed.",
+    "issues": [
+      {
+        "file": "app/(workspace)/app/brief/[companyId]/page.tsx",
+        "line": 2,
+        "severity": "non_blocking",
+        "description": "The `Link` import from 'next/link' at line 2 of the committed version is used in the error fallback JSX, but it could use the project's Button+asChild pattern for consistency with the not-found.tsx page (which uses `<Button asChild><Link>...</Link></Button>`). Minor style inconsistency."
+      },
+      {
+        "file": "components/workspace/brief/brief-header.tsx",
+        "line": 137,
+        "severity": "non_blocking",
+        "description": "A trailing dot separator (·) renders after the priority badge when website is present (lines 126-131 render the separator after the website link). This means the last visible metadata item before priority will have a trailing separator. However, since priority Badge is always rendered (no null check), the separator before it is actually between the last nullable field and the badge, which is acceptable visually. The pattern works correctly because the separator is always between the preceding nullable field and the next element."
+      }
+    ]
+  },
+  "sharedStateObservations": [
+    {
+      "area": "conventions",
+      "observation": "The brief page route uses BriefHeader as the page header instead of SiteHeader, which diverges from the pattern documented in AGENTS.md ('Page components: use SiteHeader, standard flex layout'). However, the feature description explicitly states 'SiteHeader is optional here since BriefHeader serves as the page header', so this is an intentional design decision. AGENTS.md could be updated to note that brief pages use BriefHeader instead of SiteHeader.",
+      "evidence": "app/(workspace)/app/brief/[companyId]/page.tsx uses BriefHeader instead of SiteHeader. Compare to app/(workspace)/app/dashboard/page.tsx which uses SiteHeader. Feature description says 'Uses the standard workspace layout (SiteHeader is optional here since BriefHeader serves as the page header)'."
+    }
+  ],
+  "addressesFailureFrom": null,
+  "summary": "Feature passes review. All four deliverables are implemented correctly: the brief page route loads company data with proper error handling, BriefHeader shows company metadata with null-safe rendering and a 3-state completion indicator, the company table has clickable navigation links to brief pages, and four section placeholder components render with appropriate empty state messages. No blocking issues found. Two minor non-blocking style observations noted. The worker followed the skill procedure, ran validators, and performed thorough browser verification including testing invalid IDs, navigation, and sidebar functionality."
+}

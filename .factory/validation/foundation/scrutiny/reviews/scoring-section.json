@@ -1,0 +1,40 @@
+{
+  "featureId": "scoring-section",
+  "reviewedAt": "2026-03-28T06:10:00.000Z",
+  "commitId": "77ed343",
+  "transcriptSkeletonReviewed": true,
+  "diffReviewed": true,
+  "status": "pass",
+  "codeReview": {
+    "summary": "ScoringSection is a well-structured client component implementing all 4 states (empty, running, success, error) with proper partial failure handling, sequential scoring via POST /api/leads/score, incremental UI updates, grade badges (A≥85/B≥70/C<70), ranked display by total weighted score descending, and rerun capability. The implementation correctly uses calculateTotalScore, getScoreGrade, and getGradeBadgeVariant from lib/utils/scoring.ts. It handles two distinct empty states (no contacts vs contacts but no scores), preserves prior scores on error, and shows partial results when some contacts fail to score. The component integrates cleanly with BriefRunController via externalState/externalScores props. Badge component was extended with an outline-solid variant for grade C display. getBriefData was updated to include scoringConfig in the BriefData type.",
+    "issues": [
+      {
+        "file": "components/workspace/brief/scoring-section.tsx",
+        "line": 37,
+        "severity": "non_blocking",
+        "description": "DEFAULT_WEIGHTS is duplicated between scoring-section.tsx (line 37) and lib/actions/briefs.ts (line 48). Should be extracted to a shared constant (e.g. in lib/utils/scoring.ts) to avoid divergence if weights are changed in one place but not the other."
+      },
+      {
+        "file": "components/workspace/brief/scoring-section.tsx",
+        "line": 365,
+        "severity": "non_blocking",
+        "description": "Reasoning summary picks the first non-empty value from the reasoning object via Object.values(reasoning).find(). The iteration order of Object.values on a JSON object is insertion-order in V8, which is likely fine, but the chosen reasoning dimension is arbitrary (could be industryMatch, companyMatch, etc.). A more explicit approach might concatenate all reasoning entries or pick a specific one. This is acceptable for an MVP but could confuse users who see different dimension reasoning for different contacts."
+      },
+      {
+        "file": "components/workspace/brief/scoring-section.tsx",
+        "line": 148,
+        "severity": "non_blocking",
+        "description": "During handleRun, when scoring contacts sequentially, the UI updates incrementally via setScoresList([...newScores]) after each successful contact. However, the running state's rendered list (line 310, opacity-50 section) only shows scoredContacts from buildScoredContacts which uses displayScores. Since externalScores is only set during orchestration, during standalone runs displayScores === scoresList, so incremental updates DO render. This works correctly but the indirection through displayScores vs scoresList could be confusing for maintainers."
+      }
+    ]
+  },
+  "sharedStateObservations": [
+    {
+      "area": "conventions",
+      "observation": "DEFAULT_WEIGHTS constant is duplicated in two files (scoring-section.tsx and lib/actions/briefs.ts). AGENTS.md doesn't mention a convention for sharing constants between client components and server actions. A shared constant in lib/utils/scoring.ts (which is already imported by both) would prevent drift.",
+      "evidence": "components/workspace/brief/scoring-section.tsx:37 and lib/actions/briefs.ts:48 both define DEFAULT_WEIGHTS = { industryMatch: 25, companyMatch: 30, positionMatch: 20, seniorityMatch: 15, dealSizeMatch: 10 }"
+    }
+  ],
+  "addressesFailureFrom": null,
+  "summary": "ScoringSection passes review. The implementation fully covers all 7 feature requirements and all 8 expected behaviors. All 4 states are handled correctly, scoring is sequential with incremental UI updates, grades and sorting work per spec, and error/partial-failure scenarios preserve prior data. The component integrates properly with BriefRunController for orchestration. Three non-blocking issues noted: duplicated DEFAULT_WEIGHTS constant, arbitrary reasoning dimension selection, and minor readability concern with displayScores indirection. No blocking issues found."
+}

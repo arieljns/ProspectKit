@@ -1,0 +1,34 @@
+{
+  "featureId": "research-section",
+  "reviewedAt": "2026-03-28T06:15:00.000Z",
+  "commitId": "506d869",
+  "transcriptSkeletonReviewed": true,
+  "diffReviewed": true,
+  "status": "pass",
+  "codeReview": {
+    "summary": "The ResearchSection implementation is solid and fully covers all 7 requirements from the feature description. The component correctly implements all 4 states (empty/running/success/error) with appropriate UI for each. State derivation from props works correctly. The run/rerun logic properly POSTs to /api/reports/generate and re-fetches updated data via getBriefData server action. Error handling preserves prior report data when a rerun fails. The onComplete and onStateChange callback props are properly invoked. The component also gained an externalState prop (added in a later commit by the BriefRunController feature) which is a clean integration pattern. The code follows project conventions: 'use client' directive, imports from components/shared/ui/, lucide-react icons, Tailwind styling, and the 4-state model defined in AGENTS.md. The shared SectionState type in types.ts enables consistent reuse across all brief sections. Two non-blocking observations noted below.",
+    "issues": [
+      {
+        "file": "components/workspace/brief/research-section.tsx",
+        "line": 185,
+        "severity": "non_blocking",
+        "description": "When state === 'running' && reportData exists (rerun scenario), the component shows only a skeleton overlay with opacity-50 but hides the existing report content. The 'running' state condition at line 185 does not show prior data alongside the skeleton. The contacts-section.tsx handles this better by showing the actual prior contacts at 50% opacity during rerun. This is a minor UX inconsistency — the user loses sight of the existing report during a rerun. However, this does not violate any explicit requirement since the feature spec says 'Running state with spinner and disabled button' without mandating prior data visibility during rerun."
+      },
+      {
+        "file": "components/workspace/brief/research-section.tsx",
+        "line": 150,
+        "severity": "non_blocking",
+        "description": "List items in keyStrengths and challenges arrays use array index as React key (key={index}). Since these lists are only re-rendered when new data arrives (not reordered in place), this is functionally fine and won't cause bugs. A more robust approach would use the string content as key, but this is a cosmetic concern."
+      }
+    ]
+  },
+  "sharedStateObservations": [
+    {
+      "area": "conventions",
+      "observation": "The ResearchSection shows a skeleton overlay during rerun (hiding prior data), while ContactsSection shows the actual prior contacts list at 50% opacity during rerun. AGENTS.md documents the 4-state model but doesn't specify how the 'running' state should handle pre-existing data during reruns. This led to an inconsistency across sections that a convention note could prevent.",
+      "evidence": "research-section.tsx:185 shows skeleton-only for running+reportData; contacts-section.tsx:155 shows actual contacts at opacity-50 for running+contactsList.length>0"
+    }
+  ],
+  "addressesFailureFrom": null,
+  "summary": "ResearchSection passes review. All 4 states are correctly implemented with proper state transitions, error handling with prior data preservation, run/rerun logic via POST to /api/reports/generate, and callback prop integration. The shared SectionState type in types.ts is a good pattern. Two non-blocking issues: (1) rerun hides prior data behind skeleton rather than showing it at reduced opacity like other sections, and (2) array index used as React key for list items. Neither causes functional bugs. One convention observation noted about inconsistent rerun UX across sections."
+}

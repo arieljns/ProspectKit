@@ -1,0 +1,59 @@
+{
+  "milestone": "foundation",
+  "round": 1,
+  "status": "pass",
+  "validatorsRun": {
+    "test": { "passed": true, "command": "No test framework configured — skipped per project convention", "exitCode": 0 },
+    "typecheck": { "passed": true, "command": "pnpm exec tsc --noEmit", "exitCode": 0 },
+    "lint": { "passed": true, "command": "pnpm lint", "exitCode": 0 }
+  },
+  "reviewsSummary": {
+    "total": 6,
+    "passed": 6,
+    "failed": 0,
+    "failedFeatures": []
+  },
+  "blockingIssues": [],
+  "appliedUpdates": [
+    {
+      "target": "library",
+      "description": "Updated architecture.md section 4 (Repository Layer) to document newly added lead-scores-repo functions (findLeadScoreByContactId, findLeadScoresByContactIds) and note the missing findContactsByCompanyId repo function gap.",
+      "sourceFeature": "fix-migration-and-brief-data-loader"
+    }
+  ],
+  "suggestedGuidanceUpdates": [
+    {
+      "target": "AGENTS.md",
+      "suggestion": "Add convention for rerun UX: 'During section reruns, show prior data at reduced opacity (e.g., opacity-50) alongside a loading indicator, rather than hiding it behind a skeleton. This preserves user context during the operation.'",
+      "evidence": "ResearchSection shows skeleton-only during rerun (hiding prior data at research-section.tsx:185), while ContactsSection shows actual contacts at opacity-50 (contacts-section.tsx:155). This inconsistency arose from lack of convention guidance.",
+      "isSystemic": false
+    },
+    {
+      "target": "AGENTS.md",
+      "suggestion": "Add convention: 'Shared constants used by both client components and server actions should be defined in a shared utility file (e.g., lib/utils/) rather than duplicated.' Specifically, DEFAULT_WEIGHTS should be extracted to lib/utils/scoring.ts.",
+      "evidence": "DEFAULT_WEIGHTS is duplicated in scoring-section.tsx:37 and lib/actions/briefs.ts:48 with identical values. If weights are updated in one place but not the other, scoring will diverge between the brief page and the API.",
+      "isSystemic": false
+    },
+    {
+      "target": "skills",
+      "suggestion": "Update fullstack-worker skill to clarify that agent-browser verification is only required when the feature includes UI components. Backend-only features (data loaders, migrations, repository functions) should skip browser verification.",
+      "evidence": "fix-migration-and-brief-data-loader worker correctly deviated from the skill by skipping agent-browser since the feature was backend-only. The skill should explicitly acknowledge this case.",
+      "isSystemic": false
+    }
+  ],
+  "rejectedObservations": [
+    {
+      "observation": "BriefHeader vs SiteHeader convention divergence on brief page",
+      "reason": "Intentional design decision explicitly documented in the feature description: 'SiteHeader is optional here since BriefHeader serves as the page header'. Not a convention violation."
+    },
+    {
+      "observation": "Ambiguous feature description for orchestration approach (API route vs client-side sequential calls)",
+      "reason": "One-time description ambiguity that was resolved by the worker choosing the recommended approach. Not a systemic issue requiring convention update."
+    },
+    {
+      "observation": "Worker correctly followed procedure (contacts-section informational notes)",
+      "reason": "Informational observations confirming correct procedure adherence, not actionable for shared state updates."
+    }
+  ],
+  "previousRound": null
+}

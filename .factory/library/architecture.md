@@ -108,7 +108,8 @@ Repositories live under `lib/server/repositories/`. One file per table:
 - `companies-repo.ts` — `findCompanyById`, `setCompanyReportStatus`
 - `company-reports-repo.ts` — `findCompanyReportByCompanyId`, `upsertCompanyReportByCompanyId`
 - `contacts-repo.ts` — `insertContact`, `findContactWithCompanyById`
-- `lead-scores-repo.ts` — `upsertLeadScore`
+  - **Note**: No `findContactsByCompanyId` repo function exists. Workers needing contacts by company must either use the `getContactsByCompanyId` server action from `lib/actions/contacts.ts` or query directly. Consider adding a repo function for this common query.
+- `lead-scores-repo.ts` — `upsertLeadScore`, `findLeadScoreByContactId`, `findLeadScoresByContactIds`
 - `scoring-config-repo.ts` — `getOrCreateDefaultScoringConfig`
 
 Repositories are pure data-access functions. They use Drizzle query builders directly and return plain row objects (or `null`). They do not contain business logic or error-code semantics.

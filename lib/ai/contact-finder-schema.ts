@@ -22,11 +22,11 @@ export const contactFinderSchema = z.object({
           .describe(
             'Department or functional area (e.g., "Engineering", "Sales", "Executive")',
           ),
-        linkedinUrl: z
+        candidateId: z
           .string()
-          .url()
-          .optional()
-          .describe("LinkedIn profile URL if found on LinkedIn"),
+          .describe(
+            "The exact candidate ID from the provided LinkedIn profile candidate list",
+          ),
       }),
     )
     .max(5)

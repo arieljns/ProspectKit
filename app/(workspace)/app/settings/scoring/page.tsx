@@ -237,7 +237,7 @@ export default function ScoringConfigPage() {
                     <Label htmlFor="companyName">Company Name</Label>
                     <Input
                       id="companyName"
-                      placeholder="e.g., OpenAI"
+                      placeholder="e.g., ProspectKit"
                       value={companyName}
                       onChange={(e) => setCompanyName(e.target.value)}
                     />

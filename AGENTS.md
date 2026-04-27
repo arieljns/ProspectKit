@@ -59,11 +59,11 @@ Recommended or feature-dependent:
 ```bash
 DATABASE_MIGRATIONS_URL=
 EXA_API_KEY=
-AI_MODEL_PROVIDER=xai
-AI_MODEL_ID=grok-4-fast-non-reasoning-latest
+AI_MODEL_PROVIDER=openai
+AI_MODEL_ID=gpt-5.4-mini
 ```
 
-`AI_MODEL_PROVIDER` supports `xai` and `openai` in `lib/ai/model.ts`. The default provider is `xai`.
+`AI_MODEL_PROVIDER` supports `openai` in `lib/ai/model.ts`. The default provider is `openai`.
 
 ## Application Structure
 

@@ -3,13 +3,13 @@ import { companies } from "./schema/companies";
 
 const seedData = [
   {
-    companyName: "xAI",
+    companyName: "OpenAI",
     industry: "Artificial Intelligence",
     size: "201-500",
     priority: "Low",
     reportStatus: "none",
-    website: "https://x.ai",
-    description: "World's best AI research lab",
+    website: "https://openai.com",
+    description: "AI research and product company",
   },
   {
     companyName: "Stripe",

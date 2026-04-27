@@ -12,7 +12,6 @@ This document is the tracked source of truth for repository-level setup details.
   - `EXA_API_KEY`
 - Optional keys:
   - `OPENAI_API_KEY`
-  - `XAI_API_KEY`
   - `AI_MODEL_PROVIDER`
   - `AI_MODEL_ID`
 
@@ -25,7 +24,7 @@ This document is the tracked source of truth for repository-level setup details.
   - `pnpm format:check`
   - `pnpm build`
 
-## Notes on Ignored Docs
+## Notes on Docs
 
-- This repository intentionally ignores `README.md` and `CLAUDE.md`.
+- This repository intentionally ignores `CLAUDE.md`.
 - Keep shared, versioned project notes under `docs/`.

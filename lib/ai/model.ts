@@ -1,11 +1,9 @@
 import { openai } from "@ai-sdk/openai";
-import { xai } from "@ai-sdk/xai";
 
-const DEFAULT_PROVIDER = "xai";
+const DEFAULT_PROVIDER = "openai";
 
 const DEFAULT_MODEL_BY_PROVIDER = {
-  openai: "gpt-4.1-mini",
-  xai: "grok-4-fast-non-reasoning-latest",
+  openai: "gpt-5.4-mini",
 } as const;
 
 type ChatModelProvider = keyof typeof DEFAULT_MODEL_BY_PROVIDER;
@@ -31,7 +29,5 @@ export function getChatModel() {
   switch (provider) {
     case "openai":
       return openai(modelId);
-    case "xai":
-      return xai(modelId);
   }
 }

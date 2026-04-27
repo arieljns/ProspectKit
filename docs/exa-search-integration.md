@@ -25,7 +25,7 @@ This repository now handles external web research through Exa instead of relying
 
 ### Model configuration
 
-- Default provider: `xai`
+- Default provider: `openai`
 - Switch providers with:
   - `AI_MODEL_PROVIDER`
   - `AI_MODEL_ID`
@@ -35,5 +35,4 @@ The goal is to keep search independent from model choice so provider changes onl
 ## Environment
 
 - Required for external search: `EXA_API_KEY`
-- Required only when using OpenAI as the model provider: `OPENAI_API_KEY`
-- Required only when using xAI as the chat model provider: `XAI_API_KEY`
+- Required when using OpenAI as the model provider: `OPENAI_API_KEY`

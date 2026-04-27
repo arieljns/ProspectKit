@@ -42,10 +42,45 @@ export const LogoCloud = () => {
 
   return (
     <Container id="proof" className="border-divide border-x">
-      <h2 className="py-8 text-center font-mono text-sm tracking-tight text-neutral-500 uppercase dark:text-gray-300">
-        Built for lean outbound teams
-      </h2>
-      <div className="border-divide grid grid-cols-2 border-t md:grid-cols-4">
+      <div className="border-divide grid gap-6 border-b px-6 py-10 md:grid-cols-[1fr_auto] md:items-end md:px-10">
+        <div>
+          <p className="font-mono text-sm text-neutral-500 uppercase dark:text-gray-400">
+            Accelerator-backed teams
+          </p>
+          <h2 className="mt-3 max-w-3xl text-3xl font-semibold text-neutral-950 md:text-5xl dark:text-white">
+            Used by 10+ startups from top accelerators
+          </h2>
+        </div>
+
+        <div className="grid grid-cols-3 gap-6 text-sm md:min-w-80">
+          <div>
+            <p className="text-2xl font-semibold text-neutral-950 dark:text-white">
+              10+
+            </p>
+            <p className="mt-1 text-neutral-500 dark:text-gray-400">
+              startups
+            </p>
+          </div>
+          <div>
+            <p className="text-2xl font-semibold text-neutral-950 dark:text-white">
+              Top
+            </p>
+            <p className="mt-1 text-neutral-500 dark:text-gray-400">
+              accelerators
+            </p>
+          </div>
+          <div>
+            <p className="text-2xl font-semibold text-neutral-950 dark:text-white">
+              SDR
+            </p>
+            <p className="mt-1 text-neutral-500 dark:text-gray-400">
+              workflows
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div className="border-divide grid grid-cols-2 md:grid-cols-4">
         {displayedIndices.map((logoIndex, position) => {
           const logo = logos[logoIndex];
 

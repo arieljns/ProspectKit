@@ -68,19 +68,45 @@ export const landingNavItems: LandingNavItem[] = [
 ];
 
 export const landingLogos = [
-  { title: "Logo 1", src: "/marketing/logos/1.png", className: "h-10 w-auto" },
-  { title: "Logo 2", src: "/marketing/logos/2.png", className: "h-6 w-auto" },
-  { title: "Logo 3", src: "/marketing/logos/3.png", className: "h-6 w-auto" },
-  { title: "Logo 4", src: "/marketing/logos/4.png", className: "h-8 w-auto" },
-  { title: "Logo 5", src: "/marketing/logos/5.png", className: "h-8 w-auto" },
-  { title: "Logo 6", src: "/marketing/logos/6.png", className: "h-10 w-auto" },
-  { title: "Logo 7", src: "/marketing/logos/7.png", className: "h-10 w-auto" },
-  { title: "Logo 8", src: "/marketing/logos/8.png", className: "h-10 w-auto" },
-  { title: "Logo 9", src: "/marketing/logos/9.png", className: "h-6 w-auto" },
   {
-    title: "Logo 10",
-    src: "/marketing/logos/10.png",
-    className: "h-10 w-auto",
+    title: "Logo 1",
+    src: "/marketing/logos/logo_1.png",
+    className: "h-auto w-36 max-w-[70%] rounded-sm sm:w-40 md:w-44",
+  },
+  {
+    title: "Logo 2",
+    src: "/marketing/logos/logo_2.png",
+    className: "h-auto w-36 max-w-[70%] rounded-sm sm:w-40 md:w-44",
+  },
+  {
+    title: "Logo 3",
+    src: "/marketing/logos/logo_3.png",
+    className: "h-auto w-36 max-w-[70%] rounded-sm sm:w-40 md:w-44",
+  },
+  {
+    title: "Logo 4",
+    src: "/marketing/logos/logo_4.png",
+    className: "h-auto w-36 max-w-[70%] rounded-sm sm:w-40 md:w-44",
+  },
+  {
+    title: "Logo 5",
+    src: "/marketing/logos/logo_5.png",
+    className: "h-auto w-36 max-w-[70%] rounded-sm sm:w-40 md:w-44",
+  },
+  {
+    title: "Logo 6",
+    src: "/marketing/logos/logo_6.png",
+    className: "h-auto w-36 max-w-[70%] rounded-sm sm:w-40 md:w-44",
+  },
+  {
+    title: "Logo 7",
+    src: "/marketing/logos/logo_7.png",
+    className: "h-auto w-36 max-w-[70%] rounded-sm sm:w-40 md:w-44",
+  },
+  {
+    title: "Logo 8",
+    src: "/marketing/logos/logo_8.png",
+    className: "h-auto w-36 max-w-[70%] rounded-sm sm:w-40 md:w-44",
   },
 ];
 
@@ -301,8 +327,8 @@ export const landingFaqs: FAQItem[] = [
 
 export const landingTestimonials: TestimonialItem[] = [
   {
-    src: "/marketing/logos/1.png",
-    logoClassName: "h-10 w-auto",
+    src: "/marketing/logos/logo_1.png",
+    logoClassName: "h-auto w-36 max-w-full rounded-sm",
     sideText: "2x",
     sideSubText: "Faster list building",
     quote:
@@ -313,8 +339,8 @@ export const landingTestimonials: TestimonialItem[] = [
     avatar: "/marketing/team/1.png",
   },
   {
-    src: "/marketing/logos/2.png",
-    logoClassName: "h-6 w-auto",
+    src: "/marketing/logos/logo_2.png",
+    logoClassName: "h-auto w-36 max-w-full rounded-sm",
     sideText: "40%",
     sideSubText: "Less tool switching",
     quote:
@@ -325,8 +351,8 @@ export const landingTestimonials: TestimonialItem[] = [
     avatar: "/marketing/team/2.png",
   },
   {
-    src: "/marketing/logos/3.png",
-    logoClassName: "h-6 w-auto",
+    src: "/marketing/logos/logo_3.png",
+    logoClassName: "h-auto w-36 max-w-full rounded-sm",
     sideText: "3 weeks",
     sideSubText: "To first pipeline",
     quote:
@@ -337,8 +363,8 @@ export const landingTestimonials: TestimonialItem[] = [
     avatar: "/marketing/team/3.png",
   },
   {
-    src: "/marketing/logos/4.png",
-    logoClassName: "h-8 w-auto",
+    src: "/marketing/logos/logo_4.png",
+    logoClassName: "h-auto w-36 max-w-full rounded-sm",
     sideText: "100%",
     sideSubText: "Open-source stack",
     quote:
@@ -349,8 +375,8 @@ export const landingTestimonials: TestimonialItem[] = [
     avatar: "/marketing/team/4.png",
   },
   {
-    src: "/marketing/logos/5.png",
-    logoClassName: "h-8 w-auto",
+    src: "/marketing/logos/logo_5.png",
+    logoClassName: "h-auto w-36 max-w-full rounded-sm",
     sideText: "5 reps",
     sideSubText: "Single shared workflow",
     quote:
@@ -361,8 +387,8 @@ export const landingTestimonials: TestimonialItem[] = [
     avatar: "/marketing/team/5.png",
   },
   {
-    src: "/marketing/logos/6.png",
-    logoClassName: "h-10 w-auto",
+    src: "/marketing/logos/logo_6.png",
+    logoClassName: "h-auto w-36 max-w-full rounded-sm",
     sideText: "1 place",
     sideSubText: "For SDR execution",
     quote:
@@ -373,8 +399,8 @@ export const landingTestimonials: TestimonialItem[] = [
     avatar: "/marketing/team/6.png",
   },
   {
-    src: "/marketing/logos/7.png",
-    logoClassName: "h-10 w-auto",
+    src: "/marketing/logos/logo_7.png",
+    logoClassName: "h-auto w-36 max-w-full rounded-sm",
     sideText: "10 hrs",
     sideSubText: "Saved weekly",
     quote:
@@ -385,8 +411,8 @@ export const landingTestimonials: TestimonialItem[] = [
     avatar: "/marketing/team/1.png",
   },
   {
-    src: "/marketing/logos/8.png",
-    logoClassName: "h-10 w-auto",
+    src: "/marketing/logos/logo_8.png",
+    logoClassName: "h-auto w-36 max-w-full rounded-sm",
     sideText: "Faster",
     sideSubText: "Outbound iteration",
     quote:
@@ -397,8 +423,8 @@ export const landingTestimonials: TestimonialItem[] = [
     avatar: "/marketing/team/2.png",
   },
   {
-    src: "/marketing/logos/9.png",
-    logoClassName: "h-6 w-auto",
+    src: "/marketing/logos/logo_1.png",
+    logoClassName: "h-auto w-36 max-w-full rounded-sm",
     sideText: "Lean",
     sideSubText: "By design",
     quote:
@@ -409,8 +435,8 @@ export const landingTestimonials: TestimonialItem[] = [
     avatar: "/marketing/team/3.png",
   },
   {
-    src: "/marketing/logos/10.png",
-    logoClassName: "h-10 w-auto",
+    src: "/marketing/logos/logo_2.png",
+    logoClassName: "h-auto w-36 max-w-full rounded-sm",
     sideText: "OSS",
     sideSubText: "Community-backed",
     quote:

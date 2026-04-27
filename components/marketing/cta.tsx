@@ -14,7 +14,7 @@ export function CTA() {
       id="cta"
       className="border-divide relative flex min-h-72 flex-col items-center justify-center overflow-hidden border-x px-4 py-12 md:min-h-[30rem]"
     >
-      <CTAOrbit className="absolute inset-x-0 -top-96 mask-b-from-30%" />
+      <CTAOrbit className="pointer-events-none absolute left-1/2 -top-80 -translate-x-1/2 mask-b-from-35%" />
       <SectionHeading className="relative z-10 text-center lg:text-6xl">
         Complete the essential SDR loop
         <br />
@@ -44,61 +44,81 @@ type CTAOrbitProps = {
 };
 
 function CTAOrbit({ size = 780, className }: CTAOrbitProps) {
-  const ringScaleFactors = [0.44, 0.66, 0.9];
-  const durations = [16, 22, 28];
+  const rings = [0.42, 0.64, 0.86];
+  const orbitGroups = [
+    {
+      scale: 0.64,
+      count: 5,
+      duration: 38,
+      direction: 360,
+      logoClassName: "size-10 opacity-30 dark:opacity-35",
+    },
+    {
+      scale: 0.86,
+      count: 7,
+      duration: 54,
+      direction: -360,
+      logoClassName: "size-12 opacity-25 dark:opacity-30",
+    },
+  ];
 
   return (
     <div className={className} style={{ width: size, height: size }}>
+      <div className="absolute inset-0 rounded-full bg-[radial-gradient(circle_at_center,rgba(229,229,229,0.7)_0%,rgba(245,245,245,0.42)_38%,rgba(255,255,255,0)_70%)] dark:bg-[radial-gradient(circle_at_center,rgba(64,64,64,0.42)_0%,rgba(23,23,23,0.34)_42%,rgba(0,0,0,0)_72%)]" />
+
       <div className="absolute inset-0 flex items-center justify-center">
-        {ringScaleFactors.map((scale, index) => (
+        {rings.map((scale, index) => (
           <div
-            key={`ring-bg-${index}`}
-            className="absolute rounded-full shadow-inner"
+            key={`ring-${index}`}
+            className="absolute rounded-full border border-neutral-300/70 dark:border-neutral-800"
             style={{
               width: Math.round(size * scale),
               height: Math.round(size * scale),
-              backgroundColor:
-                index === 0
-                  ? "var(--color-neutral-300)"
-                  : "var(--color-neutral-200)",
             }}
           />
         ))}
       </div>
 
-      {ringScaleFactors.map((scale, index) => (
+      <div className="absolute inset-0 flex items-center justify-center">
+        <LogoSVG className="size-44 opacity-[0.09] drop-shadow-sm grayscale dark:opacity-[0.14]" />
+      </div>
+
+      {orbitGroups.map((group, groupIndex) => (
         <motion.div
-          key={`ring-${index}`}
+          key={`orbit-${groupIndex}`}
           className="absolute top-1/2 left-1/2"
           style={{
-            width: Math.round(size * scale),
-            height: Math.round(size * scale),
+            width: Math.round(size * group.scale),
+            height: Math.round(size * group.scale),
             translateX: "-50%",
             translateY: "-50%",
           }}
-          animate={{ rotate: index % 2 === 0 ? 360 : -360 }}
+          animate={{ rotate: group.direction }}
           transition={{
-            duration: durations[index],
+            duration: group.duration,
             repeat: Infinity,
             ease: "linear",
           }}
         >
-          {Array.from({ length: 4 + index * 2 }).map((_, dotIndex, list) => {
+          {Array.from({ length: group.count }).map((_, dotIndex, list) => {
             const angle = (360 / list.length) * dotIndex;
-            const radius = (Math.round(size * scale) / 2) * 0.88;
+            const radius = (Math.round(size * group.scale) / 2) * 0.93;
+
             return (
               <div
-                key={`${index}-${dotIndex}`}
+                key={`${groupIndex}-${dotIndex}`}
                 className="absolute top-1/2 left-1/2"
                 style={{
                   transform: `rotate(${angle}deg) translateX(${radius}px)`,
                 }}
               >
                 <div
-                  className="shadow-aceternity flex size-10 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-md bg-white dark:bg-neutral-950"
+                  className="flex -translate-x-1/2 -translate-y-1/2 items-center justify-center"
                   style={{ transform: `rotate(${-angle}deg)` }}
                 >
-                  <LogoSVG className="size-4" />
+                  <LogoSVG
+                    className={`${group.logoClassName} drop-shadow-sm grayscale`}
+                  />
                 </div>
               </div>
             );

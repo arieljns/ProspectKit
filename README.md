@@ -92,10 +92,12 @@ ProspectKit is built with a modern, deployable TypeScript stack:
 
 ## Quick Start
 
+Requires [pnpm](https://pnpm.io/) (enable with `corepack enable` if needed).
+
 ```bash
 git clone <your-fork-or-repo-url>
 cd prospect-kit
-npm install
+pnpm install
 ```
 
 Create `.env`:
@@ -113,9 +115,9 @@ OPENAI_API_KEY="..."
 Initialize the database and start the app:
 
 ```bash
-npm run db:migrate
-npm run db:seed # optional demo companies
-npm run dev
+pnpm db:migrate
+pnpm db:seed # optional demo companies
+pnpm dev
 ```
 
 Open the workspace:
@@ -163,7 +165,7 @@ OPENAI_API_KEY="..."
 Before deploying, run migrations against your production database:
 
 ```bash
-npm run db:migrate
+pnpm db:migrate
 ```
 
 The production build does not automatically create tables. Run migrations explicitly before first use.
@@ -172,8 +174,9 @@ The production build does not automatically create tables. Run migrations explic
 
 Vercel defaults should work:
 
-- Install Command: `npm install`
-- Build Command: `npm run build`
+- Install Command: `pnpm install`
+- Build Command: `pnpm build`
+- Package Manager: pnpm (lockfile: `pnpm-lock.yaml`)
 - Framework Preset: Next.js
 
 Or deploy with the Vercel CLI:
@@ -196,25 +199,25 @@ After deployment:
 ## Commands
 
 ```bash
-npm run dev          # Run migrations, then start the Next dev server
-npm run build        # Build for production
-npm start            # Start the production server
-npm run lint         # Run ESLint
-npm run format       # Format the repository
-npm run format:check # Check formatting
+pnpm dev          # Run migrations, then start the Next dev server
+pnpm build        # Build for production
+pnpm start            # Start the production server
+pnpm lint         # Run ESLint
+pnpm format       # Format the repository
+pnpm format:check # Check formatting
 ```
 
 Database commands:
 
 ```bash
-npm run db:auto-migrate # Run migrations automatically
-npm run db:generate     # Generate migration files from schema changes
-npm run db:migrate      # Run migrations manually
-npm run db:push         # Push schema changes directly to DB
-npm run db:studio       # Open Drizzle Studio
-npm run db:check        # Check migration/schema consistency
-npm run db:seed         # Seed demo companies
-npm run db:seed:force   # Force re-seed demo companies
+pnpm db:auto-migrate # Run migrations automatically
+pnpm db:generate     # Generate migration files from schema changes
+pnpm db:migrate      # Run migrations manually
+pnpm db:push         # Push schema changes directly to DB
+pnpm db:studio       # Open Drizzle Studio
+pnpm db:check        # Check migration/schema consistency
+pnpm db:seed         # Seed demo companies
+pnpm db:seed:force   # Force re-seed demo companies
 ```
 
 ## Project Structure
@@ -340,10 +343,12 @@ ProspectKit 使用一套现代、容易部署的 TypeScript 技术栈：
 
 ## 快速开始
 
+需要安装 [pnpm](https://pnpm.io/)（可用 `corepack enable` 启用）。
+
 ```bash
 git clone <your-fork-or-repo-url>
 cd prospect-kit
-npm install
+pnpm install
 ```
 
 创建 `.env`：
@@ -361,9 +366,9 @@ OPENAI_API_KEY="..."
 初始化数据库并启动：
 
 ```bash
-npm run db:migrate
-npm run db:seed # 可选：插入 demo 公司
-npm run dev
+pnpm db:migrate
+pnpm db:seed # 可选：插入 demo 公司
+pnpm dev
 ```
 
 打开工作台：
@@ -372,7 +377,7 @@ npm run dev
 http://localhost:3000/app/dashboard
 ```
 
-`npm run dev` 会先运行待执行的数据库迁移，然后启动 Next.js。
+`pnpm dev` 会先运行待执行的数据库迁移，然后启动 Next.js。
 
 ## 第一次使用
 
@@ -413,7 +418,7 @@ OPENAI_API_KEY="..."
 首次部署前，对生产数据库运行：
 
 ```bash
-npm run db:migrate
+pnpm db:migrate
 ```
 
 生产构建不会自动创建数据库表。首次使用前请显式运行迁移。
@@ -422,8 +427,9 @@ npm run db:migrate
 
 Vercel 默认配置即可：
 
-- Install Command: `npm install`
-- Build Command: `npm run build`
+- Install Command: `pnpm install`
+- Build Command: `pnpm build`
+- Package Manager: pnpm (lockfile: `pnpm-lock.yaml`)
 - Framework Preset: Next.js
 
 也可以使用 Vercel CLI：
@@ -446,26 +452,26 @@ npx vercel deploy
 ## 常用命令
 
 ```bash
-npm run dev          # 运行迁移并启动开发服务器
-npm run build        # 生产构建
-npm start            # 启动生产服务
-npm run lint         # 运行 ESLint
-npm run format       # 格式化代码
-npm run db:migrate   # 运行数据库迁移
-npm run db:seed      # 插入 demo 公司
+pnpm dev          # 运行迁移并启动开发服务器
+pnpm build        # 生产构建
+pnpm start            # 启动生产服务
+pnpm lint         # 运行 ESLint
+pnpm format       # 格式化代码
+pnpm db:migrate   # 运行数据库迁移
+pnpm db:seed      # 插入 demo 公司
 ```
 
 数据库命令：
 
 ```bash
-npm run db:auto-migrate # 自动运行迁移
-npm run db:generate     # 根据 schema 生成 migration 文件
-npm run db:migrate      # 手动运行 migration
-npm run db:push         # 直接将 schema 推到数据库
-npm run db:studio       # 打开 Drizzle Studio
-npm run db:check        # 检查 migration/schema 一致性
-npm run db:seed         # 插入 demo 公司
-npm run db:seed:force   # 强制重新插入 demo 公司
+pnpm db:auto-migrate # 自动运行迁移
+pnpm db:generate     # 根据 schema 生成 migration 文件
+pnpm db:migrate      # 手动运行 migration
+pnpm db:push         # 直接将 schema 推到数据库
+pnpm db:studio       # 打开 Drizzle Studio
+pnpm db:check        # 检查 migration/schema 一致性
+pnpm db:seed         # 插入 demo 公司
+pnpm db:seed:force   # 强制重新插入 demo 公司
 ```
 
 ## 项目结构

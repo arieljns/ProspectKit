@@ -121,7 +121,7 @@ async function seed(force = false) {
 
     if (existing.length > 0 && !force) {
       console.log("⚠️  Companies already exist. Skipping seed.");
-      console.log("   Run `npm run db:seed:force` to force re-seed.");
+      console.log("   Run `pnpm db:seed:force` to force re-seed.");
       return;
     }
 

@@ -74,12 +74,12 @@ export const HeroImage = () => {
           }}
         >
           <Image
-            src="/marketing/dashboard@3x.png"
-            alt="ProspectKit dashboard preview"
+            src="/marketing/dashboard@3x.webp"
+            alt="ProspectKit pipeline analytics preview"
             className="w-full"
             priority
-            width={1000}
-            height={1000}
+            width={3122}
+            height={1952}
             draggable={false}
           />
         </motion.div>

@@ -10,18 +10,20 @@ Current status: working prototype. Favor small, direct changes that keep the pro
 
 **Stack**: Next.js 16 App Router, React 19, Tailwind CSS, shadcn/ui primitives, Drizzle ORM, PostgreSQL, Vercel AI SDK, Exa search.
 
+**Package manager**: pnpm (`pnpm-lock.yaml`). Use `pnpm install` and `pnpm <script>` — not npm.
+
 ## Development Commands
 
 ```bash
-npm run dev          # Runs DB auto-migration, then starts Next dev server
-npm run build        # Build for production
-npm start            # Start production server
-npm run lint         # Run ESLint over app, components, and lib
-npm run format       # Run Prettier
-npm run format:check # Check Prettier formatting
+pnpm dev          # Runs DB auto-migration, then starts Next dev server
+pnpm build        # Build for production
+pnpm start        # Start production server
+pnpm lint         # Run ESLint over app, components, and lib
+pnpm format       # Run Prettier
+pnpm format:check # Check Prettier formatting
 ```
 
-If `npm run dev` is blocked by database connectivity while working only on UI, run Next directly:
+If `pnpm dev` is blocked by database connectivity while working only on UI, run Next directly:
 
 ```bash
 ./node_modules/.bin/next dev --webpack
@@ -32,16 +34,16 @@ Webpack mode is useful if Turbopack panics while editing or verifying local UI.
 ## Database Commands
 
 ```bash
-npm run db:auto-migrate # Run migrations automatically
-npm run db:generate     # Generate migration files from schema changes
-npm run db:migrate      # Run migrations manually
-npm run db:push         # Push schema changes directly to DB
-npm run db:studio       # Open Drizzle Studio
-npm run db:check        # Check migration/schema consistency
-npm run db:pull         # Introspect existing database schema
-npm run db:drop         # Drop migration files
-npm run db:seed         # Seed demo companies
-npm run db:seed:force   # Re-seed demo companies even if data exists
+pnpm db:auto-migrate # Run migrations automatically
+pnpm db:generate     # Generate migration files from schema changes
+pnpm db:migrate      # Run migrations manually
+pnpm db:push         # Push schema changes directly to DB
+pnpm db:studio       # Open Drizzle Studio
+pnpm db:check        # Check migration/schema consistency
+pnpm db:pull         # Introspect existing database schema
+pnpm db:drop         # Drop migration files
+pnpm db:seed         # Seed demo companies
+pnpm db:seed:force   # Re-seed demo companies even if data exists
 ```
 
 `DATABASE_MIGRATIONS_URL` is recommended when `DATABASE_URL` points at a pooler.
@@ -103,9 +105,9 @@ Repository helpers live in `lib/server/repositories/`. Server actions used by pa
 When modifying schema:
 
 1. Update `lib/db/schema/*`.
-2. Run `npm run db:generate`.
-3. Run `npm run db:migrate` or `npm run dev`.
-4. Seed or inspect data with `npm run db:seed` and `npm run db:studio`.
+2. Run `pnpm db:generate`.
+3. Run `pnpm db:migrate` or `pnpm dev`.
+4. Seed or inspect data with `pnpm db:seed` and `pnpm db:studio`.
 
 ## AI and Search
 
@@ -132,7 +134,7 @@ Service functions return `Result` objects from `lib/server/shared/result.ts`; AP
 For most changes:
 
 ```bash
-npm run lint
+pnpm lint
 ```
 
 For schema or TypeScript-heavy changes, also run:

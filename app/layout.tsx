@@ -3,6 +3,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/shared/providers/theme-provider";
 import { interDisplay } from "@/app/fonts/inter-display/inter";
 import { dmMono } from "@/app/fonts/dm-mono";
+import { Analytics } from "@vercel/analytics/next";
 
 export const metadata: Metadata = {
   title: "ProspectKit",
@@ -22,6 +23,7 @@ export default function RootLayout({
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           {children}
         </ThemeProvider>
+        <Analytics />
       </body>
     </html>
   );

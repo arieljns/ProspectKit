@@ -1,0 +1,11 @@
+{
+  "error": 0,
+  "data": {
+    "userid": 123,
+    "username": "my_own_account",
+    "email": "me@example.com",
+    "phone": "6281111111111",
+    "shopid": 999000999,
+    "nickname": "Me"
+  }
+}

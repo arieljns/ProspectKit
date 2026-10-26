@@ -1,0 +1,112 @@
+{
+  "bff_meta": null,
+  "error": null,
+  "error_msg": null,
+  "nomore": false,
+  "total_count": 4821,
+  "items": [
+    {
+      "item_basic": {
+        "itemid": 22650011234,
+        "shopid": 111222333,
+        "name": "Glowria Serum Niacinamide 10% + Zinc 20ml BPOM",
+        "price": 8900000000,
+        "price_min": 8900000000,
+        "price_max": 8900000000,
+        "sold": 320,
+        "historical_sold": 5400,
+        "shop_location": "KOTA BANDUNG",
+        "is_official_shop": false,
+        "shop_name": "Glowria Skincare",
+        "ctime": 1690000000,
+        "item_rating": {
+          "rating_star": 4.91,
+          "rating_count": [2210, 3, 2, 10, 95, 2100]
+        },
+        "image": "id-11134207-7r98o-lq1x2y3z4a5b6c"
+      },
+      "itemid": 22650011234,
+      "shopid": 111222333,
+      "adsid": null,
+      "campaignid": null
+    },
+    {
+      "item_basic": {
+        "itemid": 22650011999,
+        "shopid": 111222333,
+        "name": "Glowria Toner Centella Calming 100ml",
+        "price": 6500000000,
+        "sold": 140,
+        "historical_sold": 2100,
+        "shop_location": "KOTA BANDUNG",
+        "is_official_shop": false,
+        "ctime": 1695000000
+      },
+      "itemid": 22650011999,
+      "shopid": 111222333,
+      "adsid": 77001
+    },
+    {
+      "item_basic": {
+        "itemid": 18820040001,
+        "shopid": 222333444,
+        "name": "Suplemen Kolagen Drink 10 Sachet Kolagenku",
+        "price": 12500000000,
+        "sold": 210,
+        "historical_sold": 900,
+        "shop_location": "KAB. SIDOARJO",
+        "is_official_shop": false
+      },
+      "itemid": 18820040001,
+      "shopid": 222333444
+    },
+    {
+      "item_basic": {
+        "itemid": 18820040002,
+        "shopid": 222333444,
+        "name": "Vitamin C 1000mg Isi 30 Kapsul",
+        "price": 4500000000,
+        "sold": 95,
+        "historical_sold": 400,
+        "shop_location": "KAB. SIDOARJO",
+        "is_official_shop": false
+      },
+      "itemid": 18820040002,
+      "shopid": 222333444
+    },
+    {
+      "item_basic": {
+        "itemid": 31000000001,
+        "shopid": 333444555,
+        "name": "Dermaglow Official Serum Niacinamide 30ml",
+        "price": 15900000000,
+        "sold": 5200,
+        "historical_sold": 120000,
+        "shop_location": "KOTA JAKARTA BARAT",
+        "is_official_shop": true
+      },
+      "itemid": 31000000001,
+      "shopid": 333444555
+    },
+    {
+      "item_basic": {
+        "itemid": 40400000001,
+        "shopid": 444555666,
+        "name": "Suplemen Kolagen Kapsul Isi 60",
+        "item_card_display_price": {
+          "price": 3500000000,
+          "strikethrough_price": 5000000000
+        },
+        "item_card_display_sold_count": {
+          "monthly_sold_count": 40,
+          "historical_sold_count": 300,
+          "display_sold_count_text": "40"
+        },
+        "shop_location": "KOTA SURABAYA",
+        "is_official_shop": false
+      },
+      "itemid": 40400000001,
+      "shopid": 444555666
+    }
+  ]
+}

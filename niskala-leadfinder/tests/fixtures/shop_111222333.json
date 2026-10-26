@@ -1,0 +1,29 @@
+{
+  "error": 0,
+  "error_msg": null,
+  "data": {
+    "shopid": 111222333,
+    "userid": 98765432,
+    "name": "Glowria Skincare",
+    "account": {
+      "username": "glowria.official",
+      "portrait": "id-11134004-abc",
+      "following_count": 12,
+      "phone_verified": true,
+      "email_verified": true,
+      "total_avg_star": null
+    },
+    "follower_count": 5321,
+    "rating_star": 4.86,
+    "rating_good": 2400,
+    "rating_bad": 12,
+    "item_count": 42,
+    "ctime": 1615809600,
+    "is_official_shop": false,
+    "is_shopee_verified": true,
+    "shop_location": "KOTA BANDUNG",
+    "place": "KOTA BANDUNG",
+    "response_rate": 98,
+    "description": "✨ GLOWRIA SKINCARE ✨\n100% ORIGINAL & BPOM NA18201234567\n\n📸 IG: @glowria.id\n🎵 TikTok: @glowria.id\n🌐 www.glowria.co.id\n\nOrder grosir/reseller WA 0812-3456-7890\nEmail: cs@glowria.co.id\nAlamat: Jl. Mawar No. 5, Bandung\n\nJam operasional 08.00-17.00 WIB"
+  }
+}

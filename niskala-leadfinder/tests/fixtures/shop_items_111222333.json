@@ -1,0 +1,40 @@
+{
+  "error": 0,
+  "data": {
+    "total": 42,
+    "items": [
+      {
+        "itemid": 22650011234,
+        "shopid": 111222333,
+        "name": "Glowria Serum Niacinamide 10% + Zinc 20ml BPOM",
+        "price": 8900000000,
+        "sold": 320,
+        "historical_sold": 5400
+      },
+      {
+        "itemid": 22650012000,
+        "shopid": 111222333,
+        "name": "Glowria Sunscreen SPF 50 PA++++ 50ml",
+        "price": 7500000000,
+        "sold": 60,
+        "historical_sold": 800
+      },
+      {
+        "itemid": 22650012001,
+        "shopid": 111222333,
+        "name": "Glowria Facial Wash Gentle 100ml",
+        "price": 4200000000,
+        "sold": 45,
+        "historical_sold": 610
+      },
+      {
+        "itemid": 22650012002,
+        "shopid": 111222333,
+        "name": "Pouch Glowria (Free Gift)",
+        "price": 100000,
+        "sold": 3,
+        "historical_sold": 40
+      }
+    ]
+  }
+}

@@ -1,0 +1,11 @@
+# local data: never commit scraped data, exports or your logged-in browser profile
+data/
+exports/
+.shopee-profile/
+.env
+
+# python
+.venv/
+__pycache__/
+.pytest_cache/
+.ruff_cache/

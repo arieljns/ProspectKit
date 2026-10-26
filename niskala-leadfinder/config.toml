@@ -1,0 +1,65 @@
+# Niskala Shopee Lead Finder: settings.
+# Every value marked TODO is a guess. Tune it after your first few real runs.
+
+[scrape]
+# Default keywords when `scrape` is run without --keywords. TODO: replace with your real list.
+keywords = ["serum niacinamide", "suplemen kolagen"]
+search_pages = 2              # result pages per keyword (TODO verify: ~60 items per page)
+max_shops = 40                # shop pages per run (hard rule: keep the default at 40)
+delay_min_s = 5               # random pause before every page load, in seconds
+delay_max_s = 11
+skip_recent_days = 14         # skip shops scraped this recently unless --refresh
+skip_official_candidates = true  # don't spend shop visits on Shopee Mall shops (they'd score `skip` anyway)
+scroll_steps_search = 8       # TODO tune: slow scroll steps on a search page
+scroll_steps_shop = 10        # TODO tune: slow scroll steps on a shop page
+profile_dir = ".shopee-profile"
+# Leave empty to use Playwright's own Chromium. Set a path to use another Chromium/Chrome build.
+browser_executable = ""
+
+[parse]
+# Shopee API prices are usually price * 100000. TODO verify against the price shown on the page.
+price_divisor = 100000
+# Candidate JSON paths (dotted) for each value; the first one present on an item wins.
+# TODO verify on first run: `sold` is believed to be ~last 30 days, `historical_sold` all-time.
+# If the check in README says otherwise, reorder these lists. No code change needed.
+monthly_sold_fields = ["sold", "item_card_display_sold_count.monthly_sold_count"]
+all_time_sold_fields = ["historical_sold", "item_card_display_sold_count.historical_sold_count"]
+
+[score]
+monthly_sold_min = 300        # TODO tune: ICP range, lower end
+monthly_sold_max = 2000       # TODO tune: ICP range, upper end
+monthly_sold_near_min = 150   # TODO tune: below range but close (the seen total is only a lower bound)
+points_sold_in_range = 50     # TODO tune
+points_sold_near = 20         # TODO tune
+points_sold_above = 15        # TODO tune: above range, maybe too big
+points_category = 25          # TODO tune
+category_full_share = 0.3     # TODO tune: share of seen items that must match a category for full points
+points_social = 25            # TODO tune: has IG or TikTok listed
+penalty_website = 25          # TODO tune: lists its own website (label capped at `check`)
+penalty_young_shop = 20       # TODO tune
+young_shop_months = 6
+penalty_low_rating = 5        # TODO tune
+rating_min = 4.5
+label_good_min = 70           # TODO tune: score >= this is `good`
+label_check_min = 45          # TODO tune: score >= this is `check`, below is `low`
+
+# Terms matched (case-insensitive) against item names to decide category fit.
+# TODO extend: these are starter lists, add the words your target sellers actually use.
+[categories]
+skincare = [
+  "skincare", "skin care", "serum", "toner", "essence", "moisturizer", "moisturiser", "pelembab",
+  "sunscreen", "sunblock", "spf", "facial wash", "face wash", "sabun muka", "cleanser", "cleansing",
+  "micellar", "exfoliat", "peeling", "masker", "sheet mask", "night cream", "day cream", "krim wajah",
+  "cream wajah", "acne", "jerawat", "niacinamide", "retinol", "hyaluronic", "ceramide", "centella",
+  "brightening", "glowing", "whitening", "eye cream", "lip balm", "body lotion", "bpom",
+]
+supplement = [
+  "suplemen", "supplement", "vitamin", "kolagen", "collagen", "kapsul", "capsule", "tablet",
+  "softgel", "herbal", "jamu", "madu", "habbatussauda", "minyak ikan", "fish oil", "omega",
+  "probiotik", "probiotic", "protein", "whey", "glutathione", "zinc", "multivitamin", "imun",
+  "pelangsing", "diet", "detox", "fiber", "serat",
+]
+
+[stats]
+# Cities with fewer shops than this are grouped as "Other" so no single shop stands out.
+min_group_size = 3
